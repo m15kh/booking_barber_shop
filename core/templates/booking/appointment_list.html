@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Appointment List</title>
+</head>
+
+<body>
+    <h1>Appointment List</h1>
+    <ul>
+        {% for appointment in appointments %}
+        <li>
+            <strong>Doctor:</strong> {{ appointment.doctor }}<br>
+            <strong>Date:</strong> {{ appointment.date }}<br>
+            <strong>Time Slot:</strong> {{ appointment.time }}<br>
+            <strong>Patient Name:</strong> {{ appointment.patient_name }}<br>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

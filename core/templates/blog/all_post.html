@@ -1,0 +1,62 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog/all_post.css' %}">
+</head>
+
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+<div class="container blog-page">
+    <div class="row clearfix">
+        <div class="col-lg-4 col-md-12">
+            <div class="card single_post">
+                {% for post in post_list %}
+
+
+                <div class="body">
+                    <h3 class="m-t-0 m-b-5"><a href="{% url 'blog:detail_post' post.pk %}">{{post.title}}</a></h3>
+                    <ul class="meta">
+                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-blue"></i>Posted By :
+                                {{post.author}}</a></li>
+                        <!-- <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Technology</a> -->
+                        </li>
+                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-comment-text col-blue"></i>Comments: {{ post.comment_set.count }}</a></li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="img-post m-b-15">
+                        <img src="{{post.image.url}}" alt="Awesome Image">
+
+                        <!-- <div class="social_share">
+                        <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                class="zmdi zmdi-facebook"></i></button>
+                        <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                class="zmdi zmdi-twitter"></i></button>
+                        <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                class="zmdi zmdi-instagram"></i></button>
+                    </div> -->
+                    </div>
+                    <p>{{ post.content | truncatewords:30 }}</p>
+                    <a href="{% url 'blog:detail_post' post.pk %}" title="read more" class="btn btn-round btn-info">Read
+                        More</a>
+
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock content %}

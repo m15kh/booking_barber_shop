@@ -1,0 +1,11 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1 style="color: darkblue;">Create new post </h1>
+    <form method="post"  enctype="multipart/form-data">{% csrf_token %}
+        {{ form |crispy }}
+        <input type="submit" value="submit">   
+    </form>
+
+{% endblock content %}
