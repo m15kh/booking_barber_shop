@@ -1,37 +1,83 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+# local
+from .utilities import order_date
+from .time_manager import generate_time_slots
+
+
+CustomUser = get_user_model()
+
+
+
+class Appointment_Hour(models.Model):
+    # DAYS_OF_WEEK = (
+    #     (0, "Saturday"),
+    #     (1, "Sunday"),
+    #     (2, "Monday"),
+    #     (3, "Tuesday"),
+    #     (4, "Wednesday"),
+    #     (5, "Thursday"),
+    #     (6, "Friday"),
+    # )
+
+    # Days = models.IntegerField(
+    #     choices=DAYS_OF_WEEK, unique=True
+    # )  # Add unique constraint here
+
+    start_hour = models.TimeField()
+    end_hour = models.TimeField()
+    start_rest_hour = models.TimeField()
+    duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
+    finish_rest_hour = models.TimeField()
+
+    def __str__(self):
+        # day_name = self.get_Days_display()
+        return " {} {} {} {}".format(
+            # day_name,
+            self.start_hour,
+            self.end_hour,
+            self.start_rest_hour,
+            self.finish_rest_hour,
+        )
+
+
+
 
 
 class Appointment(models.Model):
     """Contains info about appointment"""
 
     class Meta:
-        unique_together = ("doctor", "date", "timeslot")
+        unique_together = (
+            "barber",
+            "date",
+            "timeslot",
+        )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
     TIMESLOT_LIST = (
         (0, "09:00 – 09:30"),
         (1, "10:00 – 10:30"),
         (2, "11:00 – 11:30"),
-        (3, "12:00 – 12:30"),
-        (4, "13:00 – 13:30"),
-        (5, "14:00 – 14:30"),
-        (6, "15:00 – 15:30"),
-        (7, "16:00 – 16:30"),
-        (8, "17:00 – 17:30"),
-        (9, "18:00 – 18:30"),
-        (10, "19:00 – 19:30"),
-        (11, "20:00 – 20:30"),
-        (12, "21:00 – 21:30"),
 
     )
 
-    doctor = models.ForeignKey("Doctor", on_delete=models.CASCADE)
-    date = models.DateField(help_text="YYYY-MM-DD")
-    timeslot = models.IntegerField(choices=TIMESLOT_LIST)
-    patient_name = models.CharField(max_length=60)
+    barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
+    date = models.DateTimeField(choices=order_date())
+
+
+    appointment_hours = Appointment_Hour.objects.all()
+    timeslot = models.DateField(
+        appointment_hours
+            )
+    print(appointment_hours)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    
 
     def __str__(self):
-        return "{} {} {}. Patient: {}".format(
-            self.date, self.time, self.doctor, self.patient_name
+        return "{} {} {}. customer: {}".format(
+            self.date, self.time, self.barber, self.customer
         )
 
     @property
@@ -39,16 +85,15 @@ class Appointment(models.Model):
         return self.TIMESLOT_LIST[self.timeslot][1]
 
 
-class Doctor(models.Model):
-    """Stores info about doctor"""
+class Barber(models.Model):
+    """Stores info about barber"""
 
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     middle_name = models.CharField(max_length=20)
-    specialty = models.CharField(max_length=20)
 
     def __str__(self):
-        return "{} {}".format(self.specialty, self.short_name)
+        return "{} {}".format(self.last_name, self.short_name)
 
     @property
     def short_name(self):
@@ -57,3 +102,37 @@ class Doctor(models.Model):
             self.first_name[0].upper(),
             self.middle_name[0].upper(),
         )
+
+
+class Appointment_Hour(models.Model):
+    # DAYS_OF_WEEK = (
+    #     (0, "Saturday"),
+    #     (1, "Sunday"),
+    #     (2, "Monday"),
+    #     (3, "Tuesday"),
+    #     (4, "Wednesday"),
+    #     (5, "Thursday"),
+    #     (6, "Friday"),
+    # )
+
+    # Days = models.IntegerField(
+    #     choices=DAYS_OF_WEEK, unique=True
+    # )  # Add unique constraint here
+
+    start_hour = models.TimeField()
+    end_hour = models.TimeField()
+    start_rest_hour = models.TimeField()
+    duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
+    finish_rest_hour = models.TimeField()
+
+    def __str__(self):
+        # day_name = self.get_Days_display()
+        return " {} {} {} {}".format(
+            # day_name,
+            self.start_hour,
+            self.end_hour,
+            self.start_rest_hour,
+            self.finish_rest_hour,
+        )
+
+

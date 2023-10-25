@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html>
+{% extends "_base.html" %}
 
-<head>
-    <title>Appointment List</title>
-</head>
+{% block content %}
 
-<body>
-    <h1>Appointment List</h1>
-    <ul>
-        {% for appointment in appointments %}
-        <li>
-            <strong>Doctor:</strong> {{ appointment.doctor }}<br>
-            <strong>Date:</strong> {{ appointment.date }}<br>
-            <strong>Time Slot:</strong> {{ appointment.time }}<br>
-            <strong>Patient Name:</strong> {{ appointment.patient_name }}<br>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
+<h1>Appointment List</h1>
+</br>
+<ul>
+    {% for appointment in appointments %}
+    <li>
+        <strong>Doctor:</strong> {{ appointment.barber }}<br>
 
-</html>
+        <strong>Date:</strong> {{ appointment.date }}<br>
+        <strong>Time Slot:</strong> {{ appointment.time }}<br>
+        <strong>Patient Username:</strong> {{ appointment.customer }}<br>
+    </li>
+    </br></br></br>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock content %}
