@@ -1,18 +1,16 @@
 from django.urls import path
 from .views import (
-    AppointmentListView,
-    AppointmentListView_main,
-    CurrentWeekCalendarView,
+    BookingListView,
     AdminCalendarView,
 )
+from .views import booking_test
 
 app_name = "booking"
 
 urlpatterns = [
-    path("", AppointmentListView.as_view(), name="appointment-list"),
-    path("main", AppointmentListView_main.as_view(), name="appointment-list-main"),
-    path(
-        "current-week/", CurrentWeekCalendarView.as_view(), name="current_week_calendar"
-    ),
+    path("bookingtest", booking_test , name="booking_test"),
+    path("", BookingListView.as_view(), name="booking_list"),
+
+
     path("schedule", AdminCalendarView.as_view(), name="doctor_schedule"),
 ]

@@ -1,8 +1,32 @@
 
-
 from datetime import datetime, timedelta
 
-def generate_time_slots(start_time_str, finish_time_str, start_rest_str, finish_rest_str):
+def Dateslotgenerator():
+    # Get today's date
+    input_date = datetime.now().date()
+    lst = []
+
+    # Define the number of weeks into the future and past
+    weeks_in_future = 1
+    weeks_in_past = 1
+
+    # Define the names of the days of the week
+    day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+    # Iterate through the days and add date and day name to the list
+    for i in range(-7 * weeks_in_past, 7 * (weeks_in_future + 1)):
+        date = input_date + timedelta(days=i)
+        day_name = day_names[date.weekday()]
+        formatted_date = date.strftime('%Y-%m-%d')
+        display_name = f"{formatted_date} ({day_name})"
+        lst.append((date, display_name))
+
+    return lst
+
+
+
+
+def TimeSlotgenerator(start_time_str, finish_time_str, start_rest_str, finish_rest_str):
     slot_duration_minutes = 60
     # Convert start and finish times to datetime objects
     start_time = datetime.strptime(start_time_str, "%H:%M")
@@ -47,14 +71,5 @@ def generate_time_slots(start_time_str, finish_time_str, start_rest_str, finish_
 
     return time_slots
 
-# Example usage:
-start_time = "10:00"
-finish_time = "17:00"
-start_rest = "11:00"
-finish_rest = "12:30"
-
-timeslots = generate_time_slots(start_time, finish_time, start_rest, finish_rest)
-for slot in timeslots:
-    print(slot)
 
 

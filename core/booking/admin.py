@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Barber, Appointment, Appointment_Hour
+from .models import Barber, TimeRange, Booking
 # Register your models here.
-admin.site.register(Appointment)
+admin.site.register(TimeRange)
 admin.site.register(Barber)
-admin.site.register(Appointment_Hour)
+admin.site.register(Booking)

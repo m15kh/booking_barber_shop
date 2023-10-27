@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="main-wrapper">
+
+    {% include '_header.html' %} <!-- add header -->
+
+    <div>
+        <p>appointment barber</p>
+        <ul>
+            {% for item in processed_data %}
+            <li>
+                <p>Appointment Hour: {{ item.appointment_hour }}</p>
+                <p>Time Slots:</p>
+                <ul>
+                    {% for slot in item.time_slots %}
+                    <li>{{ slot }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% empty %}
+            <li>No appointment hours available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

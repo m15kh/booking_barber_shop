@@ -2,51 +2,50 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 # local
-from .utilities import order_date
-from .time_manager import generate_time_slots
-
+from .utils import Dateslotgenerator
 
 CustomUser = get_user_model()
 
 
+   
+class TimeRange(models.Model):
+    DAYS_OF_WEEK = (
+        (0, "Saturday"),
+        (1, "Sunday"),
+        (2, "Monday"),
+        (3, "Tuesday"),
+        (4, "Wednesday"),
+        (5, "Thursday"),
+        (6, "Friday"),
+    )
 
-class Appointment_Hour(models.Model):
-    # DAYS_OF_WEEK = (
-    #     (0, "Saturday"),
-    #     (1, "Sunday"),
-    #     (2, "Monday"),
-    #     (3, "Tuesday"),
-    #     (4, "Wednesday"),
-    #     (5, "Thursday"),
-    #     (6, "Friday"),
-    # )
+    Days = models.IntegerField(
+        choices=DAYS_OF_WEEK, unique=True
+    ) 
 
-    # Days = models.IntegerField(
-    #     choices=DAYS_OF_WEEK, unique=True
-    # )  # Add unique constraint here
-
-    start_hour = models.TimeField()
-    end_hour = models.TimeField()
-    start_rest_hour = models.TimeField()
+    startwork = models.TimeField()
+    finishwork = models.TimeField()
+    startrest = models.TimeField()
+    finishrest = models.TimeField()
     duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
-    finish_rest_hour = models.TimeField()
 
     def __str__(self):
-        # day_name = self.get_Days_display()
-        return " {} {} {} {}".format(
-            # day_name,
-            self.start_hour,
-            self.end_hour,
-            self.start_rest_hour,
-            self.finish_rest_hour,
+        day_name = self.get_Days_display()
+        return " {} {} {} {} {}".format(
+            day_name,
+            self.startwork,
+            self.finishwork,
+            self.startrest,
+            self.finishrest,
+            self.duration,
+
         )
+     
 
 
 
 
-
-class Appointment(models.Model):
-    """Contains info about appointment"""
+class Booking(models.Model):
 
     class Meta:
         unique_together = (
@@ -55,25 +54,12 @@ class Appointment(models.Model):
             "timeslot",
         )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
-    TIMESLOT_LIST = (
-        (0, "09:00 – 09:30"),
-        (1, "10:00 – 10:30"),
-        (2, "11:00 – 11:30"),
-
-    )
-
     barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
-    date = models.DateTimeField(choices=order_date())
+    date = models.DateTimeField(choices=Dateslotgenerator())
+    timeslot = models.TimeField()
 
-
-    appointment_hours = Appointment_Hour.objects.all()
-    timeslot = models.DateField(
-        appointment_hours
-            )
-    print(appointment_hours)
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
-    
 
     def __str__(self):
         return "{} {} {}. customer: {}".format(
@@ -86,7 +72,6 @@ class Appointment(models.Model):
 
 
 class Barber(models.Model):
-    """Stores info about barber"""
 
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
@@ -104,35 +89,5 @@ class Barber(models.Model):
         )
 
 
-class Appointment_Hour(models.Model):
-    # DAYS_OF_WEEK = (
-    #     (0, "Saturday"),
-    #     (1, "Sunday"),
-    #     (2, "Monday"),
-    #     (3, "Tuesday"),
-    #     (4, "Wednesday"),
-    #     (5, "Thursday"),
-    #     (6, "Friday"),
-    # )
-
-    # Days = models.IntegerField(
-    #     choices=DAYS_OF_WEEK, unique=True
-    # )  # Add unique constraint here
-
-    start_hour = models.TimeField()
-    end_hour = models.TimeField()
-    start_rest_hour = models.TimeField()
-    duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
-    finish_rest_hour = models.TimeField()
-
-    def __str__(self):
-        # day_name = self.get_Days_display()
-        return " {} {} {} {}".format(
-            # day_name,
-            self.start_hour,
-            self.end_hour,
-            self.start_rest_hour,
-            self.finish_rest_hour,
-        )
 
 
