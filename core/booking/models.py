@@ -31,14 +31,9 @@ class TimeRange(models.Model):
 
     def __str__(self):
         day_name = self.get_Days_display()
-        return "{} | work: {} | work: {} | rest: {} | rest: {} |  Duration:{}".format(
+        return " {} ".format(
             day_name,
-            self.workstart,
-            self.workfinish,
-            self.reststart,
-            self.restfinish,
-            self.duration,
-
+     
         )
      
 

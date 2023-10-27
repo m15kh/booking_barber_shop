@@ -1,18 +1,28 @@
 {% extends '_base.html' %}
 {% load static %}
 
-
 {% block content %}
-
 <div class="main-wrapper">
-
     {% include '_header.html' %} <!-- add header -->
-
-<ul>
-    {% for date, display_name in dateslots %}
-    <li>{{ display_name }}</li>
-    {% endfor %}
-</ul>
-
+    <div>
+        <p>Appointment Barber</p>
+        <ul>
+            {% for item in processed_data %}
+            <li>
+                <p>Date: {{ item.date }} ({{ item.date|date:"l" }})
+                <p>Time Range: {{ item.TimeRange }}</p>
+                <p>Week Number:</p>
+                <p>Time Slots:</p>
+                <ul>
+                    {% for slot in item.time_slots %}
+                    <li>{{ slot.start_time }} - {{ slot.end_time }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% empty %}
+            <li>No appointment hours available.</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock content %}
