@@ -31,7 +31,7 @@ class TimeRange(models.Model):
 
     def __str__(self):
         day_name = self.get_Days_display()
-        return " {} {} {} {} {}".format(
+        return "{} | work: {} | work: {} | rest: {} | rest: {} |  Duration:{}".format(
             day_name,
             self.workstart,
             self.workfinish,
@@ -41,7 +41,6 @@ class TimeRange(models.Model):
 
         )
      
-
 
 
 
@@ -57,7 +56,6 @@ class Booking(models.Model):
     barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
     date = models.DateTimeField(choices=Dateslotgenerator())
     timeslot = models.TimeField()
-
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 

@@ -3,12 +3,13 @@ from .views import (
     BookingListView,
     AdminCalendarView,
 )
-from .views import booking_test
+from .views import booking_test , booking_test2
 
 app_name = "booking"
 
 urlpatterns = [
     path("bookingtest", booking_test , name="booking_test"),
+    path("bookingtest2", booking_test2 , name="booking_test2"),
     path("", BookingListView.as_view(), name="booking_list"),
 
 

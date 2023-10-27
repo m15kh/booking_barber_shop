@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="main-wrapper">
+
+    {% include '_header.html' %} <!-- add header -->
+
+<ul>
+    {% for date, display_name in dateslots %}
+    <li>{{ display_name }}</li>
+    {% endfor %}
+</ul>
+
+</div>
+{% endblock content %}
