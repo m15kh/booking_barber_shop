@@ -23,20 +23,20 @@ class TimeRange(models.Model):
         choices=DAYS_OF_WEEK, unique=True
     ) 
 
-    startwork = models.TimeField()
-    finishwork = models.TimeField()
-    startrest = models.TimeField()
-    finishrest = models.TimeField()
+    workstart = models.TimeField()
+    workfinish = models.TimeField()
+    reststart = models.TimeField()
+    restfinish = models.TimeField()
     duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
 
     def __str__(self):
         day_name = self.get_Days_display()
         return " {} {} {} {} {}".format(
             day_name,
-            self.startwork,
-            self.finishwork,
-            self.startrest,
-            self.finishrest,
+            self.workstart,
+            self.workfinish,
+            self.reststart,
+            self.restfinish,
             self.duration,
 
         )

@@ -25,48 +25,49 @@ def Dateslotgenerator():
 
 
 
+#TODO
 
-def TimeSlotgenerator(start_time_str, finish_time_str, start_rest_str, finish_rest_str):
-    slot_duration_minutes = 60
+
+def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
     # Convert start and finish times to datetime objects
-    start_time = datetime.strptime(start_time_str, "%H:%M")
-    finish_time = datetime.strptime(finish_time_str, "%H:%M")
+    workstart = datetime.strptime(workstart, "%H:%M")
+    workfinish = datetime.strptime(workfinish, "%H:%M")
 
     # Convert rest start and end times to datetime objects
-    start_rest = datetime.strptime(start_rest_str, "%H:%M")
-    finish_rest = datetime.strptime(finish_rest_str, "%H:%M")
+    reststart = datetime.strptime(reststart, "%H:%M")
+    restfinish = datetime.strptime(restfinish, "%H:%M")
 
     # Initialize a list to store the time slots
     time_slots = []
 
     # Initialize the current time as the start time
-    current_time = start_time
+    current_time = workstart
 
     # Calculate the time difference between the current time and rest start time
-    time_difference = start_rest - current_time
+    time_difference = reststart - current_time
 
     # Calculate the number of slots before the rest period
-    num_slots = int(time_difference.total_seconds() / (slot_duration_minutes * 60))
+    num_slots = int(time_difference.total_seconds() / (duration * 60))
 
     # Generate time slots before the rest period
     for i in range(num_slots):
-        slot_start = current_time + timedelta(minutes=i * slot_duration_minutes)
-        slot_end = slot_start + timedelta(minutes=slot_duration_minutes)
+        slot_start = current_time + timedelta(minutes=i * duration)
+        slot_end = slot_start + timedelta(minutes=duration)
         time_slots.append(( f"{slot_start.strftime('%H:%M')} – {slot_end.strftime('%H:%M')}"))
 
     # Set the current time to the end of the rest period
-    current_time = finish_rest
+    current_time = restfinish
 
     # Calculate the time difference between the last rest end time and the finish time
-    time_difference = finish_time - current_time
+    time_difference = workfinish - current_time
 
     # Calculate the number of slots after the last rest period
-    num_slots = int(time_difference.total_seconds() / (slot_duration_minutes * 60))
+    num_slots = int(time_difference.total_seconds() / (duration * 60))
 
     # Generate time slots after the last rest period
     for i in range(num_slots):
-        slot_start = current_time + timedelta(minutes=i * slot_duration_minutes)
-        slot_end = slot_start + timedelta(minutes=slot_duration_minutes)
+        slot_start = current_time + timedelta(minutes=i * duration)
+        slot_end = slot_start + timedelta(minutes=duration)
         time_slots.append(( f" {slot_start.strftime('%H:%M')} – {slot_end.strftime('%H:%M')}"))
 
     return time_slots
