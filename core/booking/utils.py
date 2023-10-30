@@ -6,8 +6,8 @@ def Dateslotgenerator():
     lst = []
 
     # Define the number of weeks into the future and past
-    weeks_in_future = 1
-    weeks_in_past = 1
+    weeks_in_future = 2
+    weeks_in_past = 0
 
     # Define the names of the days of the week in the desired order
     day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
