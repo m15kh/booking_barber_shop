@@ -6,11 +6,12 @@ from .models import Booking , TimeRange
 from .utils import TimeSlotgenerator ,Dateslotgenerator
 
 def booking_test(request):
-    all_time_ranges = TimeRange.objects.all()
+    all_time_ranges = TimeRange.objects.all().order_by('Days')
+
     
-    processed_data = []
+    all_week_slot_time  = []
 
-
+    all_date_exist = Dateslotgenerator() # all date that exist
 
     for timerange in all_time_ranges:
 
@@ -21,11 +22,12 @@ def booking_test(request):
             timerange.restfinish.strftime('%H:%M'),
             timerange.duration,
         )
-        processed_data.append({'week':timerange.Days ,'TimeRange': timerange, 'time_slots': time_slots})
+        all_week_slot_time.append({'timerange': timerange, 'time_slots': time_slots})
 
-        date_data = Dateslotgenerator()
 
-    return render(request, 'booking/booking_test.html', {'processed_data': processed_data, 'date_data': date_data})
+   
+
+    return render(request, 'booking/booking_test.html', {'all_week_slot_time': all_week_slot_time, 'all_date_exist': all_date_exist})
 
 def booking_test2(request):
     dateslots = Dateslotgenerator()

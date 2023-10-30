@@ -4,32 +4,37 @@
 {% block content %}
 <div class="main-wrapper">
     {% include '_header.html' %} <!-- add header -->
-    <div>
-        <p>Appointment Barber</p>
-        <ul>
-            {% for item in processed_data %}
-            <li>
-                <p>Time Range: {{ item.TimeRange }}</p>
-                <p>Week Number: {{ item.TimeRange.get_Days_display }}</p>
-                <p>Time Slots:</p>
-                <ul>
-                    {% for slot in item.time_slots %}
-                    <li>{{ slot }}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-            {% empty %}
-            <li>No appointment hours available.</li>
-            {% endfor %}
-        </ul>
-    </div>
+
     <div>
         <p>Date Slots:</p>
         <ul>
-            {% for date_entry in date_data %}
-            <li>{{ date_entry.1 }}</li>
+            {% for date in all_date_exist %}
+                <h2  style="color: red;">{{ date.0|date:"Y m. d, l" }}</h2>
+                {{item.timerange}}
+                <li>{{ date.0|date:"l" }}</li>
+
+                {% if date.0|date:"l" == "Saturday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.0.time_slots }}</p>
+                {% elif date.0|date:"l" == "Sunday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.1.time_slots }}</p>
+                {% elif date.0|date:"l" == "Monday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.2.time_slots }}</p>
+                {% elif date.0|date:"l" == "Tuesday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.3.time_slots }}</p>
+                {% elif date.0|date:"l" == "Wednesday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.4.time_slots }}</p>
+                {% elif date.0|date:"l" == "Thursday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.5.time_slots }}</p>
+                {% elif date.0|date:"l" == "Friday" %}
+                    <p style="color: blue;">{{ all_week_slot_time.6.time_slots }}</p>
+
+                {% endif %}
+
+
             {% endfor %}
         </ul>
     </div>
+
+
 </div>
 {% endblock content %}
