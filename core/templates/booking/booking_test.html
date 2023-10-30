@@ -9,9 +9,9 @@
         <p>Date Slots:</p>
         <ul>
             {% for date in all_date_exist %}
-                <h2  style="color: red;">{{ date.0|date:"Y m. d, l" }}</h2>
+                <h2  style="color: red;">{{ date.0|date:"Y-m-d" }}</h2>
                 {{item.timerange}}
-                <li>{{ date.0|date:"l" }}</li>
+                <h6 style="color: chocolate;">{{ date.0|date:"l" }}</h6>
 
                 {% if date.0|date:"l" == "Saturday" %}
                     <p style="color: blue;">{{ all_week_slot_time.0.time_slots }}</p>

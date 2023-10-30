@@ -10,7 +10,6 @@ def Dateslotgenerator():
     weeks_in_past = 1
 
     # Define the names of the days of the week in the desired order
-    # day_names = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 
@@ -53,7 +52,7 @@ def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
     for i in range(num_slots):
         slot_start = current_time + timedelta(minutes=i * duration)
         slot_end = slot_start + timedelta(minutes=duration)
-        time_slots.append(( f"{slot_start.strftime('%H:%M')} – {slot_end.strftime('%H:%M')}"))
+        time_slots.append(( f"{slot_start.strftime('%H:%M')}"))
 
     # Set the current time to the end of the rest period
     current_time = restfinish
@@ -68,9 +67,8 @@ def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
     for i in range(num_slots):
         slot_start = current_time + timedelta(minutes=i * duration)
         slot_end = slot_start + timedelta(minutes=duration)
-        time_slots.append(( f" {slot_start.strftime('%H:%M')} – {slot_end.strftime('%H:%M')}"))
+        time_slots.append(( f" {slot_start.strftime('%H:%M')}"))
 
     return time_slots
-
 
 
