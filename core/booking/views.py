@@ -4,7 +4,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #local
 from .models import Booking , TimeRange
-from .forms import BookingForm
 from .utils import TimeSlotgenerator ,Dateslotgenerator
 
 def booking_test(request):
@@ -79,16 +78,7 @@ def booking_test2(request):
 
     
 
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # You can add a success message here if needed
-            return redirect('success_page')
-    else:
-        form = BookingForm()
-
-    return render(request, 'booking/booking_test2.html', {'all_week_slot_time': all_week_slot_time, 'all_date_exist': all_date_exist, 'form': form})
+    return render(request, 'booking/booking_test2.html', {'all_week_slot_time': all_week_slot_time, 'all_date_exist': all_date_exist })
 
 
 

@@ -6,59 +6,14 @@
     {% include '_header.html' %}
 
     <div class="breadcrumb-bar">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-12 col-12">
-                    <nav aria-label="breadcrumb" class="page-breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Booking</li>
-                        </ol>
-                    </nav>
-                    <h2 class="breadcrumb-title">Booking</h2>
-                </div>
-            </div>
-        </div>
+        <!-- ... Your existing code for breadcrumbs ... -->
     </div>
 
     <div class="content">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="booking-doc-info">
-                                <a href="#" class="booking-doc-img">
-                                    <!-- Add your image source here -->
-                                </a>
-                                <div class="booking-info">
-                                    <h4><a href="#">Dr. Eric Buckles</a></h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class "fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">35</span>
-                                    </div>
-                                    <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> New York, USA</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-4 col-md-6">
-                            <h4 class="mb-1">{{ selected_date|date:"Y-m-d" }}</h4>
-                            <p class="text-muted">{{ selected_date|date:"l" }}</p>
-                        </div>
-                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                            <div class="bookingrange btn btn-white btn-sm mb-3">
-                                <i class="far fa-calendar-alt me-2"></i>
-                                <span>{{ selected_date }}</span>
-                                <i class="fas fa-chevron-down ms-2"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- ... Your existing code for the card and date selection ... -->
 
                     <div class="card booking-schedule schedule-widget">
                         <div class="schedule-header">
@@ -71,20 +26,17 @@
                                                 <a href="?page={{ all_date_exist.previous_page_number }}"><i
                                                         class="fa fa-chevron-left"></i></a>
                                                 {% endif %}
-
                                             </li>
                                             {% for date in all_date_exist %}
                                             <li>
                                                 <span>{{ date.0|date:"D" }}</span>
-                                                <span class="slot-date">{{ date.0|date:"j M Y" }}</span>
+                                                <span class="slot-date">{{ date.0|date:"j m Y" }}</span>
                                             </li>
                                             {% endfor %}
-
                                             <li class="right-arrow">
                                                 {% if all_date_exist.has_next %}
                                                 <a href="?page={{ all_date_exist.next_page_number }}"><i
                                                         class="fa fa-chevron-right"> </i></a>
-                                                </a>
                                                 {% endif %}
                                             </li>
                                         </ul>
@@ -92,31 +44,82 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- time slot TODO -->
                         <div class="schedule-cont">
                             <div class="row">
                                 <div class="col-md-12">
+
                                     <div class="time-slot">
                                         <ul class="clearfix">
-                                            {% for time_slot in all_week_slot_time %}
+                                            {% for date in all_date_exist %}
                                             <li>
-                                                {% for slot in time_slot.time_slots %}
-                                                <a class="timing" href="#" data-time="{{ slot }}">
-                                                    <span>{{ slot }}</span>
-                                                </a>
-                                                {% endfor %}
+                                                <div class="date-slot">
+                                                    <h2 style="color: red;">{{ date.0|date:"Y-m-d" }}</h2>
+                                                    {{ item.timerange }}
+                                                    <h6 style="color: chocolate;">{{ date.0|date:"l" }}</h6>
+
+
+
+                                                    {% if date.0|date:"l" == "Saturday" %}
+                                                    {% for time_slot in all_week_slot_time.0.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+
+                                                    {% elif date.0|date:"l" == "Sunday" %}
+                                                    {% for time_slot in all_week_slot_time.1.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+
+                                                    {% elif date.0|date:"l" == "Monday" %}
+                                                    {% for time_slot in all_week_slot_time.1.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+                                                    {% elif date.0|date:"l" == "Tuesday" %}
+                                                    {% for time_slot in all_week_slot_time.3.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+                                                    {% elif date.0|date:"l" == "Wednesday" %}
+                                                    {% for time_slot in all_week_slot_time.4.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+                                                    {% elif date.0|date:"l" == "Thursday" %}
+                                                    {% for time_slot in all_week_slot_time.5.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+                                                    {% elif date.0|date:"l" == "Friday" %}
+                                                    {% for time_slot in all_week_slot_time.6.time_slots %}
+                                                    <a class="timing" href="#">
+                                                        <span>{{ time_slot.strip }}</span>
+                                                    </a>
+                                                    {% endfor %}
+                                                    {% endif %}
+
                                             </li>
                                             {% endfor %}
                                         </ul>
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
+
+
                     </div>
 
-                    <div class="submit-section proceed-btn text-end">
-                        <a href="#" class="btn btn-primary submit-btn">Proceed to Pay</a>
-                    </div>
+                    <!-- ... Your existing code for the "Proceed to Pay" button ... -->
                 </div>
             </div>
         </div>
