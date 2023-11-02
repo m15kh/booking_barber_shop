@@ -8,6 +8,10 @@ CustomUser = get_user_model()
 
 
    
+
+
+
+
 class TimeRange(models.Model):
     DAYS_OF_WEEK = (
         (0, "Saturday"),
@@ -18,6 +22,7 @@ class TimeRange(models.Model):
         (5, "Thursday"),
         (6, "Friday"),
     )
+
 
     Days = models.IntegerField(
         choices=DAYS_OF_WEEK, unique=True
@@ -36,10 +41,15 @@ class TimeRange(models.Model):
      
         )
      
-
-
+ 
 
 class Booking(models.Model):
+
+
+    barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
+    date = models.DateField(choices=Dateslotgenerator())
+    timeslot = models.TimeField()
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (
@@ -48,20 +58,16 @@ class Booking(models.Model):
             "timeslot",
         )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
-    barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
-    date = models.DateTimeField(choices=Dateslotgenerator())
-    timeslot = models.TimeField()
-    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return "{} {} {}. customer: {}".format(
-            self.date, self.time, self.barber, self.customer
+            self.date, self.timeslot, self.barber, self.customer
         )
 
-    @property
-    def time(self):
-        return self.TIMESLOT_LIST[self.timeslot][1]
+
+    # @property
+    # def time(self):
+    #     return self.TIMESLOT_LIST[self.timeslot][1]
 
 
 class Barber(models.Model):

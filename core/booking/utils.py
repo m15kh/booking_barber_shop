@@ -18,7 +18,6 @@ def Dateslotgenerator():
         date = input_date + timedelta(days=i)
         day_name = day_names[date.weekday()]
         formatted_date = date.strftime('%Y-%m-%d')
-        day_week  = f"({day_name})"
         display_name = f"{formatted_date} | ({day_name})"
         lst.append((date,  display_name))
 

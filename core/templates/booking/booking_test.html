@@ -9,26 +9,26 @@
         <p>Date Slots:</p>
         <ul>
             {% for date in all_date_exist %}
-                <h2  style="color: red;">{{ date.0|date:"Y-m-d" }}</h2>
-                {{item.timerange}}
-                <h6 style="color: chocolate;">{{ date.0|date:"l" }}</h6>
+            <h2 style="color: red;">{{ date.0|date:"Y-m-d" }}</h2>
+            {{item.timerange}}
+            <h6 style="color: chocolate;">{{ date.0|date:"l" }}</h6>
 
-                {% if date.0|date:"l" == "Saturday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.0.time_slots }}</p>
-                {% elif date.0|date:"l" == "Sunday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.1.time_slots }}</p>
-                {% elif date.0|date:"l" == "Monday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.2.time_slots }}</p>
-                {% elif date.0|date:"l" == "Tuesday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.3.time_slots }}</p>
-                {% elif date.0|date:"l" == "Wednesday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.4.time_slots }}</p>
-                {% elif date.0|date:"l" == "Thursday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.5.time_slots }}</p>
-                {% elif date.0|date:"l" == "Friday" %}
-                    <p style="color: blue;">{{ all_week_slot_time.6.time_slots }}</p>
+            {% if date.0|date:"l" == "Saturday" %}
+            <p style="color: blue;">{{ all_week_slot_time.0.time_slots }}</p>
+            {% elif date.0|date:"l" == "Sunday" %}
+            <p style="color: blue;">{{ all_week_slot_time.1.time_slots }}</p>
+            {% elif date.0|date:"l" == "Monday" %}
+            <p style="color: blue;">{{ all_week_slot_time.2.time_slots }}</p>
+            {% elif date.0|date:"l" == "Tuesday" %}
+            <p style="color: blue;">{{ all_week_slot_time.3.time_slots }}</p>
+            {% elif date.0|date:"l" == "Wednesday" %}
+            <p style="color: blue;">{{ all_week_slot_time.4.time_slots }}</p>
+            {% elif date.0|date:"l" == "Thursday" %}
+            <p style="color: blue;">{{ all_week_slot_time.5.time_slots }}</p>
+            {% elif date.0|date:"l" == "Friday" %}
+            <p style="color: blue;">{{ all_week_slot_time.6.time_slots }}</p>
 
-                {% endif %}
+            {% endif %}
 
 
             {% endfor %}
@@ -39,30 +39,35 @@
     </div>
 
 
-        <!-- Pagination buttons -->
-        <div class="pagination">
-            {% if all_date_exist.has_previous %}
-            <a href="?page=1">First</a>
-            <a href="?page={{ all_date_exist.previous_page_number }}">Previous</a>
-            {% endif %}
-        
-            <span class="current-page">{{ all_date_exist.number }}</span>
-        
-            {% if all_date_exist.has_next %}
-            <a href="?page={{ all_date_exist.next_page_number }}"> Next</a>
-            <a href="?page={{ all_date_exist.paginator.num_pages }}">Last </a>
-            {% endif %}
-        </div>
-        <div>
-            {%if page_obj.has_previous %} {# whether the previous page exists #}
-            <a href="?page={{all_date_exist.previous_page_number}}"> </a> {# link to the prev page #}
-                    {% endif %}
-                    <span>{{page_obj.number}}</span> {# the current page number #}
-            
-                    {%if page_obj.has_next %} {# whether the next page exists #}
-                    <a href="?page={{all_date_exist.next_page_number}}">></a> {# link to the next page #}
-                    {% endif %}
-        </div>
+    <!-- Pagination buttons -->
+    <div class="pagination">
+        {% if all_date_exist.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ all_date_exist.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current-page">{{ all_date_exist.number }}</span>
+
+        {% if all_date_exist.has_next %}
+        <a href="?page={{ all_date_exist.next_page_number }}"> Next</a>
+        <a href="?page={{ all_date_exist.paginator.num_pages }}">Last </a>
+        {% endif %}
+    </div>
+    <div>
+        {%if page_obj.has_previous %} {# whether the previous page exists #}
+        <a href="?page={{all_date_exist.previous_page_number}}"> </a> {# link to the prev page #}
+        {% endif %}
+        <span>{{page_obj.number}}</span> {# the current page number #}
+
+        {%if page_obj.has_next %} {# whether the next page exists #}
+        <a href="?page={{all_date_exist.next_page_number}}">></a> {# link to the next page #}
+        {% endif %}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 
 
 </div>
