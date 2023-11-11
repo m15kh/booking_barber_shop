@@ -5,4 +5,4 @@ class BookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = [ 'timeslot', 'date']
+        fields = ['barber', 'date', 'timeslot', 'customer']

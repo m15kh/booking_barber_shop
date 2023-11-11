@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import Barber, TimeRange, Booking
+from .models import  TimeRange, Booking
 # Register your models here.
 
 class TimeRangeAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'workstart', 'workfinish', 'reststart', 'restfinish', 'duration')
+    list_display = ('barber', '__str__', 'workstart', 'workfinish', 'reststart', 'restfinish', 'duration')
     
     # Define a custom ordering based on the name of the day
-    ordering = ('Days',)
+    list_filter = ('barber', 'Days')
+    ordering = ('barber', 'Days')
 
 admin.site.register(TimeRange, TimeRangeAdmin)
 
-admin.site.register(Barber)
 admin.site.register(Booking)

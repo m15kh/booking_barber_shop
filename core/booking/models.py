@@ -1,15 +1,8 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from accounts.models import BarberProfile, CustomerProfile
 
 # local
 from .utils import Dateslotgenerator
-
-CustomUser = get_user_model()
-
-
-   
-
-
 
 
 class TimeRange(models.Model):
@@ -23,33 +16,44 @@ class TimeRange(models.Model):
         (6, "Friday"),
     )
 
+    barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
 
     Days = models.IntegerField(
-        choices=DAYS_OF_WEEK, unique=True
-    ) 
+        choices=DAYS_OF_WEEK,
+    )
 
     workstart = models.TimeField()
     workfinish = models.TimeField()
     reststart = models.TimeField()
     restfinish = models.TimeField()
-    duration = models.IntegerField(choices=((15, "15 minute"), (30, "30 minute"), (45, "45 minute"), (60, "60 minute")))
+    duration = models.IntegerField(
+        choices=(
+            (15, "15 minute"),
+            (30, "30 minute"),
+            (45, "45 minute"),
+            (60, "60 minute"),
+        )
+    )
+
+    class Meta:
+        unique_together = (
+            "barber",
+            "Days",
+        
+        )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
     def __str__(self):
         day_name = self.get_Days_display()
         return " {} ".format(
             day_name,
-     
         )
-     
- 
+
 
 class Booking(models.Model):
-
-
-    barber = models.ForeignKey("Barber", on_delete=models.CASCADE)
+    barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
     date = models.DateField(choices=Dateslotgenerator())
     timeslot = models.TimeField()
-    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (
@@ -58,35 +62,11 @@ class Booking(models.Model):
             "timeslot",
         )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
-
     def __str__(self):
         return "{} {} {}. customer: {}".format(
             self.date, self.timeslot, self.barber, self.customer
         )
 
-
     # @property
     # def time(self):
     #     return self.TIMESLOT_LIST[self.timeslot][1]
-
-
-class Barber(models.Model):
-
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    middle_name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return "{} {}".format(self.last_name, self.short_name)
-
-    @property
-    def short_name(self):
-        return "{} {}.{}.".format(
-            self.last_name.title(),
-            self.first_name[0].upper(),
-            self.middle_name[0].upper(),
-        )
-
-
-
-

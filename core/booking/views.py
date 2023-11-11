@@ -68,6 +68,8 @@ def booking_test2(request):
         if form.is_valid():
             # Create a new Booking instance with the form data
             new_booking = form.save(commit=False)
+            new_booking.customer = request.user
+            new_booking.barber = 's'
             new_booking.selected_slot = request.POST.get('selected_slot')
             new_booking.selected_date = request.POST.get('selected_date')
             new_booking.save()  # Save the instance to the database
