@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import BarberProfile, CustomerProfile
-
+from django.urls import reverse
 # local
 from .utils import Dateslotgenerator
 
@@ -67,6 +67,4 @@ class Booking(models.Model):
             self.date, self.timeslot, self.barber, self.customer
         )
 
-    # @property
-    # def time(self):
-    #     return self.TIMESLOT_LIST[self.timeslot][1]
+

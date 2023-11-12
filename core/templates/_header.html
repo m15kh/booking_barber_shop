@@ -50,9 +50,9 @@
                                 <li><a href="map-list.html">Map List</a></li>
                             </ul>
                         </li>
-                        <li><a href="{% url 'booking:booking_test' %}">test booking</a></li>
-                        <li><a href="{% url 'booking:booking_test2' %}">test booking 2</a></li>
+                        <li><a href="{% url 'booking:booking_list' %}">test booking</a></li>
                         <li><a href="{% url 'booking:booking_list' %}">Booking</a></li>
+
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="booking-success.html">Booking Success</a></li>
                         <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
@@ -64,7 +64,7 @@
                 <li class="has-submenu">
                     <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="search.html">Search Doctors</a></li>
+                        <li><a href="{% url 'pages:list_barber' %}">list all Barbers</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
                         <li><a href="components.html">Components</a></li>
                         <li class="has-submenu">

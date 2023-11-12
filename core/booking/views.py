@@ -1,15 +1,21 @@
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse
 
 # local
 from .models import Booking, TimeRange
 from .utils import TimeSlotgenerator, Dateslotgenerator
 from .forms import BookingForm
+from accounts.models import BarberProfile
+
+from django.shortcuts import get_object_or_404
 
 
-def booking_test(request):
-    all_time_ranges = TimeRange.objects.all().order_by("Days")
+def booking_test(request, barber_id):
+    barber = get_object_or_404(BarberProfile, id=barber_id)
+
+    all_time_ranges = TimeRange.objects.filter(barber=barber).order_by("Days")
     all_week_slot_time = []
 
     all_date_exist = Dateslotgenerator()  # all date that exist
@@ -38,14 +44,19 @@ def booking_test(request):
     return render(
         request,
         "booking/booking_test.html",
-        {"all_week_slot_time": all_week_slot_time, "all_date_exist": all_date_exist},
+        {
+            "all_week_slot_time": all_week_slot_time,
+            "all_date_exist": all_date_exist,
+            "barber": barber,
+        },
     )
 
 
+######################################################
+def booking_test2(request, barber_id):
+    barber = get_object_or_404(BarberProfile, id=barber_id)
 
-def booking_test2(request):
-    
-    all_time_ranges = TimeRange.objects.all().order_by("Days")
+    all_time_ranges = TimeRange.objects.filter(barber=barber).order_by("Days")
     all_week_slot_time = []
 
     all_date_exist = (
@@ -63,17 +74,17 @@ def booking_test2(request):
     except EmptyPage:
         all_date_exist = all_date_exist.get_page(1)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
             # Create a new Booking instance with the form data
             new_booking = form.save(commit=False)
             new_booking.customer = request.user
-            new_booking.barber = 's'
-            new_booking.selected_slot = request.POST.get('selected_slot')
-            new_booking.selected_date = request.POST.get('selected_date')
+            new_booking.barber = "s"
+            new_booking.selected_slot = request.POST.get("selected_slot")
+            new_booking.selected_date = request.POST.get("selected_date")
             new_booking.save()  # Save the instance to the database
-            return redirect('success_page')  # Redirect to a success page
+            return redirect("success_page")  # Redirect to a success page
     else:
         form = BookingForm()
 
@@ -93,9 +104,13 @@ def booking_test2(request):
         {
             "all_week_slot_time": all_week_slot_time,
             "all_date_exist": all_date_exist,
-            'form': form
+            "form": form,
+            "barber": barber,
         },
     )
+
+
+#########################################################################
 
 
 class BookingListView(ListView):

@@ -32,10 +32,10 @@
                         <div class="card-body">
                             <div class="booking-doc-info">
                                 <a href="doctor-profile.html" class="booking-doc-img">
-                                    <img src="{% static 'img/doctors/doctor-thumb-02.jpg}" alt="User Image">
+                                    <img src="{{ barber.image.url }}" alt="User Image">
                                 </a>
                                 <div class="booking-info">
-                                    <h4><a href="doctor-profile.html">Dr. Eric Buckles</a></h4>
+                                    <h4><a href="doctor-profile.html">{{ barber }}</a></h4>
                                     <div class="rating">
                                         <i class="fas fa-star filled"></i>
                                         <i class="fas fa-star filled"></i>
@@ -181,7 +181,7 @@
                         </div>
 
 
-                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_test2' %}">
+                         <form id="bookingForm" method="POST" action="#"> <!--[ ] -->
                             {% csrf_token %}
 
                             <input type="hidden" id="selectedSlot" name="selected_slot" value="" />
