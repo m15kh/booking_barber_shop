@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import BarberProfile, CustomerProfile
+from accounts.models import BarberProfile, CustomerProfile , User
 from django.urls import reverse
 # local
 from .utils import Dateslotgenerator
@@ -50,10 +50,11 @@ class TimeRange(models.Model):
 
 
 class Booking(models.Model):
+    
     barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
     date = models.DateField(choices=Dateslotgenerator())
     timeslot = models.TimeField()
-    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (

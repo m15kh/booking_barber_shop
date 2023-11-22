@@ -1,35 +1,27 @@
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.urls import reverse
+
 
 # local
 from .models import Booking, TimeRange
 from .utils import TimeSlotgenerator, Dateslotgenerator
+from accounts.models import BarberProfile, CustomerProfile
 from .forms import BookingForm
-from accounts.models import BarberProfile
 
 from django.shortcuts import get_object_or_404
+
+# 3rd party
+from datetime import datetime
 
 
 def booking_test(request, barber_id):
     barber = get_object_or_404(BarberProfile, id=barber_id)
-
     all_time_ranges = TimeRange.objects.filter(barber=barber).order_by("Days")
+
+    if request.method == "POST":
+        print("sslddf,d,dpl")
+        print(request.POST)
     all_week_slot_time = []
-
-    all_date_exist = Dateslotgenerator()  # all date that exist
-    all_date_exist = Paginator(all_date_exist, 15)
-
-    try:
-        page_number = request.GET.get("page")
-        all_date_exist = all_date_exist.get_page(page_number)
-
-    except PageNotAnInteger:
-        all_date_exist = all_date_exist.get_page(1)
-
-    except EmptyPage:
-        all_date_exist = all_date_exist.get_page(1)
 
     for timerange in all_time_ranges:
         time_slots = TimeSlotgenerator(
@@ -46,13 +38,11 @@ def booking_test(request, barber_id):
         "booking/booking_test.html",
         {
             "all_week_slot_time": all_week_slot_time,
-            "all_date_exist": all_date_exist,
             "barber": barber,
         },
     )
 
 
-######################################################
 def booking_test2(request, barber_id):
     barber = get_object_or_404(BarberProfile, id=barber_id)
 
@@ -62,31 +52,10 @@ def booking_test2(request, barber_id):
     all_date_exist = (
         Dateslotgenerator()
     )  # Replace with your code to get available dates
-    all_date_exist = Paginator(all_date_exist, 7)
-
-    try:
-        page_number = request.GET.get("page")
-        all_date_exist = all_date_exist.get_page(page_number)
-
-    except PageNotAnInteger:
-        all_date_exist = all_date_exist.get_page(1)
-
-    except EmptyPage:
-        all_date_exist = all_date_exist.get_page(1)
 
     if request.method == "POST":
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            # Create a new Booking instance with the form data
-            new_booking = form.save(commit=False)
-            new_booking.customer = request.user
-            new_booking.barber = "s"
-            new_booking.selected_slot = request.POST.get("selected_slot")
-            new_booking.selected_date = request.POST.get("selected_date")
-            new_booking.save()  # Save the instance to the database
-            return redirect("success_page")  # Redirect to a success page
-    else:
-        form = BookingForm()
+        print(request.POST)
+        barber = get_object_or_404(BarberProfile, id=barber_id)
 
     for timerange in all_time_ranges:
         time_slots = TimeSlotgenerator(
@@ -104,13 +73,46 @@ def booking_test2(request, barber_id):
         {
             "all_week_slot_time": all_week_slot_time,
             "all_date_exist": all_date_exist,
-            "form": form,
             "barber": barber,
         },
     )
 
 
-#########################################################################
+def booking_test3(request, barber_id):
+    if request.method == "POST":
+        selected_date = request.POST.get("selected_date")
+        print(selected_date)
+        date_object = datetime.strptime(selected_date, "%Y-%m-%d")
+        day_of_week = date_object.strftime("%A")
+        print(day_of_week)
+
+        # Use selected_date to filter available time slots for the chosen date
+        # Update the following line with your code to get available time slots for the selected date
+
+    barber = get_object_or_404(BarberProfile, id=barber_id)
+
+    all_time_ranges = TimeRange.objects.filter(barber=barber, Days=0).order_by("Days")
+    print(all_time_ranges)
+
+    for timerange in all_time_ranges:
+        time_slots = TimeSlotgenerator(
+            timerange.workstart.strftime("%H:%M"),
+            timerange.workfinish.strftime("%H:%M"),
+            timerange.reststart.strftime("%H:%M"),
+            timerange.restfinish.strftime("%H:%M"),
+            timerange.duration,
+        )
+
+    return render(
+        request,
+        "booking/booking_test3.html",
+        {
+            "barber": barber,
+            "selected_date": selected_date,
+            "day_of_week": day_of_week,
+            "time_slots": time_slots,
+        },
+    )
 
 
 class BookingListView(ListView):

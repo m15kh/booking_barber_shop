@@ -12,6 +12,7 @@ class BarberAdmin(admin.ModelAdmin):
 # Custom admin class for Customer model
 class CustomerAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "username",
         "email",
         "first_name",

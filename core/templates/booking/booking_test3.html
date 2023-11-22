@@ -45,8 +45,8 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-4 col-md-6">
-                            <h4 class="mb-1">11 November 2019</h4>
-                            <p class="text-muted">Monday</p>
+                            <h4 class="mb-1">{{ selected_date }}</h4>
+                            <p class="text-muted">{{ day_of_week }}</p>
                         </div>
                         <div class="col-12 col-sm-8 col-md-6 text-sm-end">
                             <div class="bookingrange btn btn-white btn-sm mb-3">
@@ -72,20 +72,22 @@
                                         <div class="time-slot">
                                             <ul class="clearfix">
                                                 <li>
+
                                                     <div class="date-slot">
 
 
-                                                {% for date in all_date_exist %}
+                                                     {% for slot in time_slots %}
 
                                                         <a class="timing" href="#" id="sss">
-                                                            
-                                                            <span  class ="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span>
-                                                            </br>
-                                                            <span>{{ date.0|date:"Y-m-d"}}</span>
-                                                        </a>
 
-                                                {% endfor %}
-                                                        </div>
+                                                            <span class="date333" style="font-size: 10px;">{{ slot }} </span>
+                                                            </br>
+                                                            <span>ssssss</span>
+                                                        </a>
+                                                        {% endfor %}
+
+                                                    </div>
+
                                                 </li>
                                             </ul>
                                         </div>
@@ -99,6 +101,9 @@
 
 
 
+     
+
+
                                     <form id="bookingForm" method="POST" action="{% url 'booking:booking_test3' barber.pk %}"> <!--[ ] -->
                                         {% csrf_token %}
                                     
@@ -109,8 +114,6 @@
                                             <button type="submit" class="btn btn-primary submit-btn">Proceed to Pay</button>
                                         </div>
                                     </form>
-
-
 
 
                         <!-- ... Your existing code for the "Proceed to Pay" button ... -->
@@ -130,8 +133,8 @@
 
                 var selectedSlot = $(this).text().trim();
                 var parts = selectedSlot.split(/\s+/); // Split by spaces
-                                
-                var date = parts[1];
+
+                var date = parts[0];
                 $('#selectedDate').val(date);
             });
         });
