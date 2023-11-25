@@ -75,7 +75,7 @@
                                                     <div class="date-slot">
 
 
-                                                {% for date in all_date_exist %}
+                                                {% for date in all_dateslot %}
 
                                                         <a class="timing" href="#" id="sss">
                                                             
@@ -99,7 +99,7 @@
 
 
 
-                                    <form id="bookingForm" method="POST" action="{% url 'booking:booking_test3' barber.pk %}"> <!--[ ] -->
+                                    <form id="bookingForm" method="POST" action="{% url 'booking:booking_time' barber.pk %}"> <!--[ ] -->
                                         {% csrf_token %}
                                     
                                         <input type="hidden" id="selectedDate" name="selected_date" value="" />

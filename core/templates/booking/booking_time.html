@@ -1,0 +1,182 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="main-wrapper">
+
+    {% include '_header.html' %} <!-- add header -->
+
+
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Booking</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Booking</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="booking-doc-info">
+                                <a href="doctor-profile.html" class="booking-doc-img">
+                                    <img src="{{ barber.image.url }}" alt="User Image">
+                                </a>
+                                <div class="booking-info">
+                                    <h4><a href="doctor-profile.html">{{ barber }}</a></h4>
+
+                                    <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> IRAN, Tehran
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-4 col-md-6">
+                            <h4 class="text-muted">{{ selected_date }}</h4>
+                            <p class="text-muted" style="font-size: 30px;">{{ day_of_week }}</p>
+                        </div>
+                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                            <div class="bookingrange btn btn-white btn-sm mb-3">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                <span></span>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card booking-schedule schedule-widget">
+
+                        <div class="card booking-schedule schedule-widget">
+                            <div class="schedule-header">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                            <!-- time slot TODO -->
+                            <div class="schedule-cont">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="time-slot">
+                                                                                          
+                                            <ul class="clearfix">
+                                                {% for slot in all_timeslot %}
+                                                    <li>ِ
+                                                        <div class="date-slot">
+                                                            <a class="timing {% if slot in all_reserve %}reserved{% endif %}" href="#" id="sss" style="{% if slot in all_reserve %}background-color: #979A9A ; color: #555;{% endif %}">
+                                                                {% if slot in all_reserve %}
+                                                                    <span class="date333" style="font-size: 18px;">{{ slot }}</span>
+                                                                {% else %}
+                                                                    <span class="date333" style="font-size: 18px;">{{ slot }}</span>
+                                                                {% endif %}
+                                                                </br>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        </br>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+
+                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_success'  %}"> <!--[ ] -->
+                            {% csrf_token %}
+
+                            <input type="hidden" id="selectedTime" name="timeslot" value="" />
+                            <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" />
+                            <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}" />
+
+                            <!-- Your slot selection code here -->
+
+                            <button type="submit" class="btn btn-primary submit-btn" id="proceedToPayBtn">Proceed to Pay</button>
+                    </div>
+                    </form>
+
+
+                    <!-- ... Your existing code for the "Proceed to Pay" button ... -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.timing').click(function () {
+            // Check if the slot is reserved
+            if ($(this).hasClass('reserved')) {
+                // If reserved, do not allow selection
+                return;
+            }
+
+            // Remove the 'selected' class from all slots
+            $('.timing').removeClass('selected');
+
+            // Add the 'selected' class to the clicked slot
+            $(this).addClass('selected');
+
+            // Extract and set the selected time
+            var selectedSlot = $(this).text().trim();
+            var parts = selectedSlot.split(/\s+/); // Split by spaces
+            var date = parts[0];
+            $('#selectedTime').val(date);
+        });
+    });
+
+
+// ########
+    $(document).ready(function () {
+        $('#proceedToPayBtn').click(function (event) {
+            // Check if a timeslot is selected
+            var selectedTime = $('#selectedTime').val();
+
+            if (!selectedTime) {
+                // If no timeslot is selected, prevent form submission and show an error message
+                alert('Please select a timeslot.');
+                event.preventDefault();
+            }
+        });
+    });    
+</script>
+
+
+
+
+
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/moment.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+<script src="{% static 'cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js' %}" data-cf-settings="|49"
+    defer=""></script>
+
+
+{% endblock content %}

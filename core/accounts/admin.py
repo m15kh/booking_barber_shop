@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Barber, Customer, BarberProfile, CustomerProfile
+from .models import Barber, Customer, BarberProfile, CustomerProfile, User
 
 
 # Custom admin class for Barber model
@@ -24,14 +24,27 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 class BarberProfileAdmin(admin.ModelAdmin):
-    list_display = ('id','user', "image",)
+    list_display = (
+        "id",
+        "user",
+        "image",
+    )
 
-    ordering = ('id',)
+    ordering = ("id",)
+
+
 class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = ('id','user', "phone_number",)
+    list_display = (
+        "id",
+        "user",
+        "phone_number",
+    )
 
 
 # Register the custom admin classes for your models
+admin.site.register(User)
+
+
 admin.site.register(Barber, BarberAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(BarberProfile, BarberProfileAdmin)

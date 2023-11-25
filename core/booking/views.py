@@ -43,42 +43,32 @@ def booking_test(request, barber_id):
     )
 
 
-def booking_test2(request, barber_id):
+def booking_date(request, barber_id):
     barber = get_object_or_404(BarberProfile, id=barber_id)
-
-    all_time_ranges = TimeRange.objects.filter(barber=barber).order_by("Days")
-    all_week_slot_time = []
-
-    all_date_exist = (
-        Dateslotgenerator()
-    )  # Replace with your code to get available dates
-
-    if request.method == "POST":
-        print(request.POST)
-        barber = get_object_or_404(BarberProfile, id=barber_id)
-
-    for timerange in all_time_ranges:
-        time_slots = TimeSlotgenerator(
-            timerange.workstart.strftime("%H:%M"),
-            timerange.workfinish.strftime("%H:%M"),
-            timerange.reststart.strftime("%H:%M"),
-            timerange.restfinish.strftime("%H:%M"),
-            timerange.duration,
-        )
-        all_week_slot_time.append({"timerange": timerange, "time_slots": time_slots})
+    
+    all_dateslot = Dateslotgenerator()
 
     return render(
         request,
-        "booking/booking_test2.html",
+        "booking/booking_date.html",
         {
-            "all_week_slot_time": all_week_slot_time,
-            "all_date_exist": all_date_exist,
+            "all_dateslot": all_dateslot,
             "barber": barber,
         },
     )
 
 
-def booking_test3(request, barber_id):
+def booking_time(request, barber_id):
+    days_convertor = {
+        "Saturday": 0,
+        "Sunday": 1,
+        "Monday": 2,
+        "Tuesday": 3,
+        "Wednesday": 4,
+        "Thursday": 5,
+        "Friday": 6,
+    }
+
     if request.method == "POST":
         selected_date = request.POST.get("selected_date")
         print(selected_date)
@@ -86,31 +76,87 @@ def booking_test3(request, barber_id):
         day_of_week = date_object.strftime("%A")
         print(day_of_week)
 
-        # Use selected_date to filter available time slots for the chosen date
-        # Update the following line with your code to get available time slots for the selected date
-
     barber = get_object_or_404(BarberProfile, id=barber_id)
 
-    all_time_ranges = TimeRange.objects.filter(barber=barber, Days=0).order_by("Days")
-    print(all_time_ranges)
+    timeslot_step = TimeRange.objects.filter(
+        barber=barber, Days=days_convertor[day_of_week]
+    )
 
-    for timerange in all_time_ranges:
-        time_slots = TimeSlotgenerator(
-            timerange.workstart.strftime("%H:%M"),
-            timerange.workfinish.strftime("%H:%M"),
-            timerange.reststart.strftime("%H:%M"),
-            timerange.restfinish.strftime("%H:%M"),
-            timerange.duration,
+    reserve_timeslot = Booking.objects.filter(
+        barber=barber, date=selected_date
+    )  # return all time that reserved
+
+    # Extract the timeslot values from each Booking instance
+    all_reserve = [booking.timeslot.strftime("%H:%M") for booking in reserve_timeslot]
+    print("all_reserve", all_reserve)
+
+    print(timeslot_step)
+
+    if timeslot_step.exists():
+        first_timeslot = timeslot_step.first()
+
+        all_timeslot = TimeSlotgenerator(
+            first_timeslot.workstart.strftime("%H:%M"),
+            first_timeslot.workfinish.strftime("%H:%M"),
+            first_timeslot.reststart.strftime("%H:%M"),
+            first_timeslot.restfinish.strftime("%H:%M"),
+            first_timeslot.duration,
         )
+    else:
+        print("No timeslots found for the specified conditions.")
+
+    print("all_timeslot", all_timeslot)
 
     return render(
         request,
-        "booking/booking_test3.html",
+        "booking/booking_time.html",
         {
             "barber": barber,
             "selected_date": selected_date,
             "day_of_week": day_of_week,
-            "time_slots": time_slots,
+            "all_timeslot": all_timeslot,
+            "all_reserve": all_reserve,
+        },
+    )
+
+
+def booking_success(request):
+    if request.method == "POST":
+        print(request.POST)
+    form = BookingForm(request.POST)
+
+    if form.is_valid():
+        customer = request.user
+        barber = request.POST.get("barber")
+        timeslot = request.POST.get("timeslot")
+        date = request.POST.get("date")
+        print("valid")
+
+        barber = get_object_or_404(BarberProfile, id=barber)
+
+        print(customer, barber, timeslot, date)
+        new_booking = form.save(commit=False)
+        new_booking.customer = request.user
+        barber = request.POST.get("barber")
+        barber = get_object_or_404(BarberProfile, id=barber)
+        new_booking.barber = barber
+        new_booking.slottime = request.POST.get("slottime")
+        new_booking.date = request.POST.get("date")
+        new_booking.save()
+        # return redirect("success_page")  # Redirect to a success page
+
+    else:
+        print("fuck")
+        print(form.errors)
+
+    return render(
+        request,
+        "booking/booking_success.html",
+        {
+            "customer": customer,
+            "barber": barber,
+            "timeslot": timeslot,
+            "date": date,
         },
     )
 
