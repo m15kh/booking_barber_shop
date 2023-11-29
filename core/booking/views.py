@@ -45,7 +45,7 @@ def booking_test(request, barber_id):
 
 def booking_date(request, barber_id):
     barber = get_object_or_404(BarberProfile, id=barber_id)
-    
+
     all_dateslot = Dateslotgenerator()
 
     return render(

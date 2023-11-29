@@ -14,7 +14,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=50, choices=Role.choices)
 
     def save(self, *args, **kwargs):
-        if not  self.pk:
+        if not self.pk:
             self.role = self.base_role
             return super().save(*args, **kwargs)
 
@@ -24,21 +24,22 @@ class CustomerManager(BaseUserManager):
         results = super().get_queryset(*args, **kwargs)
         return results.filter(role=User.Role.CUSTOMER)
 
-class Customer(User):
 
+class Customer(User):
     base_role = User.Role.CUSTOMER
     student = CustomerManager()
+
     class Meta:
         proxy = True
+
     def welcome(self):
         return "Only for CUSTOMERS"
 
+
 class CustomerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=11) 
-    date  = models.DateField(null=True, blank=True) 
-
-
+    phone_number = models.CharField(max_length=11)
+    date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -48,8 +49,6 @@ class CustomerProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.role == "CUSTOMER":
         CustomerProfile.objects.create(user=instance)
-
-
 
 
 class BarberManager(BaseUserManager):
@@ -71,7 +70,7 @@ class Barber(User):
 
 class BarberProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image  = models.ImageField(upload_to='barbers/', default='barbers/default.jpg' )
+    image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
 
     def __str__(self):
         return self.user.username

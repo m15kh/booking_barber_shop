@@ -7,7 +7,7 @@
 
 <div class="main-wrapper">
 
-    {% include '_header.html' %} <!-- add header -->
+    {% include 'include/_header.html' %} <!-- add header -->
 
 
     <div class="breadcrumb-bar">
@@ -108,7 +108,7 @@
                         <form id="bookingForm" method="POST" action="{% url 'booking:booking_success'  %}"> <!--[ ] -->
                             {% csrf_token %}
 
-                            <input type="hidden" id="selectedTime" name="timeslot" value="" />
+                            <input type="hidden" id="selectedTime" name="time" value="" />
                             <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" />
                             <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}" />
 

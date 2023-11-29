@@ -30,11 +30,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # local
-    "blog",
+
     "pages",
     "accounts",
     "booking",
-    'barbers',
     # 3rd Party
     "crispy_forms",
     "crispy_bootstrap5",

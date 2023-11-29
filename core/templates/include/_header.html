@@ -29,7 +29,7 @@
                 <li class="has-submenu active">
                     <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+                        <li><a href="#">Doctor Dashboard</a></li>
                         <li><a href="appointments.html">Appointments</a></li>
                         <li class="active"><a href="{% url 'booking:doctor_schedule' %}">Schedule Timing</a></li>
                         <li><a href="my-patients.html">Patients List</a></li>
@@ -43,20 +43,14 @@
                 <li class="has-submenu">
                     <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li class="has-submenu">
-                            <a href="#">Doctors</a>
-                            <ul class="submenu">
-                                <li><a href="map-grid.html">Map Grid</a></li>
-                                <li><a href="map-list.html">Map List</a></li>
-                            </ul>
-                        </li>
+                       
+                        <li><a href="#">Patient Dashboard</a></li>
+
                         <li><a href="{% url 'booking:booking_list' %}">test booking</a></li>
                         <li><a href="{% url 'booking:booking_list' %}">Booking</a></li>
 
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="booking-success.html">Booking Success</a></li>
-                        <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
-                        <li><a href="favourites.html">Favourites</a></li>
                         <li><a href="profile-settings.html">Profile Settings</a></li>
                         <li><a href="change-password.html">Change Password</a></li>
                     </ul>
@@ -65,7 +59,6 @@
                     <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
                         <li><a href="{% url 'pages:list_barber' %}">list all Barbers</a></li>
-                        <li><a href="calendar.html">Calendar</a></li>
                         <li><a href="components.html">Components</a></li>
                         <li class="has-submenu">
                             <a href="invoices.html">Invoices</a>
@@ -74,7 +67,6 @@
                                 <li><a href="invoice-view.html">Invoice View</a></li>
                             </ul>
                         </li>
-                        <li><a href="blank-page.html">Starter Page</a></li>
                         <li><a href="about-us.html">About Us</a></li>
                         <li><a href="contact-us.html">Contact Us</a></li>
                 </li>
@@ -83,14 +75,7 @@
                 <li><a href="forgot-password.html">Forgot Password</a></li>
             </ul>
             </li>
-            <li class="has-submenu">
-                <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                <ul class="submenu right-dropdown">
-                    <li><a href="blog-list.html">Blog List</a></li>
-                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                    <li><a href="blog-details.html">Blog Details</a></li>
-                </ul>
-            </li>
+
             <li>
                 <!-- <a href="admin/index.html" target="_blank">Admin</a> -->
                 {% if request.user.is_authenticated %}
