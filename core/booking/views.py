@@ -1,7 +1,5 @@
 from django.views.generic import ListView, TemplateView
-from django.shortcuts import render, redirect
-
-
+from django.shortcuts import render
 # local
 from .models import Booking, TimeRange
 from .utils import TimeSlotgenerator, Dateslotgenerator
@@ -41,6 +39,8 @@ def booking_test(request, barber_id):
             "barber": barber,
         },
     )
+
+
 
 
 def booking_date(request, barber_id):

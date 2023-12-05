@@ -1,6 +1,5 @@
 from django.db import models
-from accounts.models import BarberProfile, CustomerProfile, User
-from django.urls import reverse
+from accounts.models import CustomerProfile, BarberProfile
 
 # local
 from .utils import Dateslotgenerator
@@ -53,14 +52,14 @@ class Booking(models.Model):
     barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
     date = models.DateField(choices=Dateslotgenerator())
     time = models.TimeField()
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (
             "barber",
             "date",
             "time",
-        )  # you can't have multiple appointments with the same barber on the same date and timeslot.
+        )
 
     def __str__(self):
         return "{} {} {}. customer: {}".format(

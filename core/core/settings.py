@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "pages",
     "accounts",
     "booking",
+    'barbers',
+    'customers',
     # 3rd Party
     "crispy_forms",
     "crispy_bootstrap5",

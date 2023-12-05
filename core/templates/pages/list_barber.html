@@ -197,7 +197,7 @@
                                         </ul>
                                     </div>
                                     <div class="clinic-booking">
-                                        <a class="view-pro-btn" href="#">View Profile</a>
+                                        <a class="view-pro-btn" href="{% url 'barbers:barber_panel' barber.pk %}">View Profile</a>
                                         <a class="apt-btn" href="{% url 'booking:booking_date'  barber.pk %}">Book Appointment</a>
                                     </div>
                                 </div>

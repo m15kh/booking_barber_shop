@@ -1,51 +1,116 @@
+from django.contrib.auth.admin import UserAdmin
+from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
 from django.contrib import admin
-from .models import Barber, Customer, BarberProfile, CustomerProfile, User
 
 
-# Custom admin class for Barber model
-class BarberAdmin(admin.ModelAdmin):
-    list_display = ("username", "email", "first_name", "last_name", "role")
-    list_filter = ("role",)
-    search_fields = ("username", "email", "first_name", "last_name")
+@admin.register(User)
+class UserAdmin(UserAdmin):
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "last_login",
+                    "date_joined",
+                )
+            },
+        ),
+    )
 
-
-# Custom admin class for Customer model
-class CustomerAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
         "username",
-        "email",
-        "first_name",
+        'id',
         "last_name",
+        "phone_number",
+        "email",
+        "is_active",
+        "is_staff",
         "role",
     )
     list_filter = ("role",)
+    search_fields = ("username", "role", "last_name")
+
+
+@admin.register(BarberUser)
+class BarberUserAdmin(UserAdmin):
+    list_display = ("username", "id", "email", "first_name", "last_name", "role")
+    list_filter = ("role",)
+    search_fields = ("username", "email", "first_name", "last_name")
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                    "last_login",
+                    "date_joined",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(BarberProfile)
+class BarberProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "id", "image")
+    ordering = ("id",)
+    readonly_fields = ("user",)  # can't change user
+
+    def has_add_permission(self, request):  # remove add user
+        return False
+
+
+@admin.register(CustomerUser)
+class CustomerUserAdmin(UserAdmin):
+    list_display = ("username",'id', "last_name", "phone_number", "email", "role")
+    list_filter = ("role",)
     search_fields = ("username", "email", "first_name", "last_name")
 
-
-class BarberProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "image",
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                    "last_login",
+                    "date_joined",
+                )
+            },
+        ),
     )
 
-    ordering = ("id",)
 
-
+@admin.register(CustomerProfile)
 class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "phone_number",
-    )
+    list_display = ("user", "id")
+    ordering = ("id",)
+    readonly_fields = ("user",)  # can't change user
 
-
-# Register the custom admin classes for your models
-admin.site.register(User)
-
-
-admin.site.register(Barber, BarberAdmin)
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(BarberProfile, BarberProfileAdmin)
-admin.site.register(CustomerProfile, CustomerProfileAdmin)
+    def has_add_permission(self, request):  # remove add user
+        return False

@@ -37,7 +37,7 @@
                                      <img src="{{ customer.image.url }}" alt="User Image"> <!--BUG -->
                                     </a>
                                     <div class="profile-det-info">
-                                        <h3>cfddf</h3>
+                                        <h3>{{ customer }}</h3>
                                         <div class="patient-details">
                                             <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
                                             <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Iran, Tehran</h5>
@@ -122,7 +122,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                              {% for item in all_bookings %}
+                                                                              {% for item in bookings %}
 
                                                             <tr>
                                                                 <td>

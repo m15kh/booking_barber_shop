@@ -1,16 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.core.validators import RegexValidator
 
 
 class User(AbstractUser):
     class Role(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
-        CUSTOMER = "CUSTOMER", "Customer"
-        BARBER = "BARBER", "Barber"
+        CUSTOMERUSER = "CUSTOMERUSER", "CustomerUser"
+        BARBERUSER = "BARBERUSER", "BarberUser"
 
     base_role = Role.ADMIN
+
+    phone_number = models.CharField(
+        max_length=11,
+        validators=[
+            RegexValidator(r"^\d{11}$", "Enter a valid 11-digit phone number.")
+        ],
+        blank=True,
+        null=True,
+    )
+    date = models.DateField(null=True, blank=True)
     role = models.CharField(max_length=50, choices=Role.choices)
 
     def save(self, *args, **kwargs):
@@ -19,15 +30,15 @@ class User(AbstractUser):
             return super().save(*args, **kwargs)
 
 
-class CustomerManager(BaseUserManager):
+class CustomerUserManager(BaseUserManager):
     def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
-        return results.filter(role=User.Role.CUSTOMER)
+        return results.filter(role=User.Role.CUSTOMERUSER)
 
 
-class Customer(User):
-    base_role = User.Role.CUSTOMER
-    student = CustomerManager()
+class CustomerUser(User):
+    base_role = User.Role.CUSTOMERUSER
+    customeruser = CustomerUserManager()
 
     class Meta:
         proxy = True
@@ -38,28 +49,44 @@ class Customer(User):
 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=11)
-    date = models.DateField(null=True, blank=True)
+    image = models.ImageField(upload_to="customers/", default="customers/default.jpg")
 
     def __str__(self):
         return self.user.username
 
+    def delete(self, *args, **kwargs):
+        # Delete associated BarberUser
+        customer_user = CustomerProfile.objects.filter(id=self.user.id)
+        if customer_user.exists():
+            customer_user.delete()
 
-@receiver(post_save, sender=Customer)
+        # Call the parent class delete method
+        super().delete(*args, **kwargs)
+
+
+@receiver(post_delete, sender=CustomerProfile)
+def delete_user(sender, instance, **kwargs):
+    # Delete associated BarberUser
+    customer_user = CustomerUser.objects.filter(id=instance.user.id)
+    if customer_user.exists():
+        customer_user.delete()
+
+
+@receiver(post_save, sender=CustomerUser)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "CUSTOMER":
+    if created and instance.role == "CUSTOMERUSER":
         CustomerProfile.objects.create(user=instance)
 
 
-class BarberManager(BaseUserManager):
+class BarberUSERManager(BaseUserManager):
     def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
-        return results.filter(role=User.Role.BARBER)
+        return results.filter(role=User.Role.BARBERUSER)
 
 
-class Barber(User):
-    base_role = User.Role.BARBER
-    barber = BarberManager()
+class BarberUser(User):
+    base_role = User.Role.BARBERUSER
+    barberuser = BarberUSERManager()
 
     class Meta:
         proxy = True
@@ -75,8 +102,25 @@ class BarberProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def delete(self, *args, **kwargs):
+        # Delete associated BarberUser
+        barber_user = BarberUser.objects.filter(id=self.user.id)
+        if barber_user.exists():
+            barber_user.delete()
 
-@receiver(post_save, sender=Barber)
+        # Call the parent class delete method
+        super().delete(*args, **kwargs)
+
+
+@receiver(post_save, sender=BarberUser)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "BARBER":
+    if created and instance.role == "BARBERUSER":
         BarberProfile.objects.create(user=instance)
+
+
+@receiver(post_delete, sender=BarberProfile)
+def delete_user(sender, instance, **kwargs):
+    # Delete associated BarberUser
+    barber_user = BarberUser.objects.filter(id=instance.user.id)
+    if barber_user.exists():
+        barber_user.delete()

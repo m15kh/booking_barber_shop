@@ -29,16 +29,16 @@ class BookingAdmin(admin.ModelAdmin):
         "customer",
         "barber",
         "date",
-        "formatted_timeslot",  # Use the custom method here
+        "formatted_time",  # Use the custom method here
     )
 
     list_filter = ("barber", "date")
     ordering = ("barber", "date")
 
-    def formatted_timeslot(self, obj):
-        return obj.timeslot.strftime("%H:%M")
+    def formatted_time(self, obj):
+        return obj.time.strftime("%H:%M")
 
-    formatted_timeslot.short_description = "Timeslot"  # Set a custom column header
+    formatted_time.short_description = "time"  # Set a custom column header
 
 
 admin.site.register(TimeRange, TimeRangeAdmin)
