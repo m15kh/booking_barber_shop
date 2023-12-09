@@ -1,30 +1,14 @@
+{% extends '_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <title>Doccure-Cosmetics</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
+{% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css' %}">
 
-    <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<div class="main-wrapper">
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-
-    <div class="main-wrapper">
-
-        {% include '_header.html' %} <!-- add header -->
-
+    {% include 'include/_header.html' %} <!-- add header -->
 
 
         <div class="breadcrumb-bar">
@@ -327,116 +311,7 @@
         </div>
 
 
-        <footer class="footer">
-
-            <div class="footer-top">
-                <div class="container-fluid">
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 col-md-6">
-
-                            <div class="footer-widget footer-about">
-                                <div class="footer-logo">
-                                    <img src="{% static 'img/logo.png' %}" alt="logo">
-                                </div>
-                                <div class="footer-about-content">
-                                    <div class="social-icon">
-                                        <ul>
-                                            <li>
-                                                <a href="#" target="_blank"><img src="{% static 'img/payment1.jpg' %}"
-                                                        alt=""></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank"><img src="{% static 'img/payment2.jpg' %}"
-                                                        alt=""></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank"><img src="{% static 'img/payment3.jpg' %}"
-                                                        alt=""></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank"><img src="{% static 'img/payment4.jpg' %}"
-                                                        alt=""></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-
-                            <div class="footer-widget footer-menu">
-                                <h2 class="footer-title">For Patients</h2>
-                                <ul>
-                                    <li><a href="search.html">Search for Doctors</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="booking.html">Booking</a></li>
-                                    <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-
-                            <div class="footer-widget footer-menu">
-                                <h2 class="footer-title">For Doctors</h2>
-                                <ul>
-                                    <li><a href="appointments.html">Appointments</a></li>
-                                    <li><a href="chat.html">Chat</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="doctor-register.html">Register</a></li>
-                                    <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-
-                            <div class="footer-widget footer-menu">
-                                <h2 class="footer-title">Sitemap</h2>
-                                <ul>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="chat.html">FAQs</a></li>
-                                    <li><a href="payment.html">Payment</a></li>
-                                    <li><a href="checkout.html">Shipment</a></li>
-                                    <li><a href="privacy-policy.html">Return policy</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="footer-bottom">
-                <div class="container-fluid">
-
-                    <div class="copyright">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-6">
-                                <div class="copyright-text">
-                                    <p class="mb-0">&copy; 2022 Doccure. All rights reserved.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-
-                                <div class="copyright-menu">
-                                    <ul class="policy-menu">
-                                        <li><a href="term-condition.html">Terms and Conditions</a></li>
-                                        <li><a href="privacy-policy.html">Policy</a></li>
-                                    </ul>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </footer>
+  
 
     </div>
 
@@ -634,6 +509,4 @@
     <script src="{% static 'js/script.js' %}" type="520dcd7daaa1634d38669afa-text/javascript"></script>
     <script src="{% static 'cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js' %}"
         data-cf-settings="520dcd7daaa1634d38669afa-|49" defer=""></script>
-</body>
-
-</html>
+{% endblock content %}

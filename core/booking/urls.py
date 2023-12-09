@@ -4,7 +4,7 @@ from .views import (
     AdminCalendarView,
 )
 from .views import (
-    booking_date,
+    BookingDateView,
     booking_time,
     booking_success,
 )
@@ -12,8 +12,10 @@ from .views import (
 app_name = "booking"
 
 urlpatterns = [
-    path("bookingtest2/<int:barber_id>/", booking_date, name="booking_date"),
-    path("bookingtest3/<int:barber_id>/", booking_time, name="booking_time"),
+    path(
+        "bookingdate/<int:barber_id>/", BookingDateView.as_view(), name="booking_date"
+    ),
+    path("bookingtime/<int:barber_id>/", booking_time, name="booking_time"),
     path("booking_success", booking_success, name="booking_success"),
     path("", BookingListView.as_view(), name="booking_list"),
     path("schedule", AdminCalendarView.as_view(), name="doctor_schedule"),

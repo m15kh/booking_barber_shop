@@ -30,23 +30,9 @@
             <div class="row">
                 <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
 
-                    <div class="profile-sidebar">
-                        <div class="widget-profile pro-widget-content">
-                            <div class="profile-info-widget">
-                                <a href="#" class="booking-doc-img">
-                                    <img src="{{ barber.image.url }}" alt="User Image"> 
-                                </a>
-                                <div class="profile-det-info">
-                                    <h3>{{ barber }}</h3>
-                                    <div class="patient-details">
-                                        <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+          
                          {% include 'include/_sidebar.html' %}                <!-- side bar -->
 
-                    </div>
 
                 </div>
                 <div class="col-md-7 col-lg-8 col-xl-9">
@@ -202,7 +188,7 @@
                                                                     <h2 class="table-avatar">
                                                                         <a href="patient-profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle"
                                                                                 src="{{ booking.customer.image.url }}" alt="User Image"></a>
-                                                                        <a href="patient-profile.html">{{ booking.customer }}<span>#PT0004</span></a>
+                                                                        <a href="patient-profile.html">{{ booking.customer }}<span>{{ booking.customer }}</span></a>
                                                                     </h2>
                                                                 </td>
                                                                 <td>

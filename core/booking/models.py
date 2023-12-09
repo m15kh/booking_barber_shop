@@ -53,6 +53,7 @@ class Booking(models.Model):
     date = models.DateField(choices=Dateslotgenerator())
     time = models.TimeField()
     customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (

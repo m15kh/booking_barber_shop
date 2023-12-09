@@ -1,5 +1,6 @@
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import render
+
 # local
 from .models import Booking, TimeRange
 from .utils import TimeSlotgenerator, Dateslotgenerator
@@ -10,52 +11,21 @@ from django.shortcuts import get_object_or_404
 
 # 3rd party
 from datetime import datetime
+from django.views import View
 
 
-def booking_test(request, barber_id):
-    barber = get_object_or_404(BarberProfile, id=barber_id)
-    all_time_ranges = TimeRange.objects.filter(barber=barber).order_by("Days")
-
-    if request.method == "POST":
-        print("sslddf,d,dpl")
-        print(request.POST)
-    all_week_slot_time = []
-
-    for timerange in all_time_ranges:
-        time_slots = TimeSlotgenerator(
-            timerange.workstart.strftime("%H:%M"),
-            timerange.workfinish.strftime("%H:%M"),
-            timerange.reststart.strftime("%H:%M"),
-            timerange.restfinish.strftime("%H:%M"),
-            timerange.duration,
+class BookingDateView(View):
+    def get(self, request, barber_id):
+        barber = get_object_or_404(BarberProfile, id=barber_id)
+        all_dateslot = Dateslotgenerator()
+        return render(
+            request,
+            "booking/booking_date.html",
+            {
+                "all_dateslot": all_dateslot,
+                "barber": barber,
+            },
         )
-        all_week_slot_time.append({"timerange": timerange, "time_slots": time_slots})
-
-    return render(
-        request,
-        "booking/booking_test.html",
-        {
-            "all_week_slot_time": all_week_slot_time,
-            "barber": barber,
-        },
-    )
-
-
-
-
-def booking_date(request, barber_id):
-    barber = get_object_or_404(BarberProfile, id=barber_id)
-
-    all_dateslot = Dateslotgenerator()
-
-    return render(
-        request,
-        "booking/booking_date.html",
-        {
-            "all_dateslot": all_dateslot,
-            "barber": barber,
-        },
-    )
 
 
 def booking_time(request, barber_id):
