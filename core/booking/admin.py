@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import TimeRange, Booking
+from .models import TimeRange, Booking, ExcludedDates
 
 # Register your models here.
 
 
+@admin.register(TimeRange)
 class TimeRangeAdmin(admin.ModelAdmin):
     list_display = (
         "barber_id",
@@ -42,6 +43,7 @@ class TimeRangeAdmin(admin.ModelAdmin):
     formatted_restfinish.short_description = "restfinish"
 
 
+@admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
         "customer",
@@ -61,7 +63,11 @@ class BookingAdmin(admin.ModelAdmin):
     formatted_time.short_description = "time"
 
 
-admin.site.register(TimeRange, TimeRangeAdmin)
+@admin.register(ExcludedDates)
+class ExcludedDatesAdmin(admin.ModelAdmin):
+    list_display = ("barber", "formatted_date")
+    list_filter = ("barber", "date")
+    ordering = ("barber", "date")
 
-
-admin.site.register(Booking, BookingAdmin)
+    def formatted_date(self, obj):
+        return obj.date.strftime("%Y-%m-%d")

@@ -52,7 +52,7 @@ class Booking(models.Model):
     barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
     date = models.DateField(choices=Dateslotgenerator())
     time = models.TimeField()
-    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE,)
     status = models.BooleanField(default=False)
 
     class Meta:
@@ -66,3 +66,17 @@ class Booking(models.Model):
         return "{} {} {}. customer: {}".format(
             self.date, self.time, self.barber, self.customer
         )
+
+
+class ExcludedDates(models.Model):
+    date = models.DateField()
+    barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (
+            "date",
+            "barber",
+        )
+
+    def __str__(self) -> str:
+        return "{}".format(self.date, self.barber)

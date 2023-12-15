@@ -48,7 +48,7 @@ class CustomerUser(User):
 
 
 class CustomerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customerprofile')
     image = models.ImageField(upload_to="customers/", default="customers/default.jpg")
 
     def __str__(self):
@@ -96,7 +96,7 @@ class BarberUser(User):
 
 
 class BarberProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name='barberprofile')
     image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
 
     def __str__(self):

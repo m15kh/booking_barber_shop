@@ -4,9 +4,28 @@ from accounts.models import BarberProfile
 from booking.models import Booking, TimeRange
 from datetime import datetime, timedelta
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.http import HttpResponseForbidden
 
+from django.http import HttpResponseForbidden
+
+
+@method_decorator(login_required, name="dispatch")
 class BarberPanelView(View):
     def get(self, request, barber_id):
+        # Ensure that the user has a related BarberProfile
+        if not hasattr(request.user, "barberprofile"):
+            return HttpResponseForbidden(
+                "You don't have permission to access this page."
+            )
+
+        # Check if the requested barber_id matches the user's BarberProfile
+        if request.user.barberprofile.id != int(barber_id):
+            return HttpResponseForbidden(
+                "You don't have permission to access this page."
+            )
+
         barber = BarberProfile.objects.get(pk=barber_id)
         tomorrow_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -14,7 +33,7 @@ class BarberPanelView(View):
             barber=barber,
             date__gte=tomorrow_date,
         ).order_by("date", "time")
-        count_tommorrow_bookings = upcoming_bookings.count()
+        count_tomorrow_bookings = upcoming_bookings.count()
 
         today_bookings = Booking.objects.filter(
             barber=barber,
@@ -29,7 +48,7 @@ class BarberPanelView(View):
             "upcoming_bookings": upcoming_bookings,
             "today_bookings": today_bookings,
             "count_today_bookings": count_today_bookings,
-            "count_tommorrow_bookings": count_tommorrow_bookings,
+            "count_tomorrow_bookings": count_tomorrow_bookings,
         }
         return render(request, "barbers/barber_panel.html", context)
 

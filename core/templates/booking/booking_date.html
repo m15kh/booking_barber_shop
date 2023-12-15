@@ -45,7 +45,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-4 col-md-6">
-                            <h4 class="mb-1">11 November 2019</h4>
+                            <h4 class="mb-1"></h4>
                             <p class="text-muted">Monday</p>
                         </div>
                         <div class="col-12 col-sm-8 col-md-6 text-sm-end">
@@ -74,17 +74,13 @@
                                                 <li>
                                                     <div class="date-slot">
 
-
-                                                {% for date in all_dateslot %}
-
-                                                        <a class="timing" href="#" id="sss">
-                                                            
-                                                            <span  class ="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span>
-                                                            </br>
+                                                        {% for date in all_dateslot %}
+                                                        <button class="timing" href="#" id="sss" style="display: inline-block; /* Your other styles */">
+                                                            <span class="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
                                                             <span>{{ date.0|date:"Y-m-d"}}</span>
-                                                        </a>
+                                                        </button>
+                                                        {% endfor %}
 
-                                                {% endfor %}
                                                         </div>
                                                 </li>
                                             </ul>

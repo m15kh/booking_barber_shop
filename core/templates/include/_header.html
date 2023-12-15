@@ -24,12 +24,15 @@
             </div>
             <ul class="main-nav">
                 <li>
-                    <a href="{% url 'pages:home' %}">Home</a>
+                    <a href="#" style="color: blueviolet;">{{ request.user }} {{ request.user.role }}</a>
+
                 </li>
                 <li class="has-submenu active">
                     <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="#">Doctor Dashboard</a></li>
+                        {% if request.user.role == 'BARBERUSER' %}
+                        <li><a href="{% url 'barbers:barber_panel' request.user.barberprofile.pk %}">Doctor Dashboard</a></li>
+                        {% endif %}
                         <li><a href="appointments.html">Appointments</a></li>
                         <li class="active"><a href="{% url 'booking:doctor_schedule' %}">Schedule Timing</a></li>
                         <li><a href="my-patients.html">Patients List</a></li>

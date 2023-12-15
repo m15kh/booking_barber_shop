@@ -114,3 +114,5 @@ class CustomerProfileAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):  # remove add user
         return False
+    
+
