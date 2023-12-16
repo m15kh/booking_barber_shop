@@ -43,21 +43,18 @@
                         <li><a href="doctor-register.html">Doctor Register</a></li>
                     </ul>
                 </li>
+                                        {% if request.user.role == 'CUSTOMERUSER' %}
+
                 <li class="has-submenu">
                     <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                       
-                        <li><a href="#">Patient Dashboard</a></li>
+                        <li><a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">Patient Dashboard</a></li>
+                        
 
-                        <li><a href="{% url 'booking:booking_list' %}">test booking</a></li>
-                        <li><a href="{% url 'booking:booking_list' %}">Booking</a></li>
-
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="booking-success.html">Booking Success</a></li>
-                        <li><a href="profile-settings.html">Profile Settings</a></li>
-                        <li><a href="change-password.html">Change Password</a></li>
                     </ul>
                 </li>
+                                        {% endif %}
+
                 <li class="has-submenu">
                     <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">

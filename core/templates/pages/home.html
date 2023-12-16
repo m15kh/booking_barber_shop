@@ -6,6 +6,6 @@
 
     {% include 'include/_header.html' %} <!-- add header -->
 
-</div>
-<h1 style="color: darkblue;">welcome to liam inside</h1>
+</div>;
+<h1 style="color: darkblue;">welcome to <p2 style="color: red">{{ request.user }}</p2> inside<p style="color: rgb(255, 0, 93)">{{ request.user.role }}</p></h1>
 {% endblock content %}

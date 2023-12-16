@@ -1,31 +1,14 @@
+# views.py
 from django.views import View
 from django.shortcuts import render
 from accounts.models import BarberProfile
 from booking.models import Booking, TimeRange
 from datetime import datetime, timedelta
-
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.http import HttpResponseForbidden
-
-from django.http import HttpResponseForbidden
+from .mixins import BarberProfilePermissionMixin
 
 
-@method_decorator(login_required, name="dispatch")
-class BarberPanelView(View):
+class BarberPanelView(BarberProfilePermissionMixin, View):
     def get(self, request, barber_id):
-        # Ensure that the user has a related BarberProfile
-        if not hasattr(request.user, "barberprofile"):
-            return HttpResponseForbidden(
-                "You don't have permission to access this page."
-            )
-
-        # Check if the requested barber_id matches the user's BarberProfile
-        if request.user.barberprofile.id != int(barber_id):
-            return HttpResponseForbidden(
-                "You don't have permission to access this page."
-            )
-
         barber = BarberProfile.objects.get(pk=barber_id)
         tomorrow_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -53,7 +36,7 @@ class BarberPanelView(View):
         return render(request, "barbers/barber_panel.html", context)
 
 
-class BarberScheduleView(View):
+class BarberScheduleView(BarberProfilePermissionMixin, View):
     def get(self, request, barber_id):
         barber = BarberProfile.objects.get(pk=barber_id)
         timerange = TimeRange.objects.filter(barber=barber)
