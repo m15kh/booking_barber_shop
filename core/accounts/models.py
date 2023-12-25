@@ -108,7 +108,6 @@ class BarberProfile(models.Model):
         if barber_user.exists():
             barber_user.delete()
 
-        # Call the parent class delete method
         super().delete(*args, **kwargs)
 
 

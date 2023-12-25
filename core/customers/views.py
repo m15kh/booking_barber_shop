@@ -9,6 +9,7 @@ class CustomerPanelView(CustomerProfilePermissionMixin, View):
     def get(self, request, customer_id):
         customer = CustomerProfile.objects.get(pk=customer_id)
         bookings = Booking.objects.filter(customer=customer)
+        
 
         context = {
             "customer": customer,
@@ -16,3 +17,9 @@ class CustomerPanelView(CustomerProfilePermissionMixin, View):
         }
 
         return render(request, "customers/customer_panel.html", context)
+
+class InvoiceDetailsView(View):
+    def get(self, request):
+        info_booking = Booking.objects.filter(customer = request.user.customerprofile)
+
+        return render(request, "customers/invoice_details.html")

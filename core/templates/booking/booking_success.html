@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="main-wrapper">
+    <div class="main-wrapper">
 
     {% include 'include/_header.html' %} <!-- add header -->
 
@@ -21,6 +21,8 @@
                 </div>
             </div>
         </div>
+        {% include 'include/messages.html' %}
+
 
 
         <div class="content success-page-cont">
@@ -33,8 +35,8 @@
                                 <div class="success-cont">
                                     <i class="fas fa-check"></i>
                                     <h3>Appointment booked Successfully!</h3>
-                                    <p>Appointment booked with <strong>{{ barber }}</strong><br> on <strong>{{ date }} at {{ timeslot }}</strong></p>
-                                    <a href="#" class="btn btn-primary view-inv-btn">View Invoice</a>
+                                    <p>Appointment booked with <strong>{{ barber }}</strong><br> on <strong>{{ date }} at {{ time }}</strong></p>
+                                    <a href="{% url 'customers:invoice_details' %}" class="btn btn-primary view-inv-btn">View Invoice</a>
                                 </div>
                             </div>
                         </div>

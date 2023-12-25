@@ -9,7 +9,6 @@
 
     {% include 'include/_header.html' %} <!-- add header -->
 
-
     <div class="breadcrumb-bar">
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -25,6 +24,7 @@
             </div>
         </div>
     </div>
+        {% include 'include/messages.html' %}
 
 
     <div class="content">
@@ -108,7 +108,7 @@
                         <form id="bookingForm" method="POST" action="{% url 'booking:booking_success'  %}"> <!--[ ] -->
                             {% csrf_token %}
 
-                            <input type="hidden" id="selectedTime" name="time" value="" />
+                            <input type="hidden" id="selectedTime" name="time" value=""/>
                             <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" />
                             <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}" />
 
@@ -146,23 +146,26 @@
             var parts = selectedSlot.split(/\s+/); // Split by spaces
             var date = parts[0];
             $('#selectedTime').val(date);
+
+            // Enable or disable the "Proceed to Pay" button based on selection
+            toggleProceedToPayButton();
         });
-    });
 
-
-// ########
-    $(document).ready(function () {
-        $('#proceedToPayBtn').click(function (event) {
-            // Check if a timeslot is selected
+        function toggleProceedToPayButton() {
+            // Check if any time slot is selected
             var selectedTime = $('#selectedTime').val();
-
-            if (!selectedTime) {
-                // If no timeslot is selected, prevent form submission and show an error message
-                alert('Please select a timeslot.');
-                event.preventDefault();
+            if (selectedTime) {
+                // Enable the button if a time slot is selected
+                $('#proceedToPayBtn').prop('disabled', false);
+            } else {
+                // Disable the button if no time slot is selected
+                $('#proceedToPayBtn').prop('disabled', true);
             }
-        });
-    });    
+        }
+
+        // Initial check on page load
+        toggleProceedToPayButton();
+    });
 </script>
 
 

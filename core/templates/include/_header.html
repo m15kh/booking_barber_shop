@@ -27,22 +27,17 @@
                     <a href="#" style="color: blueviolet;">{{ request.user }} {{ request.user.role }}</a>
 
                 </li>
+                                        {% if request.user.role == 'BARBERUSER' %}
+
                 <li class="has-submenu active">
                     <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        {% if request.user.role == 'BARBERUSER' %}
                         <li><a href="{% url 'barbers:barber_panel' request.user.barberprofile.pk %}">Doctor Dashboard</a></li>
-                        {% endif %}
-                        <li><a href="appointments.html">Appointments</a></li>
-                        <li class="active"><a href="{% url 'booking:doctor_schedule' %}">Schedule Timing</a></li>
-                        <li><a href="my-patients.html">Patients List</a></li>
-                        <li><a href="patient-profile.html">Patients Profile</a></li>
-                        <li><a href="invoices.html">Invoices</a></li>
-                        <li><a href="doctor-profile-settings.html">Profile Settings</a></li>
-                        <li><a href="reviews.html">Reviews</a></li>
-                        <li><a href="doctor-register.html">Doctor Register</a></li>
+
                     </ul>
                 </li>
+                                        {% endif %}
+
                                         {% if request.user.role == 'CUSTOMERUSER' %}
 
                 <li class="has-submenu">
@@ -59,20 +54,11 @@
                     <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
                         <li><a href="{% url 'pages:list_barber' %}">list all Barbers</a></li>
-                        <li><a href="components.html">Components</a></li>
-                        <li class="has-submenu">
-                            <a href="invoices.html">Invoices</a>
-                            <ul class="submenu">
-                                <li><a href="invoices.html">Invoices</a></li>
-                                <li><a href="invoice-view.html">Invoice View</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="contact-us.html">Contact Us</a></li>
+                        <li><a href="{% url 'pages:components' %}">components</a></li>
+
+
                 </li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
-                <li><a href="forgot-password.html">Forgot Password</a></li>
+
             </ul>
             </li>
 

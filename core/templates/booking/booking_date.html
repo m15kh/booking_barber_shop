@@ -22,6 +22,8 @@
             </div>
         </div>
     </div>
+        {% include 'include/messages.html' %}
+
 
 
     <div class="content">
@@ -95,14 +97,14 @@
 
 
 
-                                    <form id="bookingForm" method="POST" action="{% url 'booking:booking_time' barber.pk %}"> <!--[ ] -->
+                                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_time' barber.pk  %}">
                                         {% csrf_token %}
                                     
                                         <input type="hidden" id="selectedDate" name="selected_date" value="" />
                                         <!-- Your slot selection code here -->
                                     
                                         <div class="submit-section proceed-btn text-end">
-                                            <button type="submit" class="btn btn-primary submit-btn">Proceed to Pay</button>
+                                            <button type="submit" class="btn btn-primary submit-btn" id="proceedToPayBtn">Proceed to Pay</button>
                                         </div>
                                     </form>
 
@@ -116,25 +118,42 @@
         </div>
     </div>
 
-    <script>
+<script>
+    $(document).ready(function () {
+        $('.timing').click(function () {
+            // Remove the 'selected' class from all slots
+            $('.timing').removeClass('selected');
 
-        $(document).ready(function () {
-            $('.timing').click(function () {
-                $('.timing').removeClass('selected');
+            // Add the 'selected' class to the clicked slot
+            $(this).addClass('selected');
 
-                $(this).addClass('selected');
+            // Extract and set the selected date
+            var selectedSlot = $(this).text().trim();
+            var parts = selectedSlot.split(/\s+/); // Split by spaces
 
-                var selectedSlot = $(this).text().trim();
-                var parts = selectedSlot.split(/\s+/); // Split by spaces
-                                
-                var date = parts[1];
-                $('#selectedDate').val(date);
-            });
+            var date = parts[1];
+            $('#selectedDate').val(date);
+
+            // Enable or disable the "Proceed to Pay" button based on selection
+            toggleProceedToPayButton();
         });
 
-    </script>
+        function toggleProceedToPayButton() {
+            // Check if any date slot is selected
+            var selectedDate = $('#selectedDate').val();
+            if (selectedDate) {
+                // Enable the button if a date slot is selected
+                $('#proceedToPayBtn').prop('disabled', false);
+            } else {
+                // Disable the button if no date slot is selected
+                $('#proceedToPayBtn').prop('disabled', true);
+            }
+        }
 
-
+        // Initial check on page load
+        toggleProceedToPayButton();
+    });
+</script>
 
 
 

@@ -1,22 +1,21 @@
-from django.views.generic import ListView, TemplateView
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
+from django.contrib import messages
+from django.urls import reverse
 
 # local
 from .models import Booking, TimeRange, ExcludedDates
 from .utils import TimeSlotgenerator, Dateslotgenerator
-from accounts.models import BarberProfile, CustomerProfile
+from accounts.models import BarberProfile
 from .forms import BookingForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import BookingPermissionMixin
 
-from django.shortcuts import get_object_or_404
 
 # 3rd party
 from datetime import datetime, date
-from django.views import View
 
 
-class BookingDateView(View):
+class BookingDateView(BookingPermissionMixin, View):
     def get(self, request, barber_id):
         barber = get_object_or_404(BarberProfile, id=barber_id)
         check_timerange_day_exist = TimeRange.objects.filter(barber=barber)
@@ -24,11 +23,7 @@ class BookingDateView(View):
         day_names_list = [
             str(timerange).strip() for timerange in check_timerange_day_exist
         ]
-
-        # Given list of days
-        days_list = day_names_list
-        print("Days in the list:", days_list)
-        # All days of the week
+        print("Days in the list:", day_names_list)
         all_days = [
             "Monday",
             "Tuesday",
@@ -38,7 +33,7 @@ class BookingDateView(View):
             "Saturday",
             "Sunday",
         ]
-        missing_days = set(all_days) - set(days_list)
+        missing_days = set(all_days) - set(day_names_list)
         missing_days_list = list(missing_days)
         print("Days not in the list:", missing_days_list)
 
@@ -62,7 +57,7 @@ class BookingDateView(View):
         )
 
 
-class BookingTimeView(LoginRequiredMixin, View):
+class BookingTimeView(BookingPermissionMixin, View):
     template_name = "booking/booking_time.html"
 
     days_converter = {
@@ -75,27 +70,29 @@ class BookingTimeView(LoginRequiredMixin, View):
         "Friday": 6,
     }
 
-    def get(self, request, barber_id):
-        barber = get_object_or_404(BarberProfile, id=barber_id)
-        return render(request, self.template_name, {"barber": barber})
-
     def post(self, request, barber_id):
-        selected_date = request.POST.get("selected_date")
-        date_object = datetime.strptime(selected_date, "%Y-%m-%d")
-        day_of_week = date_object.strftime("%A")
+        date = request.POST.get("selected_date")
+        # date = selected_date
+        date_format = datetime.strptime(
+            date, "%Y-%m-%d"
+        )  # change format of date to valid format (str)
+        name_of_day = date_format.strftime("%A")  # retuen for a example friday
 
         barber = get_object_or_404(BarberProfile, id=barber_id)
 
-        timeslot_step = TimeRange.objects.filter(
-            barber=barber, Days=self.days_converter[day_of_week]
+        timeslots_selected_date = TimeRange.objects.filter(  # retuen all range timeslot for day that selected ( for a example show time slot for tuesday )
+            barber=barber, Days=self.days_converter[name_of_day]
         )
+        reserved_timeslot = Booking.objects.filter(
+            barber=barber, date=date
+        )  # return all query for reserved timeslot
 
-        reserve_timeslot = Booking.objects.filter(barber=barber, date=selected_date)
+        reserved_timeslot_format = [
+            booking.time.strftime("%H:%M") for booking in reserved_timeslot
+        ]  # return  jyst the time of all re timeslot
 
-        all_reserve = [booking.time.strftime("%H:%M") for booking in reserve_timeslot]
-
-        if timeslot_step.exists():
-            first_timeslot = timeslot_step.first()
+        if timeslots_selected_date.exists():
+            first_timeslot = timeslots_selected_date.first()
 
             all_timeslot = TimeSlotgenerator(
                 first_timeslot.workstart.strftime("%H:%M"),
@@ -112,78 +109,56 @@ class BookingTimeView(LoginRequiredMixin, View):
             self.template_name,
             {
                 "barber": barber,
-                "selected_date": selected_date,
-                "day_of_week": day_of_week,
+                "selected_date": date,
+                "day_of_week": name_of_day,
                 "all_timeslot": all_timeslot,
-                "all_reserve": all_reserve,
+                "all_reserve": reserved_timeslot_format,
             },
         )
 
 
-def is_not_admin(user):
-    return not user.is_staff
-
-@user_passes_test(is_not_admin)
-def your_view(request):
-    # Your view logic here
-    if request.user.profile:
-        customer = request.user.profile
-        # Rest of your view logic using the customer variable
-    else:
-        # Handle the case where the user does not have a profile
-        customer = None
-    # Rest of your view logic
-
-
-class BookingSuccessView(LoginRequiredMixin, View):
+class BookingSuccessView(BookingPermissionMixin, View):
     template_name = "booking/booking_success.html"
 
-    def get(self, request):
-        return render(request, self.template_name)
-
     def post(self, request):
-        form = BookingForm(request.POST)
+        form = BookingForm(request.POST, customer=request.user.customerprofile)
 
         if form.is_valid():
             customer = request.user.customerprofile
-            print("#############", customer)
             barber_id = request.POST.get("barber")
-            print("#############", barber_id)
-
-            timeslot = request.POST.get("timeslot")
-            date = request.POST.get("date")
-
             barber = get_object_or_404(BarberProfile, id=barber_id)
-
+            time = request.POST.get("time")
+            date = request.POST.get("date")
+            # start save booking
             new_booking = form.save(commit=False)
             new_booking.customer = customer
             new_booking.barber = barber
-            new_booking.slottime = request.POST.get("slottime")
-            new_booking.date = request.POST.get("date")
+            new_booking.time = time
+            new_booking.date = date
             new_booking.save()
-
+            messages.success(
+                request, "you reserved appointment successfully", "success"
+            )
             return render(
                 request,
                 self.template_name,
                 {
                     "customer": customer,
                     "barber": barber,
-                    "timeslot": timeslot,
+                    "time": time,
                     "date": date,
                 },
             )
+
         else:
-            print("Form is not valid")
-            print(form.errors)
-
-        return render(request, self.template_name)
-
-
-class BookingListView(ListView):
-    model = Booking
-    template_name = "booking/booking_list.html"
-    context_object_name = "bookings"
-
-
-class AdminCalendarView(TemplateView):
-    template_name = "booking/schedule-timings.html"
+            messages.error(
+                request,
+                "you have active reservation with this barber on selected date ",
+                "danger",
+            )
+            barber_id = request.POST.get("barber")
+            print(request.path)
+        return redirect(
+            reverse("booking:booking_date", kwargs={"barber_id": barber_id})
+        )
+    

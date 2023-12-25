@@ -14,3 +14,7 @@ class ListDoctorPageView(ListView):
     model = BarberProfile
     template_name = "pages/list_barber.html"
     context_object_name = "barbers"
+
+
+class ComponentPageView(TemplateView):
+    template_name = "pages/components.html"
