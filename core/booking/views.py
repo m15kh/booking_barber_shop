@@ -10,7 +10,6 @@ from accounts.models import BarberProfile
 from .forms import BookingForm
 from .mixins import BookingPermissionMixin
 
-
 # 3rd party
 from datetime import datetime, date
 
@@ -34,19 +33,22 @@ class BookingDateView(BookingPermissionMixin, View):
             "Sunday",
         ]
         missing_days = set(all_days) - set(day_names_list)
-        missing_days_list = list(missing_days)
+        missing_days_list = list(missing_days)  # Days not in the list:
         print("Days not in the list:", missing_days_list)
 
-        exclude_dates = ExcludedDates.objects.filter(
+        exclude_dates = ExcludedDates.objects.filter( #days that barber  is not available
             barber=barber, date__gte=date.today()
         )
         exclude_dates_list = [
             exclude_date.date.strftime("%Y-%m-%d") for exclude_date in exclude_dates
         ]
 
-        all_dateslot = Dateslotgenerator(
+
+        all_dateslot = Dateslotgenerator( #return all available dates
             exclude_namedays=missing_days_list, exclude_dates=exclude_dates_list
         )
+        
+        
         return render(
             request,
             "booking/booking_date.html",
@@ -70,7 +72,7 @@ class BookingTimeView(BookingPermissionMixin, View):
         "Friday": 6,
     }
 
-    def post(self, request, barber_id):
+    def get(self, request, barber_id, date):
         date = request.POST.get("selected_date")
         # date = selected_date
         date_format = datetime.strptime(
@@ -153,7 +155,7 @@ class BookingSuccessView(BookingPermissionMixin, View):
         else:
             messages.error(
                 request,
-                "you have active reservation with this barber on selected date ",
+                "you have active reservation with this barber on this  date ",
                 "danger",
             )
             barber_id = request.POST.get("barber")
@@ -161,4 +163,4 @@ class BookingSuccessView(BookingPermissionMixin, View):
         return redirect(
             reverse("booking:booking_date", kwargs={"barber_id": barber_id})
         )
-    
+

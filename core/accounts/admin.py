@@ -1,10 +1,10 @@
-from django.contrib.auth.admin import UserAdmin
 from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
 @admin.register(User)
-class UserAdmin(UserAdmin):
+class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (
@@ -27,7 +27,7 @@ class UserAdmin(UserAdmin):
 
     list_display = (
         "username",
-        'id',
+        "id",
         "last_name",
         "phone_number",
         "email",
@@ -79,7 +79,7 @@ class BarberProfileAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerUser)
 class CustomerUserAdmin(UserAdmin):
-    list_display = ("username",'id', "last_name", "phone_number", "email", "role")
+    list_display = ("username", "id", "last_name", "phone_number", "email", "role")
     list_filter = ("role",)
     search_fields = ("username", "email", "first_name", "last_name")
 
@@ -114,5 +114,3 @@ class CustomerProfileAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):  # remove add user
         return False
-    
-

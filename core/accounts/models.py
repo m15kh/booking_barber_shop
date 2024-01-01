@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
+
 from django.core.validators import RegexValidator
 
 
@@ -25,9 +24,13 @@ class User(AbstractUser):
     role = models.CharField(max_length=50, choices=Role.choices)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
+        if  not self.pk:
             self.role = self.base_role
-            return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
+        
+
+
+
 
 
 class CustomerUserManager(BaseUserManager):
@@ -64,21 +67,9 @@ class CustomerProfile(models.Model):
         super().delete(*args, **kwargs)
 
 
-@receiver(post_delete, sender=CustomerProfile)
-def delete_user(sender, instance, **kwargs):
-    # Delete associated BarberUser
-    customer_user = CustomerUser.objects.filter(id=instance.user.id)
-    if customer_user.exists():
-        customer_user.delete()
 
 
-@receiver(post_save, sender=CustomerUser)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "CUSTOMERUSER":
-        CustomerProfile.objects.create(user=instance)
-
-
-class BarberUSERManager(BaseUserManager):
+class BarberUSERManager(BaseUserManager): 
     def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
         return results.filter(role=User.Role.BARBERUSER)
@@ -111,15 +102,3 @@ class BarberProfile(models.Model):
         super().delete(*args, **kwargs)
 
 
-@receiver(post_save, sender=BarberUser)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "BARBERUSER":
-        BarberProfile.objects.create(user=instance)
-
-
-@receiver(post_delete, sender=BarberProfile)
-def delete_user(sender, instance, **kwargs):
-    # Delete associated BarberUser
-    barber_user = BarberUser.objects.filter(id=instance.user.id)
-    if barber_user.exists():
-        barber_user.delete()

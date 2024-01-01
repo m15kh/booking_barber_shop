@@ -96,17 +96,17 @@
                         </div>
 
 
+                        <form id="bookingForm" method="post" action="{% url 'booking:booking_time' barber.pk  %}">
+                        {% csrf_token %}
+                    
+                        <input type="hidden" id="selectedDate" name="selected_date" value="" />
+                        <!-- Your slot selection code here -->
+                    
+                        <div class="submit-section proceed-btn text-end">
+                            <button type="submit" class="btn btn-primary submit-btn" id="proceedToPayBtn">Proceed to Pay</button>
+                        </div>
+                    </form>
 
-                                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_time' barber.pk  %}">
-                                        {% csrf_token %}
-                                    
-                                        <input type="hidden" id="selectedDate" name="selected_date" value="" />
-                                        <!-- Your slot selection code here -->
-                                    
-                                        <div class="submit-section proceed-btn text-end">
-                                            <button type="submit" class="btn btn-primary submit-btn" id="proceedToPayBtn">Proceed to Pay</button>
-                                        </div>
-                                    </form>
 
 
 
