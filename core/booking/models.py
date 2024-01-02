@@ -1,6 +1,5 @@
 from django.db import models
 from accounts.models import CustomerProfile, BarberProfile
-
 # local
 from .utils import Dateslotgenerator
 
@@ -34,6 +33,8 @@ class TimeRange(models.Model):
             (60, "60 minute"),
         )
     )
+    number_timeslots = models.IntegerField(null=True, blank=True)
+    
 
     class Meta:
         unique_together = (
@@ -41,12 +42,15 @@ class TimeRange(models.Model):
             "Days",
         )  # you can't have multiple appointments with the same barber on the same date and timeslot.
 
+
     def __str__(self):
         day_name = self.get_Days_display()
         return " {} ".format(
             day_name,
         )
 
+    def get_day_name(self):
+        return dict(self.DAYS_OF_WEEK).get(self.Days, "Unknown")
 
 class Booking(models.Model):
     barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)

@@ -7,7 +7,7 @@ from .models import BarberUser, BarberProfile,CustomerProfile, CustomerUser
 
 @receiver(post_delete, sender=CustomerProfile)
 def delete_user(sender, instance, **kwargs):
-    # Delete associated BarberUser
+    # Delete moassociated BarberUser
     customer_user = CustomerUser.objects.filter(id=instance.user.id)
     if customer_user.exists():
         customer_user.delete()

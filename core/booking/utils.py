@@ -91,4 +91,5 @@ def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
         slot_end = slot_start + timedelta(minutes=duration)
         time_slots.append((f"{slot_start.strftime('%H:%M')}"))
 
-    return time_slots
+    len_time_slots = len(time_slots)
+    return time_slots, len_time_slots

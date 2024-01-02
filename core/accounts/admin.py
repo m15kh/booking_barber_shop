@@ -1,10 +1,27 @@
-from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
+# local
+from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
+
+class BarberProfileInline(admin.StackedInline):
+    model = BarberProfile
+    can_delete = False
+
+class CustomerProfileInline(admin.StackedInline):
+    model = CustomerProfile
+    can_delete = False
 
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    if User.Role.CUSTOMERUSER == "CUSTOMERUSER":
+        inlines = (CustomerProfileInline,)
+        
+    elif User.Role.BARBERUSER == "BARBERUSER":
+        inlines = (BarberProfileInline,)
+
+
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (
@@ -39,8 +56,12 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ("username", "role", "last_name")
 
 
+
+
+
 @admin.register(BarberUser)
 class BarberUserAdmin(UserAdmin):
+    inlines = (BarberProfileInline,)
     list_display = ("username", "id", "email", "first_name", "last_name", "role")
     list_filter = ("role",)
     search_fields = ("username", "email", "first_name", "last_name")
@@ -65,16 +86,6 @@ class BarberUserAdmin(UserAdmin):
             },
         ),
     )
-
-
-@admin.register(BarberProfile)
-class BarberProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "id", "image")
-    ordering = ("id",)
-    readonly_fields = ("user",)  # can't change user
-
-    def has_add_permission(self, request):  # remove add user
-        return False
 
 
 @admin.register(CustomerUser)
@@ -104,13 +115,3 @@ class CustomerUserAdmin(UserAdmin):
             },
         ),
     )
-
-
-@admin.register(CustomerProfile)
-class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "id")
-    ordering = ("id",)
-    readonly_fields = ("user",)  # can't change user
-
-    def has_add_permission(self, request):  # remove add user
-        return False

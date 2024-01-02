@@ -11,7 +11,19 @@ from .forms import BookingForm
 from .mixins import BookingPermissionMixin
 
 # 3rd party
-from datetime import datetime, date
+from datetime import datetime
+from datetime import date as datee
+
+
+days_converter = {
+    "Saturday": 0,
+    "Sunday": 1,
+    "Monday": 2,
+    "Tuesday": 3,
+    "Wednesday": 4,
+    "Thursday": 5,
+    "Friday": 6,
+}
 
 
 class BookingDateView(BookingPermissionMixin, View):
@@ -22,7 +34,7 @@ class BookingDateView(BookingPermissionMixin, View):
         day_names_list = [
             str(timerange).strip() for timerange in check_timerange_day_exist
         ]
-        print("Days in the list:", day_names_list)
+        # print("Days in the list:", day_names_list)
         all_days = [
             "Monday",
             "Tuesday",
@@ -34,26 +46,55 @@ class BookingDateView(BookingPermissionMixin, View):
         ]
         missing_days = set(all_days) - set(day_names_list)
         missing_days_list = list(missing_days)  # Days not in the list:
-        print("Days not in the list:", missing_days_list)
+        # print("Days not in the list:", missing_days_list)
 
-        exclude_dates = ExcludedDates.objects.filter( #days that barber  is not available
-            barber=barber, date__gte=date.today()
+        exclude_dates = (
+            ExcludedDates.objects.filter(  # days that barber  is not available
+                barber=barber, date__gte=datee.today()
+            )
         )
         exclude_dates_list = [
             exclude_date.date.strftime("%Y-%m-%d") for exclude_date in exclude_dates
         ]
 
-
-        all_dateslot = Dateslotgenerator( #return all available dates
+        all_available_dates = Dateslotgenerator(  # return all available dates
             exclude_namedays=missing_days_list, exclude_dates=exclude_dates_list
         )
-        
-        
+        # check that date is full timeslot  or not
+
+        barber_timerange = TimeRange.objects.filter(barber=barber)
+        info_dict = {}
+
+        for i in barber_timerange:
+            info_dict[i.get_day_name()] = i.number_timeslots
+
+        # Print the dictionary
+        print('asa',info_dict)
+
+                        
+
+        full_date  = []
+        for date in all_available_dates:  # all_da
+            date = date[0]
+            date_deform = date.strftime("%Y-%m-%d")  # Convert datetime.date to string
+            date_name = date.strftime("%A")
+            count_active_reserve = Booking.objects.filter(
+                barber=barber, date=date_deform
+            ).count()
+
+            if date_name in info_dict:
+                print('yreee________________--------------_____')
+                print(count_active_reserve , info_dict[date_name],'--------------')
+                if count_active_reserve  == info_dict[date_name]:
+                    full_date.append(date_deform)
+                    
+        print("Full date:", full_date)
         return render(
             request,
             "booking/booking_date.html",
             {
-                "all_dateslot": all_dateslot,
+                "all_dateslot": all_available_dates,
+                'full_date':full_date,
                 "barber": barber,
             },
         )
@@ -62,19 +103,8 @@ class BookingDateView(BookingPermissionMixin, View):
 class BookingTimeView(BookingPermissionMixin, View):
     template_name = "booking/booking_time.html"
 
-    days_converter = {
-        "Saturday": 0,
-        "Sunday": 1,
-        "Monday": 2,
-        "Tuesday": 3,
-        "Wednesday": 4,
-        "Thursday": 5,
-        "Friday": 6,
-    }
-
-    def get(self, request, barber_id, date):
+    def post(self, request, barber_id):
         date = request.POST.get("selected_date")
-        # date = selected_date
         date_format = datetime.strptime(
             date, "%Y-%m-%d"
         )  # change format of date to valid format (str)
@@ -83,7 +113,8 @@ class BookingTimeView(BookingPermissionMixin, View):
         barber = get_object_or_404(BarberProfile, id=barber_id)
 
         timeslots_selected_date = TimeRange.objects.filter(  # retuen all range timeslot for day that selected ( for a example show time slot for tuesday )
-            barber=barber, Days=self.days_converter[name_of_day]
+            barber=barber,
+            Days=days_converter[name_of_day],  # Days=self.days_converter[name_of_day]
         )
         reserved_timeslot = Booking.objects.filter(
             barber=barber, date=date
@@ -91,7 +122,7 @@ class BookingTimeView(BookingPermissionMixin, View):
 
         reserved_timeslot_format = [
             booking.time.strftime("%H:%M") for booking in reserved_timeslot
-        ]  # return  jyst the time of all re timeslot
+        ]  # reformat  return all query for reserved timeslot
 
         if timeslots_selected_date.exists():
             first_timeslot = timeslots_selected_date.first()
@@ -103,6 +134,7 @@ class BookingTimeView(BookingPermissionMixin, View):
                 first_timeslot.restfinish.strftime("%H:%M"),
                 first_timeslot.duration,
             )
+
         else:
             print("No timeslots found for the specified conditions.")
 
@@ -113,7 +145,7 @@ class BookingTimeView(BookingPermissionMixin, View):
                 "barber": barber,
                 "selected_date": date,
                 "day_of_week": name_of_day,
-                "all_timeslot": all_timeslot,
+                "all_timeslot": all_timeslot[0],
                 "all_reserve": reserved_timeslot_format,
             },
         )
@@ -163,4 +195,3 @@ class BookingSuccessView(BookingPermissionMixin, View):
         return redirect(
             reverse("booking:booking_date", kwargs={"barber_id": barber_id})
         )
-

@@ -1,7 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
 
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import BaseUserManager
+
+# local
+# from .managers import CustomerUserManager, BarberUSERManager
 
 
 class User(AbstractUser):
@@ -24,13 +28,9 @@ class User(AbstractUser):
     role = models.CharField(max_length=50, choices=Role.choices)
 
     def save(self, *args, **kwargs):
-        if  not self.pk:
+        if not self.pk:
             self.role = self.base_role
         return super().save(*args, **kwargs)
-        
-
-
-
 
 
 class CustomerUserManager(BaseUserManager):
@@ -50,8 +50,16 @@ class CustomerUser(User):
         return "Only for CUSTOMERS"
 
 
+class BarberUSERManager(BaseUserManager):
+    def get_queryset(self, *args, **kwargs):
+        results = super().get_queryset(*args, **kwargs)
+        return results.filter(role=User.Role.BARBERUSER)
+
+
 class CustomerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customerprofile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="customerprofile"
+    )
     image = models.ImageField(upload_to="customers/", default="customers/default.jpg")
 
     def __str__(self):
@@ -67,14 +75,6 @@ class CustomerProfile(models.Model):
         super().delete(*args, **kwargs)
 
 
-
-
-class BarberUSERManager(BaseUserManager): 
-    def get_queryset(self, *args, **kwargs):
-        results = super().get_queryset(*args, **kwargs)
-        return results.filter(role=User.Role.BARBERUSER)
-
-
 class BarberUser(User):
     base_role = User.Role.BARBERUSER
     barberuser = BarberUSERManager()
@@ -87,7 +87,9 @@ class BarberUser(User):
 
 
 class BarberProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name='barberprofile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="barberprofile"
+    )
     image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
 
     def __str__(self):
@@ -100,5 +102,3 @@ class BarberProfile(models.Model):
             barber_user.delete()
 
         super().delete(*args, **kwargs)
-
-

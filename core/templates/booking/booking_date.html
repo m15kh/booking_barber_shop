@@ -77,10 +77,17 @@
                                                     <div class="date-slot">
 
                                                         {% for date in all_dateslot %}
-                                                        <button class="timing" href="#" id="sss" style="display: inline-block; /* Your other styles */">
-                                                            <span class="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
+                                                        {% if date.0|date:"Y-m-d"  in full_date %}
+                                                        <button class="timing" href="#" id="sss" style="display: inline-block; color: crimson;">
+                                                            <span class="date333" style="font-size: 10px;">ffffdf</span><br>
                                                             <span>{{ date.0|date:"Y-m-d"}}</span>
                                                         </button>
+                                                        {% else %}
+                                                            <button class="timing" href="#" id="sss" style="display: inline-block; /* Your other styles */">
+                                                                <span class="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
+                                                                <span>{{ date.0|date:"Y-m-d"}}</span>
+                                                            </button>
+                                                        {% endif %}
                                                         {% endfor %}
 
                                                         </div>
