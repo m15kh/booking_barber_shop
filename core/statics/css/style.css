@@ -3623,17 +3623,18 @@ html.menu-opened body {
     width: 14.28%;
 }
 .time-slot li .timing {
-    background-color: #e9e9e9;
+	background-color: #e9e9e9;
     border: 1px solid #e9e9e9;
     border-radius: 3px;
     color: #757575;
     display: block;
-    font-size: 14px;
+    font-size: 20px;
     margin-bottom: 10px;
-    padding: 5px 5px;
+    padding: 10px 10px;
     text-align: center;
 	position: relative;
 }
+
 .time-slot li .timing:hover {
     background-color: #fff;
 }
@@ -3655,6 +3656,11 @@ html.menu-opened body {
     right: 6px;
     top: 6px;
 }
+
+/* code by liam */
+
+
+/* /////////////////////// */
 .schedule-list {
     border-bottom: 1px solid #cfcfcf;
     margin-bottom: 50px;

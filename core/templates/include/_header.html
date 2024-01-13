@@ -77,8 +77,16 @@
             <li class="nav-item dropdown has-arrow logged-item">
                 <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                     <span class="user-img">
-                        <img class="rounded-circle" src="{% static 'img/doctors/doctor-thumb-02.jpg' %}" width="31"
-                            alt="Eric Buckles">
+                        {% if request.user.role == 'BARBERUSER' %}
+                            <img class="rounded-circle" src="{{ request.user.barberprofile.image.url }}" width="31" alt="Barber Image">
+                        {% elif request.user.role == 'CUSTOMERUSER' %}
+                            <img class="rounded-circle" src="{{ request.user.customerprofile.image.url }}" width="31" alt="Customer Image">
+                        {% else %}
+                            <img class="rounded-circle" src="{% static 'img/default/profile.jpg' %}" width="31" alt="Customer Image">
+
+
+                        {% endif %}
+
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">

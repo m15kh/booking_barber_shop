@@ -69,11 +69,9 @@ class BookingDateView(BookingPermissionMixin, View):
             info_dict[i.get_day_name()] = i.number_timeslots
 
         # Print the dictionary
-        print('asa',info_dict)
+        print("asa", info_dict)
 
-                        
-
-        full_date  = []
+        full_date = []
         for date in all_available_dates:  # all_da
             date = date[0]
             date_deform = date.strftime("%Y-%m-%d")  # Convert datetime.date to string
@@ -83,18 +81,16 @@ class BookingDateView(BookingPermissionMixin, View):
             ).count()
 
             if date_name in info_dict:
-                print('yreee________________--------------_____')
-                print(count_active_reserve , info_dict[date_name],'--------------')
-                if count_active_reserve  == info_dict[date_name]:
+                if count_active_reserve == info_dict[date_name]:
                     full_date.append(date_deform)
-                    
+
         print("Full date:", full_date)
         return render(
             request,
             "booking/booking_date.html",
             {
                 "all_dateslot": all_available_dates,
-                'full_date':full_date,
+                "full_date": full_date,
                 "barber": barber,
             },
         )
@@ -151,8 +147,8 @@ class BookingTimeView(BookingPermissionMixin, View):
         )
 
 
-class BookingSuccessView(BookingPermissionMixin, View):
-    template_name = "booking/booking_success.html"
+class BookingProccessView(BookingPermissionMixin, View):
+    template_name = "booking/booking_proccess.html"
 
     def post(self, request):
         form = BookingForm(request.POST, customer=request.user.customerprofile)
@@ -173,17 +169,12 @@ class BookingSuccessView(BookingPermissionMixin, View):
             messages.success(
                 request, "you reserved appointment successfully", "success"
             )
-            return render(
-                request,
-                self.template_name,
-                {
-                    "customer": customer,
-                    "barber": barber,
-                    "time": time,
-                    "date": date,
-                },
+            return redirect(
+                reverse(
+                    "booking:booking_success",
+                    kwargs={"barber_id": barber_id, "date": date, "time": time},
+                )
             )
-
         else:
             messages.error(
                 request,
@@ -192,6 +183,23 @@ class BookingSuccessView(BookingPermissionMixin, View):
             )
             barber_id = request.POST.get("barber")
             print(request.path)
-        return redirect(
-            reverse("booking:booking_date", kwargs={"barber_id": barber_id})
+            return redirect(
+                reverse("booking:booking_date", kwargs={"barber_id": barber_id})
+            )
+
+
+class BookingSuccessView(BookingPermissionMixin, View):
+    template_name = "booking/booking_success.html"
+
+    def get(self, request, barber_id, date, time):
+        barber = get_object_or_404(BarberProfile, id=barber_id)
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "barber": barber,
+                "date": date,
+                "time": time,
+            },
         )

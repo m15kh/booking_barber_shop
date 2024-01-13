@@ -73,25 +73,30 @@
                                     <div class="col-md-12">
                                         <div class="time-slot">
                                             <ul class="clearfix">
+                                                {% for date in all_dateslot %}
+
                                                 <li>
-                                                    <div class="date-slot">
+                                            <div class="date-slot">
+                                                {% if date.0|date:"Y-m-d" in full_date %}
+                                               <button class="timing" style=" color: crimson;  background-color: #979A9A"  disabled>
+                                                    <span style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
+                                                    <span>{{ date.0|date:"Y-m-d"}}</span>
 
-                                                        {% for date in all_dateslot %}
-                                                        {% if date.0|date:"Y-m-d"  in full_date %}
-                                                        <button class="timing" href="#" id="sss" style="display: inline-block; color: crimson;">
-                                                            <span class="date333" style="font-size: 10px;">ffffdf</span><br>
-                                                            <span>{{ date.0|date:"Y-m-d"}}</span>
-                                                        </button>
-                                                        {% else %}
-                                                            <button class="timing" href="#" id="sss" style="display: inline-block; /* Your other styles */">
-                                                                <span class="date333" style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
-                                                                <span>{{ date.0|date:"Y-m-d"}}</span>
-                                                            </button>
-                                                        {% endif %}
-                                                        {% endfor %}
+                                               </button>
+                                                {% else %}
+                                                <button class="timing" >
+                                                    <span  style="font-size: 10px;">{{ date.0|date:"D" }}</span><br>
+                                                    <span>{{ date.0|date:"Y-m-d"}}</span>
+                                                </button>
+                                                {% endif %}
+                                                            </br>
 
-                                                        </div>
+                                            </div>
+
+
                                                 </li>
+                                                {% endfor %}
+
                                             </ul>
                                         </div>
                                     </div>
@@ -106,7 +111,7 @@
                         <form id="bookingForm" method="post" action="{% url 'booking:booking_time' barber.pk  %}">
                         {% csrf_token %}
                     
-                        <input type="hidden" id="selectedDate" name="selected_date" value="" />
+                        <input type="hidden" id="selectedDate" name="selected_date" value="" autocomplete="off" />
                         <!-- Your slot selection code here -->
                     
                         <div class="submit-section proceed-btn text-end">

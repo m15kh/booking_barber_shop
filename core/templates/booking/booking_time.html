@@ -78,14 +78,16 @@
                                                 {% for slot in all_timeslot %}
                                                     <li>ِ
                                                         <div class="date-slot">
-                                                            <button class="timing {% if slot in all_reserve %}reserved{% endif %}" href="#" id="sss" style ="{% if slot in all_reserve %}background-color: #979A9A ; color: #555;{% endif %}">
                                                                 {% if slot in all_reserve %}
-                                                                    <span class="date333" style="font-size: 18px;">{{ slot }}</span>
+                                                                    <button class="timing"  style="background-color: #979A9A ;" disabled>
+                                                                        <span style="font-size: 18px;">{{ slot }}</span>
+                                                                    </button>
                                                                 {% else %}
-                                                                    <span class="date333" style="font-size: 18px;">{{ slot }}</span>
+                                                                    <button class="timing" >
+                                                                    <span style="font-size: 18px;">{{ slot }}</span>
+                                                                    </button>
                                                                 {% endif %}
                                                                 </br>
-                                                            </button>
                                                         </div>
                                                     </li>
                                                 {% endfor %}
@@ -105,12 +107,12 @@
 
 
 
-                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_success'  %}"> <!--[ ] -->
+                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_process'  %}"> <!--[ ] -->
                             {% csrf_token %}
 
-                            <input type="hidden" id="selectedTime" name="time" value=""/>
-                            <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" />
-                            <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}" />
+                            <input type="hidden" id="selectedTime" name="time" value="" autocomplete="off"/>
+                            <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" autocomplete="off"/>
+                            <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}"autocomplete="off" />
 
                             <!-- Your slot selection code here -->
 

@@ -7,7 +7,7 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ["date", "time", "barber"]
-
+        
     def __init__(self, *args, **kwargs):
         self.customer = kwargs.pop("customer", None)
         super().__init__(*args, **kwargs)

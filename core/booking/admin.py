@@ -53,6 +53,7 @@ class BookingAdmin(admin.ModelAdmin):
     )
 
     list_filter = ("barber", "date")
+    search_fields = ["customer__user__username"]
     ordering = ("barber", "date")
 
     raw_id_fields = ["customer"]

@@ -4,9 +4,11 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # local
 from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
 
+
 class BarberProfileInline(admin.StackedInline):
     model = BarberProfile
     can_delete = False
+
 
 class CustomerProfileInline(admin.StackedInline):
     model = CustomerProfile
@@ -15,13 +17,6 @@ class CustomerProfileInline(admin.StackedInline):
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    if User.Role.CUSTOMERUSER == "CUSTOMERUSER":
-        inlines = (CustomerProfileInline,)
-        
-    elif User.Role.BARBERUSER == "BARBERUSER":
-        inlines = (BarberProfileInline,)
-
-
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (
@@ -55,8 +50,13 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ("role",)
     search_fields = ("username", "role", "last_name")
 
-
-
+    def get_inline_instances(self, request, obj=None):
+        if obj and obj.role == "BARBERUSER":
+            return [BarberProfileInline(self.model, self.admin_site)]
+        elif obj and obj.role == "CUSTOMERUSER":
+            return [CustomerProfileInline(self.model, self.admin_site)]
+        else:
+            return super().get_inline_instances(request, obj)
 
 
 @admin.register(BarberUser)
@@ -90,6 +90,7 @@ class BarberUserAdmin(UserAdmin):
 
 @admin.register(CustomerUser)
 class CustomerUserAdmin(UserAdmin):
+    inlines = (CustomerProfileInline,)
     list_display = ("username", "id", "last_name", "phone_number", "email", "role")
     list_filter = ("role",)
     search_fields = ("username", "email", "first_name", "last_name")
