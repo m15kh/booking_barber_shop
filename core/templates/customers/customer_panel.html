@@ -29,54 +29,7 @@
             <div class="container-fluid">
                 <div class="row">
 
-                    <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-                        <div class="profile-sidebar">
-                            <div class="widget-profile pro-widget-content">
-                                <div class="profile-info-widget">
-                                    <a href="#" class="booking-doc-img">
-                                     <img src="{{ customer.image.url }}" alt="User Image"> <!--BUG -->
-                                    </a>
-                                    <div class="profile-det-info">
-                                        <h3>{{ customer }}</h3>
-                                        <div class="patient-details">
-                                            <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dashboard-widget">
-                                <nav class="dashboard-menu">
-                                    <ul>
-                                                <span>Dashboard</span>
-                                            </a>
-                                        </li>
-               
-                                        <li>
-                                            <a href="profile-settings.html">
-                                                <i class="fas fa-user-cog"></i>
-                                                <span>Profile Settings</span>
-                                            </a>
-                                              <li class="active">
-                                            <a href="patient-dashboard.html">
-                                                <i class="fas fa-columns"></i>
-                                  </li>
-                                        <li>
-                                            <a href="change-password.html">
-                                                <i class="fas fa-lock"></i>
-                                                <span>Change Password</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="index-2.html">
-                                                <i class="fas fa-sign-out-alt"></i>
-                                                <span>Logout</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
+                {% include 'include/cus_panel_sidebar.html' %}
 
                     <div class="col-md-7 col-lg-8 col-xl-9">
                         <div class="card">

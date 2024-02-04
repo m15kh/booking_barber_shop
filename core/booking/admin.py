@@ -1,19 +1,33 @@
 from django.contrib import admin
 from .models import TimeRange, Booking, ExcludedDates
+from django.core.exceptions import ValidationError
 
 # Register your models here.
+from django.contrib import messages
 
 
-@admin.register(TimeRange)
 class TimeRangeAdmin(admin.ModelAdmin):
+    
+    
+    
+    
+    list_filter = ()
+
+    def get_list_filter(self, request):
+        # Check if the user is an admin
+        if request.user.role == "ADMIN":
+            # Show "barber" and "Days" in list filter for admins
+            return super().get_list_filter(request) + ("barber", "Days")
+        return super().get_list_filter(request) + ("Days",)
+
     list_display = (
         "barber_id",
         "barber",
         "__str__",
         "formatted_workstart",
-        "formatted_workfinish",  # Custom display for workfinish
-        "formatted_reststart",  # Custom display for reststart
-        "formatted_restfinish",  # Custom display for restfinish
+        "formatted_workfinish",
+        "formatted_reststart",
+        "formatted_restfinish",
         "duration",
     )
     list_display_links = (
@@ -21,8 +35,6 @@ class TimeRangeAdmin(admin.ModelAdmin):
         "barber",
     )
 
-    # Define a custom ordering based on the name of the day
-    list_filter = ("barber", "Days")
     ordering = ("barber", "Days")
 
     def formatted_workstart(self, obj):
@@ -43,32 +55,52 @@ class TimeRangeAdmin(admin.ModelAdmin):
     formatted_restfinish.short_description = "restfinish"
 
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = (
-        "customer",
-        "barber",
-        "date",
-        "formatted_time",  # Use the custom method here
-    )
+@admin.register(TimeRange)
 
-    list_filter = ("barber", "date")
-    search_fields = ["customer__user__username"]
-    ordering = ("barber", "date")
+class CustomTimeRangeAdmin(TimeRangeAdmin):
 
-    raw_id_fields = ["customer"]
+    exclude = ()
 
-    def formatted_time(self, obj):
-        return obj.time.strftime("%H:%M")
+    def get_form(self, request, obj=None, **kwargs):
+        # Check if the user is an admin
+        if hasattr(request.user, "barberprofile"):
+            self.exclude = ("barber", "number_timeslots")
 
-    formatted_time.short_description = "time"
+        else:
+            self.exclude = ("number_timeslots",)
 
+        return super().get_form(request, obj, **kwargs)
 
-@admin.register(ExcludedDates)
-class ExcludedDatesAdmin(admin.ModelAdmin):
-    list_display = ("barber", "formatted_date")
-    list_filter = ("barber", "date")
-    ordering = ("barber", "date")
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.role == "ADMIN":
+            return qs.all()
+        elif request.user.role == "BARBERUSER":
+            return qs.filter(barber=request.user.barberprofile)
+        else:
+            return qs.none()
 
-    def formatted_date(self, obj):
-        return obj.date.strftime("%Y-%m-%d")
+    def save_model(self, request, obj, form, change):
+        if request.user.role == "ADMIN":
+            obj.barber  = obj.barber
+        elif request.user.role == "BARBERUSER":
+            # Set the barber field to the logged-in user's BarberProfile
+            obj.barber = request.user.barberprofile
+
+            # Check if the barber already has an active time range for the same day
+            existing_time_range = (
+                TimeRange.objects.filter(
+                    barber=request.user.barberprofile,
+                    Days=obj.Days,
+                )
+                .exclude(pk=obj.pk if obj.pk else None)
+                .first()
+            )
+            if existing_time_range:
+                messages.set_level(request, messages.ERROR)
+                message = f"A time range already exists for {request.user.barberprofile} on {obj.Days}."
+                self.message_user(request, message, level=messages.ERROR)
+                return
+
+        super().save_model(request, obj, form, change)
+

@@ -44,7 +44,8 @@
                     <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
                         <li><a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">Patient Dashboard</a></li>
-                        
+                        <li><a href="{% url 'accounts:password-change-view' %}">change  password</a></li>
+
 
                     </ul>
                 </li>
@@ -108,7 +109,7 @@
                     <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                     {% else %}
                     <a class="dropdown-item" href="{% url 'login' %}">Login</a>
-                    <a class="dropdown-item" href="{% url 'signup' %}">Register</a>
+                    <a class="dropdown-item" href="{% url 'accounts:signup' %}">Register</a>
                     {% endif %}
                 </div>
             </li>
