@@ -1,18 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import BaseUserManager
-
-# local
-# from .managers import CustomerUserManager, BarberUSERManager
 
 
 class User(AbstractUser):
     class Role(models.TextChoices):
-        ADMIN = "ADMIN", "Admin"
         CUSTOMERUSER = "CUSTOMERUSER", "CustomerUser"
         BARBERUSER = "BARBERUSER", "BarberUser"
+        ADMIN = "ADMIN", "Admin"
 
     base_role = Role.ADMIN
 

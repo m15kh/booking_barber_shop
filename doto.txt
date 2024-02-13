@@ -1,20 +1,26 @@
-#TODO debug custom and barber  accounts that both of them can rigister successfully
-#TODO add status for booking! confirm cancel wait
-#TODO complete barber and customer panel
+[x]
+ debug custom and barber  accounts that both of them can rigister successfully
+ add status for booking! confirm cancel wait
+ complete barber and customer panel
+
+#TODO
+
+complete customer panel 
+complete barber panel 
+user can cancell reservation
+retrict user for more than 3 reservation one one week
+complete rigester an log out process with
+debug and link to all link  
+convert to persioan date (version2) 
+debloy in server for testing 
+barbers can deactivate and in barber list can't selected 
+set condition for adjust time range for barber for booking 
+automateclly  when rigister barberuser active is_staff
+add filed in model that user how many times reserve nooking with each barber
 
 
-# - complete customer panel #[ ]
-# - complete barber panel #[ ]
-# - user can cancell reservation#[ ]
-#retrict user for more than 3 reservation one one week #[ ]
-# - complete rigester an log out process with #[ ]
-# - debug and link to all link  #[ ]
-# - convert to persioan date (version2) #[ ]
-# - debloy in server for testing #[ ]
-# - barbers can deactivate and in barber list can't selected #[ ]
+#BUG
+for a example for today time now is 22:00 but show time 14:00 in booking site and user can resered!
 
 
-
-Role
-phone number is unique and it is for lolg in and logout
-and can't change number phone!
+#TODO

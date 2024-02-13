@@ -30,12 +30,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # local
-
     "pages",
     "accounts",
     "booking",
-    'barbers',
-    'customers',
+    "barbers",
+    "customers",
     # 3rd Party
     "crispy_forms",
     "crispy_bootstrap5",
@@ -124,8 +123,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -144,3 +141,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # password forget console configruation
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+

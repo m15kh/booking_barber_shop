@@ -32,7 +32,6 @@
                 <li class="has-submenu active">
                     <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="{% url 'barbers:barber_panel' request.user.barberprofile.pk %}">Doctor Dashboard</a></li>
 
                     </ul>
                 </li>
@@ -43,7 +42,6 @@
                 <li class="has-submenu">
                     <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">Patient Dashboard</a></li>
                         <li><a href="{% url 'accounts:password-change-view' %}">change  password</a></li>
 
 

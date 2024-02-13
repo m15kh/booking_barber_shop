@@ -8,12 +8,12 @@ class CustomerProfilePermissionMixin:
     def dispatch(self, request, *args, **kwargs):
         if not hasattr(request.user, "customerprofile"):
             return HttpResponseForbidden(
-                "You don't have permission to access this page."
+                "You don't have permission to access this page!!!!!!!!!!!!."
             )
         customer_id = kwargs.get("customer_id")
         if request.user.customerprofile.id != int(customer_id):
             return HttpResponseForbidden(
-                "You don't have permission to access this page."
+                "You don't have permission to access this page.!!!!!!!!!!!"
             )
 
 

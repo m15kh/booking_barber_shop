@@ -16,9 +16,9 @@ class BookingForm(forms.ModelForm):
         cleaned_data = super().clean()
         date = cleaned_data.get("date")
         barber = cleaned_data.get("barber")
-        if Booking.objects.filter(date = date,customer=self.customer,barber=barber).exists():
-            self.add_error(
-                None, "This time is already booked"
-            )  # Add the error to a non-field, can also specify a field
+        # if Booking.objects.filter(date = date,customer=self.customer,barber=barber).exists():
+        #     self.add_error(
+        #         None, "This time is already booked"
+        #     )  # Add the error to a non-field, can also specify a field
 
         return cleaned_data

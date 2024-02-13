@@ -76,8 +76,9 @@ class Booking(models.Model):
 
 
 class ExcludedDates(models.Model):
-    date = models.DateField()
     barber = models.ForeignKey(BarberProfile, on_delete=models.CASCADE)
+
+    date = models.DateField()
 
     class Meta:
         unique_together = (

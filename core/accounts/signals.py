@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 # local
-from .models import BarberUser, BarberProfile,CustomerProfile, CustomerUser
+from .models import BarberUser, BarberProfile, CustomerProfile, CustomerUser, User
 
 
 @receiver(post_delete, sender=CustomerProfile)
@@ -31,3 +31,5 @@ def delete_user(sender, instance, **kwargs):
     barber_user = BarberUser.objects.filter(id=instance.user.id)
     if barber_user.exists():
         barber_user.delete()
+
+

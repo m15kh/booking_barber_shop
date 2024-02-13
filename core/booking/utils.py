@@ -46,8 +46,6 @@ def Dateslotgenerator(exclude_namedays=None, exclude_dates=None):
     return lst
 
 
-# TODO
-
 
 def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
     # Convert start and finish times to datetime objects

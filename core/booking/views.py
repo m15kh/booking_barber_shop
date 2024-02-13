@@ -152,6 +152,9 @@ class BookingProccessView(BookingPermissionMixin, View):
 
     def post(self, request):
         form = BookingForm(request.POST, customer=request.user.customerprofile)
+        print(request.user.customerprofile)
+        print(request.POST.get("barber"))
+        print()
 
         if form.is_valid():
             customer = request.user.customerprofile

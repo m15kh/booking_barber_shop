@@ -10,7 +10,7 @@ class TestPageView(TemplateView):
     template_name = "pages/test.html"
 
 
-class ListDoctorPageView(ListView):
+class ListBarberPageView(ListView):
     model = BarberProfile
     template_name = "pages/list_barber.html"
     context_object_name = "barbers"
