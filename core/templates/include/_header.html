@@ -31,6 +31,7 @@
 
                 <li class="has-submenu active">
                     <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
+
                     <ul class="submenu">
 
                     </ul>
@@ -38,11 +39,13 @@
                                         {% endif %}
 
                                         {% if request.user.role == 'CUSTOMERUSER' %}
-
+ 
                 <li class="has-submenu">
                     <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="{% url 'accounts:password-change-view' %}">change  password</a></li>
+                        <li><a href="{% url 'accounts:change_password' %}">change  password</a></li>
+                        <li><a href="{% url 'customers:edit_profile' request.user.pk %}">profile me</a></li>
+
 
 
                     </ul>
@@ -54,6 +57,12 @@
                     <ul class="submenu">
                         <li><a href="{% url 'pages:list_barber' %}">list all Barbers</a></li>
                         <li><a href="{% url 'pages:components' %}">components</a></li>
+                        {% if request.user.role == 'CUSTOMERUSER' %}
+                        <li><a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">customer panel </a></li>
+                        {% elif request.user.role == 'BARBERUSER' or request.user.role == 'ADMIN' %}
+                            <li><a href="{% url 'admin:index' %}">admin panel </a></li>
+
+                        {% endif %}
 
 
                 </li>
