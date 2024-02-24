@@ -98,3 +98,13 @@ class BarberProfile(models.Model):
             barber_user.delete()
 
         super().delete(*args, **kwargs)
+
+
+class OtpCode(models.Model):
+    phone_number = models.CharField(max_length=11)
+    code = models.PositiveSmallIntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    expiration = models.DateTimeField
+
+    def __str__(self) -> str:
+        return f"{self.phone_number} - {self.code} - {self.created}"

@@ -7,11 +7,13 @@ from django.http.request import HttpRequest
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 
-
-# local
-from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User
+from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User, OtpCode
 
 
+@admin.register(OtpCode)
+class OtpCodeAdmin(admin.ModelAdmin):
+    list_display = ("phone_number", "code", "created")
+    
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     def has_add_permission(self, request):

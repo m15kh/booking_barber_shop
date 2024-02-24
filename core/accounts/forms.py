@@ -1,7 +1,8 @@
 # forms.py
 from django import forms
 from django.contrib.auth.hashers import check_password
-from .models import CustomerProfile , User
+from .models import CustomerProfile, User
+
 
 class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(label="Old Password", widget=forms.PasswordInput)
@@ -17,7 +18,15 @@ class ChangePasswordForm(forms.Form):
 
         if new_password != repeat_new_password:
             raise forms.ValidationError("New passwords do not match.")
-        
-        
-  
+
         return cleaned_data
+
+
+class UserRegisterForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("phone_number",)
+
+
+class verifyCodeForm(forms.Form):
+    code = forms.IntegerField()
