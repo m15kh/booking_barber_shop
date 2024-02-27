@@ -101,7 +101,7 @@ class BarberProfile(models.Model):
 
 
 class OtpCode(models.Model):
-    phone_number = models.CharField(max_length=11)
+    phone_number = models.CharField(max_length=11 , unique=True)
     code = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     expiration = models.DateTimeField
