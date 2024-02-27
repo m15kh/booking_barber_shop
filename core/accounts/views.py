@@ -20,17 +20,11 @@ from .models import OtpCode
 from .forms import UserRegisterForm, verifyCodeForm
 
 
-
-
 class UserLoginView(View):
     template_name = "accounts/login.html"
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
-
-
-
-
 
 
 class RegisterView(View):
@@ -47,7 +41,6 @@ class RegisterView(View):
 
         if form.is_valid():
             phone_number=form.cleaned_data["phone_number"]
-            print('$'*90)
             print(phone_number)
 
             random_code = random.randint(10000, 99999)
@@ -82,7 +75,7 @@ class UserRegisterVerifyCodeView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            if cd['code'] ==code_instance.code:
+            if cd['code'] == code_instance.code:
                 # create customer user
                 CustomerUser.objects.create_user(
                     user_session["phone_number"],
@@ -93,9 +86,12 @@ class UserRegisterVerifyCodeView(View):
                 return redirect('pages:home')
 
             else:
+                form.add_error('code', 'this code is wrong')
                 messages.error(request, 'this code is wrong', 'danger')
-                return redirect('accounts:verify_code')
-        return redirect('pages:home')
+                return render(request, self.template_name, {"form": form})
+            
+        else:
+            return render(request, self.template_name, {"form": form})
 
 
 class ChangePasswordView(LoginRequiredMixin, FormView):
@@ -106,7 +102,6 @@ class ChangePasswordView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
-            print("%%%%%%%%%%%%%%%%", form)
             old_password = form.cleaned_data["old_password"]
             new_password = form.cleaned_data["new_password"]
             print("new password", new_password)

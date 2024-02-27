@@ -1,7 +1,8 @@
 # forms.py
 from django import forms
-from django.contrib.auth.hashers import check_password
-from .models import CustomerProfile, User
+from .models import User, OtpCode, CustomerUser
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator  # Import RegexValidator from django.core.validators
 
 
 class ChangePasswordForm(forms.Form):
@@ -22,11 +23,30 @@ class ChangePasswordForm(forms.Form):
         return cleaned_data
 
 
-class UserRegisterForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ("phone_number",)
+class UserRegisterForm(forms.Form):
+    phone_number = forms.CharField(
+        required=True,  # Ensures the field is not null
+        validators=[
+            RegexValidator(r"^\d{11}$", "Enter a valid 11-digit phone number.")
+        ],
+    )
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data['phone_number']
+
+        user = CustomerUser.objects.filter(username=phone).exists()
+        if user:
+            raise ValidationError('This phone number already exists')
+        OtpCode.objects.filter(phone_number=phone).delete()
+        return phone
 
 
 class verifyCodeForm(forms.Form):
-    code = forms.IntegerField()
+    code = forms.IntegerField(required=True)
+
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        if not code:
+            raise forms.ValidationError("Code field cannot be empty.")
+
+        return code
