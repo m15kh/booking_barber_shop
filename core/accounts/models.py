@@ -1,10 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import BaseUserManager
 
+# local
+from .managers import UserManager
+class User(AbstractBaseUser, PermissionsMixin):
 
-class User(AbstractUser):
     class Role(models.TextChoices):
         CUSTOMERUSER = "CUSTOMERUSER", "CustomerUser"
         BARBERUSER = "BARBERUSER", "BarberUser"
@@ -13,20 +15,36 @@ class User(AbstractUser):
     base_role = Role.ADMIN
 
     phone_number = models.CharField(
-        max_length=11,
-        validators=[
-            RegexValidator(r"^\d{11}$", "Enter a valid 11-digit phone number.")
-        ],
-        blank=True,
-        null=True,
+    max_length=11,
+    validators=[
+        RegexValidator(r"^\d{2}$", "Enter a valid 2-digit phone number.")
+    ],
+    unique=True
     )
-    date = models.DateField(null=True, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(max_length=255, blank=True, null=True, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    birthday = models.DateField(null=True, blank=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
     role = models.CharField(max_length=50, choices=Role.choices)
+
+    USERNAME_FIELD = 'phone_number'
+
+
+    objects = UserManager()
 
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
         return super().save(*args, **kwargs)
+
+
+
+    def __str__(self):
+        return self.phone_number
 
 
 class CustomerUserManager(BaseUserManager):
@@ -59,7 +77,7 @@ class CustomerProfile(models.Model):
     image = models.ImageField(upload_to="customers/", default="customers/default.jpg")
 
     def __str__(self):
-        return self.user.username
+        return self.user.phone_number
 
     def delete(self, *args, **kwargs):
         # Delete associated BarberUser
@@ -89,7 +107,7 @@ class BarberProfile(models.Model):
     image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
 
     def __str__(self):
-        return self.user.username
+        return self.user.phone_number
 
     def delete(self, *args, **kwargs):
         # Delete associated BarberUser
