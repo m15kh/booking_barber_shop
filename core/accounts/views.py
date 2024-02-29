@@ -1,5 +1,3 @@
-from django.views.generic import CreateView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
@@ -8,23 +6,53 @@ from .forms import ChangePasswordForm
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
-from .models import User, CustomerUser , CustomerProfile
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.views import View
-from utils import sent_otp_code
-import random
+from django.contrib.auth import login, logout, authenticate
 
 # local
 from .models import OtpCode
-from .forms import UserRegisterForm, verifyCodeForm
+from .forms import UserRegisterForm, verifyCodeForm, UserLoginForm
+from .models import CustomerUser
+from utils import sent_otp_code
+
+# 3rd party
+import random
 
 
 class UserLoginView(View):
+    form_class = UserLoginForm
     template_name = "accounts/login.html"
 
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(
+                request, phone_number=cd["phone_number"], password=cd["password"]
+            )
+            if user is not None:
+                login(request, user)
+                messages.success(request, "You logged in successfully.", "info")
+                return redirect("pages:home")
+            else:
+                # Display error message if authentication fails
+                form.add_error(None, "Phone number or password is incorrect.")
+                messages.error(
+                    request, "Phone number or password is incorrect.", "warning"
+                )
+        return render(request, self.template_name, {"form": form})
+
+
+class UserLogoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        messages.success(request, "you logged out successfully", "success")
+        return redirect("pages:home")
 
 
 class RegisterView(View):
@@ -63,10 +91,15 @@ class RegisterView(View):
 class UserRegisterVerifyCodeView(View):
     template_name = "accounts/verify_code.html"
     form_class = verifyCodeForm
+
     def get(self, request, *args, **kwargs):
         form = self.form_class
+        code_instance = OtpCode.objects.get(phone_number=request.session["user_registeration_form_info"]["phone_number"])
+        created_time = code_instance.created.time()
+        created_time = created_time.strftime("%H:%M:%S")
+        context = {"form": form, "created_time": created_time}
         return render(
-            request, self.template_name, {"form": form}
+            request, self.template_name, context
         )  # Pass the form to the template context
 
     def post(self, request, *args, **kwargs):
@@ -88,8 +121,15 @@ class UserRegisterVerifyCodeView(View):
             else:
                 form.add_error('code', 'this code is wrong')
                 messages.error(request, 'this code is wrong', 'danger')
-                return render(request, self.template_name, {"form": form})
-            
+                code_instance = OtpCode.objects.get(phone_number=request.session["user_registeration_form_info"]["phone_number"])
+                created_time = code_instance.created.time()
+                created_time = created_time.strftime("%H:%M:%S")
+                context = {"form": form, "created_time": created_time}
+                return render(
+                    request, self.template_name, context
+                )  # Pass the form to the template context
+
+
         else:
             return render(request, self.template_name, {"form": form})
 

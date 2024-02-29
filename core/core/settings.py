@@ -86,6 +86,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        "TIME_ZONE": "Asia/Tehran",
     }
 }
 
@@ -115,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-
 TIME_ZONE = "Asia/Tehran"
 
 USE_I18N = True
@@ -141,5 +141,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # password forget console configruation
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-

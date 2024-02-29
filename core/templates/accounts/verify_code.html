@@ -1,60 +1,100 @@
 {% extends '_base.html' %}
 {% load static %}
 
-
 {% block content %}
-        <!-- hide arrow of input tag for number -->
-    <style>                                                               
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            display: none;
-        }
-    </style>
+<!-- hide arrow of input tag for number -->
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        display: none;
+    }
+</style>
 
+<div class="main-wrapper">
+    {% include 'include/_header.html' %} <!-- add header -->
 
-    <div class="main-wrapper">
-            {% include 'include/_header.html' %} <!-- add header -->
-
-        
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-
-                        <div class="account-content">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-7 col-lg-6 login-left">
-                                    <img src="{% static 'img/registeration/signup.jpg' %}" class="img-fluid" alt="Login Banner">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="account-content">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-md-7 col-lg-6 login-left">
+                                <img src="{% static 'img/registeration/signup.jpg' %}" class="img-fluid"
+                                    alt="Login Banner">
+                            </div>
+                            <div class="col-md-12 col-lg-6 login-right">
+                                <div class="login-header">
+                                    <h3>Enter Code</h3>
+                                    <p class="small text-muted">Enter code that was sent by SMS</p>
                                 </div>
-                                <div class="col-md-12 col-lg-6 login-right">
-                                    <div class="login-header">
-                                        <h3>Enter Code</h3>
-                                        <p class="small text-muted">Enter code that sent by sms</p>
+
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Activation code</label>
+                                        <input type="number" class="form-control floating" name="{{ form.code.name }}"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)">
                                     </div>
+                                    <button class="btn btn-primary w-100 btn-lg login-btn"
+                                        type="submit">Register</button>
+                                </form>
+                                {{ form.errors }}
 
-                                    <form method="post">
-                                        {% csrf_token %}
-                                        <div class="form-group form-focus">
-                                            <label class="focus-label">activation code</label>
+                                <div id="countdown"></div>
+                                <div id="startTime"></div>
 
-                                            <input type="number" class="form-control floating" name="{{ form.code.name }}" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" >
-                                        </div>
-                                 
-                                        <button class="btn btn-primary w-100 btn-lg login-btn" type="submit">Register</button>
-                                    </form>
-                                    {{ form.errors }}
 
-                                </div>
+
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
-
-
     </div>
+</div>
+
+
+<script>
+    // Retrieve time from Django and convert it to a JavaScript Date object
+    // var djangoTime = "22:49:00"; 
+    var djangoTime = "{{ created_time }}"; // Replace this with the time retrieved from Django
+    console.log(djangoTime)
+    var djangoTimeParts = djangoTime.split(':');
+    var targetTime = new Date();
+    targetTime.setHours(parseInt(djangoTimeParts[0], 10));
+    targetTime.setMinutes(parseInt(djangoTimeParts[1], 10));
+    targetTime.setSeconds(parseInt(djangoTimeParts[2], 10));
+
+    // Add 2 minutes to the target time
+    targetTime.setMinutes(targetTime.getMinutes() + 2);
+
+    // Function to update the countdown timer
+    function updateCountdown() {
+        var currentTime = new Date();
+        var timeDifference = targetTime - currentTime;
+
+        if (timeDifference <= 0) {
+            document.getElementById('countdown').innerHTML = "<a href='#' onclick='window.location.reload();'>Reset</a>";
+        } else {
+            var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Format the remaining time
+            var remainingTime = "";
+            if (minutes > 0) {
+                remainingTime += minutes + "m ";
+            }
+            remainingTime += seconds + "s";
+
+            document.getElementById('countdown').innerHTML = remainingTime;
+            setTimeout(updateCountdown, 1000);
+        }
+    }
+
+    updateCountdown();
+</script>
+
 
 {% endblock content %}

@@ -50,3 +50,24 @@ class verifyCodeForm(forms.Form):
             raise forms.ValidationError("Code field cannot be empty.")
 
         return code
+
+
+class UserLoginForm(forms.Form):
+    phone_number = forms.CharField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    
+    def clean_phone_number(self):
+        phone = self.cleaned_data['phone_number']
+        user = CustomerUser.objects.filter(phone_number=phone).exists()
+        if not user:
+            raise ValidationError('This phone number does not exist')
+        return phone
+    
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if not password:
+            raise forms.ValidationError("Password field cannot be empty.")
+        return password
+    
+
+
