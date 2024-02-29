@@ -13,9 +13,10 @@ from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, Us
 @admin.register(OtpCode)
 class OtpCodeAdmin(admin.ModelAdmin):
     list_display = ("phone_number", "code", "created")
-    
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    # functions
     def has_add_permission(self, request):
         if request.user.role == "ADMIN":
             return True
@@ -37,8 +38,6 @@ class UserAdmin(BaseUserAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.role = "ADMIN"
-        obj.is_staff = True
-        obj.is_superuser = True
         super().save_model(request, obj, form, change)
 
     def get_model_perms(self, request):
@@ -46,46 +45,58 @@ class UserAdmin(BaseUserAdmin):
         if request.user.role == "BARBERUSER":
             perms.clear()
         return perms
-    
+
     def has_delete_permission(self, request, obj=None): #admin can'y delete himself
         if request.user == obj:
             return False
         return True
 
-    readonly_fields = ("last_login", "date_joined", 'role', 'is_staff', 'is_superuser')    
-
-    fieldsets = (
-        (None, {"fields": ("username", "password", "role")}),
-        (
-            "Personal info",
-            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
-        ),
-        (
-            "Permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "last_login",
-                    "date_joined",
-                )
-            },
-        ),
-
-    )
-
     list_display = (
-        "username",
-        "last_name",
         "phone_number",
+        "last_name",
         "email",
         "is_active",
         "is_staff",
         "is_superuser",
         "role",
     )
-    list_filter = ("is_active", )
+
+    readonly_fields = ("last_login", "date_joined", 'role')    
+    ordering = ('last_name',)
+    list_filter = ("is_active",)
+
+    fieldsets = (
+        (None, {"fields": ("password", "role")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    'is_staff',
+                    'is_superuser',
+                    "last_login",
+                    "date_joined",
+                )
+            },
+        ),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "birthday")},
+        ),
+    )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "phone_number",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+    )
 
 
 class CustomUserAdmin(BaseUserAdmin):
@@ -130,7 +141,7 @@ class BarberUserAdmin(CustomUserAdmin):
 
     def has_change_permission(self, request, obj=None):
         return True
-        return super().has_change_permission(request, obj)
+        # return super().has_change_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
         return request.user.role == "ADMIN"
@@ -141,26 +152,34 @@ class BarberUserAdmin(CustomUserAdmin):
     def has_module_permission(self, request):
         return True
 
-    inlines = (BarberProfileInline,)
+    def get_readonly_fields(self, request, obj=None):
+            readonly_fields = super().get_readonly_fields(request, obj)
+            if request.user.role == "ADMIN":
+                return readonly_fields
+            return readonly_fields + (
+                "is_active",
+                "is_staff",
+                "groups",
+                "user_permissions",
+            )
+    # inlines = (BarberProfileInline,) #BUG
+
     list_display = (
-        "username",
         "phone_number",
         "last_name",
-        "role",
+        "email",
         "is_active",
-        "is_superuser",
         "is_staff",
+        "is_superuser",
         "role",
     )
 
-    readonly_fields = ("role", "last_login", "date_joined")
+    readonly_fields = ("last_login", "date_joined", "role")
+    ordering = ("last_name",)
+    list_filter = ("is_active",)
 
     fieldsets = (
-        (None, {"fields": ("username", "password", "role")}),
-        (
-            "Personal info",
-            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
-        ),
+        (None, {"fields": ("password", "role")}),
         (
             "Permissions",
             {
@@ -174,24 +193,23 @@ class BarberUserAdmin(CustomUserAdmin):
             },
         ),
         (
-            "groups",
-            {
-                "fields": ("groups",),
-            },
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "birthday")},
         ),
     )
 
-    def get_readonly_fields(self, request, obj=None):
-        readonly_fields = super().get_readonly_fields(request, obj)
-        if request.user.role == "ADMIN":
-            return readonly_fields
-        return readonly_fields + (
-            "is_active",
-            "is_staff",
-            "is_superuser",
-            "groups",
-            "user_permissions",
-        )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "phone_number",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+    )
 
 
 class CustomerProfileInline(admin.StackedInline):
@@ -202,24 +220,24 @@ class CustomerProfileInline(admin.StackedInline):
 @admin.register(CustomerUser)
 class CustomerUserAdmin(CustomUserAdmin):
 
-    inlines = (CustomerProfileInline,)
+    # inlines = (CustomerProfileInline,)
+
     list_display = (
-        "username",
         "phone_number",
         "last_name",
         "email",
         "is_active",
+        "is_staff",
+        "is_superuser",
         "role",
-    )    
-    list_filter = ("role",)
-    search_fields = ("username", "email", "first_name", "last_name")
+    )
+
+    readonly_fields = ("last_login", "date_joined", "role")
+    ordering = ("last_name",)
+    list_filter = ("is_active",)
 
     fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        (
-            "Personal info",
-            {"fields": ("first_name", "last_name", "email", "phone_number", "date")},
-        ),
+        (None, {"fields": ( "password", "role")}),
         (
             "Permissions",
             {
@@ -232,13 +250,24 @@ class CustomerUserAdmin(CustomUserAdmin):
                 )
             },
         ),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "email", "birthday")},
+        ),
     )
 
-    readonly_fields = ("is_staff", "is_superuser", "last_login", "date_joined")
-
-    search_fields = ("phone_number",)
-
-
+    add_fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "phone_number",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+    )
 
 admin.site.unregister(Group)
 
