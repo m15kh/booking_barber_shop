@@ -50,6 +50,11 @@ class CustomerEditProfile(View):  # CustomerProfilePermissionMixin
         return render(request, "customers/edit_profile.html", context)
 
 
+
+
+
+
+
 class CustomerChangePassword(CustomerProfilePermissionMixin, View):
     def get(self, request, customer_id):
         customer = CustomerProfile.objects.get(pk=customer_id)

@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load static %}
+ 
+{% block content %}
+
+    {% include 'include/_header.html' %} <!-- add header -->
+    {% include 'include/messages.html' %}
+
+
+</div>;
+<h1 style="color: darkblue;">welcome to <p2 style="color: red">{{ request.user }}</p2> inside<p style="color: rgb(255, 0, 93)">{{ request.user.role }}</p></h1>
+
+
+{% endblock content %}

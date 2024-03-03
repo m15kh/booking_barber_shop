@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import ChangePasswordForm 
+from .forms import ChangePasswordForm
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
@@ -58,7 +58,7 @@ class UserLogoutView(LoginRequiredMixin, View):
 class RegisterView(View):
     template_name = "accounts/register.html"
     success_url = reverse_lazy("pages:home")
-    form_class = UserRegisterForm  
+    form_class = UserRegisterForm
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -68,22 +68,25 @@ class RegisterView(View):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            phone_number=form.cleaned_data["phone_number"]
-            print(phone_number)
 
             random_code = random.randint(10000, 99999)
             sent_otp_code(form.cleaned_data["phone_number"], random_code)
             OtpCode.objects.create(
                 phone_number=form.cleaned_data["phone_number"], code=random_code
             )
-            
+
             request.session["user_registeration_form_info"] = {
                 "phone_number": form.cleaned_data["phone_number"],
+                "password": form.cleaned_data["password"],
                 "code": random_code,
             }
-            
-            messages.success(request, "An activation code has been sent to your phone number.", 'success')
-            return redirect('accounts:verify_code')
+
+            messages.success(
+                request,
+                "An activation code has been sent to your phone number.",
+                "success",
+            )
+            return redirect("accounts:verify_code")
         else:
             return render(request, self.template_name, {"form": form})
 
@@ -94,7 +97,9 @@ class UserRegisterVerifyCodeView(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        code_instance = OtpCode.objects.get(phone_number=request.session["user_registeration_form_info"]["phone_number"])
+        code_instance = OtpCode.objects.get(
+            phone_number=request.session["user_registeration_form_info"]["phone_number"]
+        )
         created_time = code_instance.created.time()
         created_time = created_time.strftime("%H:%M:%S")
         context = {"form": form, "created_time": created_time}
@@ -108,27 +113,31 @@ class UserRegisterVerifyCodeView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            if cd['code'] == code_instance.code:
+            if cd["code"] == code_instance.code:
                 # create customer user
                 CustomerUser.objects.create_user(
                     user_session["phone_number"],
+                    user_session["password"],
                 )
 
                 code_instance.delete()
-                messages.success(request, "you registered successfully", 'success')
-                return redirect('pages:home')
+                messages.success(request, "you registered successfully", "success")
+                return redirect("pages:home")
 
             else:
-                form.add_error('code', 'this code is wrong')
-                messages.error(request, 'this code is wrong', 'danger')
-                code_instance = OtpCode.objects.get(phone_number=request.session["user_registeration_form_info"]["phone_number"])
+                form.add_error("code", "this code is wrong")
+                messages.error(request, "this code is wrong", "danger")
+                code_instance = OtpCode.objects.get(
+                    phone_number=request.session["user_registeration_form_info"][
+                        "phone_number"
+                    ]
+                )
                 created_time = code_instance.created.time()
                 created_time = created_time.strftime("%H:%M:%S")
                 context = {"form": form, "created_time": created_time}
                 return render(
                     request, self.template_name, context
                 )  # Pass the form to the template context
-
 
         else:
             return render(request, self.template_name, {"form": form})

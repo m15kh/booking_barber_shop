@@ -29,8 +29,8 @@
                                     <p class="small text-muted">Enter code that was sent by SMS</p>
                                 </div>
 
-                                <form method="post">
-                                    {% csrf_token %}
+                                <form method="post">{% csrf_token %}
+
                                     <div class="form-group form-focus">
                                         <label class="focus-label">Activation code</label>
                                         <input type="number" class="form-control floating" name="{{ form.code.name }}"
