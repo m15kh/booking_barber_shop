@@ -5,143 +5,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Doccure-Cosmetics</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
-    <link type="image/x-icon" href="{% static 'img/favicon.png' %}" rel="icon">
-    
-
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css' %}">
-
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
 
 <body>
 <div class="main-wrapper">
+    {% include 'include/_header.html' %} <!-- add header -->
 
-        <header class="header">
-            <nav class="navbar navbar-expand-lg header-nav">
-                <div class="navbar-header">
-                    <a id="mobile_btn" href="javascript:void(0);">
-                        <span class="bar-icon">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </a>
-                    <a href="{% url 'pages:home' %}" class="navbar-brand logo">
-                        <img src="{% static 'img/logo/logo2.jpg' %}" class="img-fluid" alt="Logo">
-                    </a>
-                </div>
-                <div class="main-menu-wrapper">
-                    <div class="menu-header">
-                        <a href="{% url 'pages:home' %}" class="menu-logo">
-                            <img src="{% static 'img/logo/logo2.jpg' %}" class="img-fluid" alt="Logo">
-                        </a>
-                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                            <i class="fas fa-times"></i>
-                        </a>
-                    </div>
-                    <ul class="main-nav">
-                        <li class="active">
-                            <a href="{% url 'pages:home' %}">Home</a>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
-                            <ul class="submenu">
-                                <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
-                                <li><a href="appointments.html">Appointments</a></li>
-                                <li><a href="schedule-timings.html">Schedule Timing</a></li>
-                                <li><a href="my-patients.html">Patients List</a></li>
-                                <li><a href="patient-profile.html">Patients Profile</a></li>
-                                <li><a href="chat-doctor.html">Chat</a></li>
-                                <li><a href="invoices.html">Invoices</a></li>
-                                <li><a href="doctor-profile-settings.html">Profile Settings</a></li>
-                                <li><a href="reviews.html">Reviews</a></li>
-                                <li><a href="doctor-register.html">Doctor Register</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
-                            <ul class="submenu">
-                                <li class="has-submenu">
-                                    <a href="#">Doctors</a>
-                                    <ul class="submenu">
-                                        <li><a href="map-grid.html">Map Grid</a></li>
-                                        <li><a href="map-list.html">Map List</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="search.html">Search Doctor</a></li>
-                                <li><a href="doctor-profile.html">Doctor Profile</a></li>
-                                <li><a href="booking.html">Booking</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="booking-success.html">Booking Success</a></li>
-                                <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
-                                <li><a href="favourites.html">Favourites</a></li>
-                                <li><a href="chat.html">Chat</a></li>
-                                <li><a href="profile-settings.html">Profile Settings</a></li>
-                                <li><a href="change-password.html">Change Password</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                            <ul class="submenu">
-                                <li><a href="voice-call.html">Voice Call</a></li>
-                                <li><a href="video-call.html">Video Call</a></li>
-                                <li><a href="search.html">Search Doctors</a></li>
-                                <li><a href="calendar.html">Calendar</a></li>
-                                <li><a href="components.html">Components</a></li>
-                                <li class="has-submenu">
-                                    <a href="invoices.html">Invoices</a>
-                                    <ul class="submenu">
-                                        <li><a href="invoices.html">Invoices</a></li>
-                                        <li><a href="invoice-view.html">Invoice View</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blank-page.html">Starter Page</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact-us.html">Contact Us</a></li>
-                        </li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="register.html">Register</a></li>
-                        <li><a href="forgot-password.html">Forgot Password</a></li>
-                    </ul>
-                    </li>
-                    <li class="has-submenu">
-                        <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                        <ul class="submenu right-dropdown">
-                            <li><a href="blog-list.html">Blog List</a></li>
-                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                            <li><a href="blog-details.html">Blog Details</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="admin/index.html" target="_blank">Admin</a>
-                    </li>
-                    <li class="login-link">
-                        <a href="login.html">Login / Signup</a>
-                    </li>
-                    </ul>
-                </div>
-                <ul class="nav header-navbar-rht">
-                    <li class="nav-item">
-                        <a class="nav-link header-login" href="{% url 'accounts:user_login' %}">login / Signup </a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
 
 
         <section class="section section-search">
             <div class="container">
                 <div class="banner-wrapper">
                     <div class="banner-header">
-                        <h1>Select <span>Barber Shop</span> &<br> Make an Appointment</h1>
+                        <h1>Select <span>Hair dresser</span> &<br> Make an Appointment</h1>
                     </div>
 
                     <div class="search-box">
@@ -152,8 +27,8 @@
             </div>
         </section>
 
-
-        <section class="specialities">
+        {% include 'include/_barbers.html' %}
+        <!-- <section class="specialities">
             <div class="container">
                 <div class="section-title text-center">
                     <h2>We are specialists in</h2>
@@ -238,7 +113,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
 
         <section class="our-service">
@@ -295,120 +170,6 @@
         </section>
 
 
-        <section class="cosmetics-specialist">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>choose your cosmetics specialist</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="specialities-col">
-                            <div class="card">
-                                <a href="doctor-profile.html" class="specialities-img">
-                                    <img src="{% static 'img/doctors/doctor-01.png' %}" alt="">
-                                </a>
-                                <div class="card-body">
-                                    <div class="specialities-content">
-                                        <a href="doctor-profile.html">
-                                            <h5>Eric Buckles</h5>
-                                        </a>
-                                        <p>MBBS, MDS - Cosmetics Surgeon</p>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
-                                        </div>
-                                        <a href="doctor-profile.html" class="booknow-btn">Book now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="specialities-col">
-                            <div class="card">
-                                <a href="doctor-profile.html" class="specialities-img">
-                                    <img src="{% static 'img/doctors/doctor-02.png' %}" alt="">
-                                </a>
-                                <div class="card-body">
-                                    <div class="specialities-content">
-                                        <a href="doctor-profile.html">
-                                            <h5>Lane Seay</h5>
-                                        </a>
-                                        <p>MBBS, MDS - Cosmetics Surgeon</p>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
-                                        </div>
-                                        <a href="doctor-profile.html" class="booknow-btn">Book now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="specialities-col">
-                            <div class="card">
-                                <a href="doctor-profile.html" class="specialities-img">
-                                    <img src="{% static 'img/doctors/doctor-03.png' %}" alt="">
-                                </a>
-                                <div class="card-body">
-                                    <div class="specialities-content">
-                                        <a href="doctor-profile.html">
-                                            <h5>Matthew Dodd</h5>
-                                        </a>
-                                        <p>MBBS, MDS - Cosmetics Surgeon</p>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
-                                        </div>
-                                        <a href="doctor-profile.html" class="booknow-btn">Book now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="specialities-col">
-                            <div class="card">
-                                <a href="doctor-profile.html" class="specialities-img">
-                                    <img src="{% static 'img/doctors/doctor-04.png' %}" alt="">
-                                </a>
-                                <div class="card-body">
-                                    <div class="specialities-content">
-                                        <a href="doctor-profile.html">
-                                            <h5>Carol Alba</h5>
-                                        </a>
-                                        <p>MBBS, MDS - Cosmetics Surgeon</p>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
-                                        </div>
-                                        <a href="doctor-profile.html" class="booknow-btn">Book now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
         <section class="news-letter">
@@ -441,17 +202,7 @@
                             </span>
                         </address>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="social-links">
-                            <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                <li><a href="#"><i class="fab fa-pinterest-p"></i></a></li>
-                                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
+                  
                 </div>
             </div>
         </section>      
@@ -459,16 +210,7 @@
 
     </div>
 
-    <script src="{% static 'js/jquery-3.6.0.min.js' %}" type="df939a7d2d3d8249ca9790c8-text/javascript"></script>
-    
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}" type="df939a7d2d3d8249ca9790c8-text/javascript"></script>
-    
-    <script src="{% static 'js/slick.js' %}" type="df939a7d2d3d8249ca9790c8-text/javascript"></script>
-    
-    <script src="{% static 'js/script.js' %}" type="df939a7d2d3d8249ca9790c8-text/javascript"></script>
-    <script src="../{% static 'scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js' %}"
-        data-cf-settings="df939a7d2d3d8249ca9790c8-|49" defer=""></script>
-    </body>
-    
-    </html>
-</html>
+    {% include 'include/_footer.html' %}
+
+
+{% endblock content %}

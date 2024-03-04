@@ -1,4 +1,7 @@
 {% load static %}
+
+
+
 <header class="header">
     <nav class="navbar navbar-expand-lg header-nav">
         <div class="navbar-header">
@@ -10,120 +13,78 @@
                 </span>
             </a>
             <a href="{% url 'pages:home' %}" class="navbar-brand logo">
-                <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="Logo">
+                <img src="{% static 'img/logo/logo2.png' %}" class="img-fluid" alt="Logo">
             </a>
         </div>
         <div class="main-menu-wrapper">
             <div class="menu-header">
-                <a href="index-2.html" class="menu-logo">
-                    <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="Logo">
+                <a href="{% url 'pages:home' %}" class="menu-logo">
+                    <img src="{% static 'img/logo/logo2.jpg' %}" class="img-fluid" alt="Logo">
                 </a>
                 <a id="menu_close" class="menu-close" href="javascript:void(0);">
                     <i class="fas fa-times"></i>
                 </a>
             </div>
             <ul class="main-nav">
+
+                <li class="has-submenu">
+                    <a href="#">Barbers <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="{% url 'pages:list_barber' %}">List of all Barbers</a></li>
+                    </ul>
+                </li>
+
+
+                {% if request.user.role == 'ADMIN' %}
                 <li>
-                    <a href="#" style="color: blueviolet;">{{ request.user }} {{ request.user.role }}</a>
-
+                    <a href="admin/index.html" target="_blank">Admin</a>
                 </li>
-                                        {% if request.user.role == 'BARBERUSER' %}
-
-                <li class="has-submenu active">
-                    <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
-
-                    <ul class="submenu">
-
-                    </ul>
-                </li>
-                                        {% endif %}
-
-                                        {% if request.user.role == 'CUSTOMERUSER' %}
- 
-                <li class="has-submenu">
-                    <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
-                    <ul class="submenu">
-                        <li><a href="{% url 'accounts:change_password' %}">change  password</a></li>
-                        <li><a href="{% url 'customers:edit_profile' request.user.pk %}">profile me</a></li>
-
-
-
-                    </ul>
-                </li>
-                                        {% endif %}
-
-                <li class="has-submenu">
-                    <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                    <ul class="submenu">
-                        <li><a href="{% url 'accounts:register' %}"> Register</a></li>
-
-                        <li><a href="{% url 'pages:list_barber' %}">list all Barbers</a></li>
-                        <li><a href="{% url 'pages:components' %}">components</a></li>
-                        {% if request.user.role == 'CUSTOMERUSER' %}
-                        <li><a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">customer panel </a></li>
-                        {% elif request.user.role == 'BARBERUSER' or request.user.role == 'ADMIN' %}
-                            <li><a href="{% url 'admin:index' %}">admin panel </a></li>
-
-                        {% endif %}
-
-
-                </li>
-
-            </ul>
-            </li>
-
-            <li>
-                <!-- <a href="admin/index.html" target="_blank">Admin</a> -->
-                {% if request.user.is_authenticated %}
-                <a href="{% url 'accounts:user_logout' %}">Logout</a>
-                {% else %}
-                <a href="{% url 'accounts:user_login' %}">Login</a>
-
                 {% endif %}
-            </li>
+                <li class="login-link">
+                    <a href="login.html">Login / Signup</a>
+                </li>
             </ul>
         </div>
+
+
+        {% if request.user.is_authenticated %}
         <ul class="nav header-navbar-rht">
 
             <li class="nav-item dropdown has-arrow logged-item">
                 <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                     <span class="user-img">
-                        {% if request.user.role == 'BARBERUSER' %}
-                            <img class="rounded-circle" src="{{ request.user.barberprofile.image.url }}" width="31" alt="Barber Image">
-                        {% elif request.user.role == 'CUSTOMERUSER' %}
-                            <img class="rounded-circle" src="{{ request.user.customerprofile.image.url }}" width="31" alt="Customer Image">
-                        {% else %}
-                            <img class="rounded-circle" src="{% static 'img/default/profile.jpg' %}" width="31" alt="Customer Image">
-
-
-                        {% endif %}
-
+                        <img class="rounded-circle" src="{% static 'img/patients/patient2.jpg' %}" width="31"
+                            alt="{{ request.user }}">
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <div class="user-header">
                         <div class="avatar avatar-sm">
-                            <img src="{% static 'img/doctors/doctor-thumb-02.jpg' %}" alt="User Image"
+                            <img src="{% static 'img/patients/patient2.jpg' %}" alt="User Image"
                                 class="avatar-img rounded-circle">
                         </div>
                         <div class="user-text">
-                            <h6>{{ request.user.username}}</h6>
-                            <p class="text-muted mb-0">Doctor</p>
+                            <h6></h6>{{ request.user.last_name }}</h6>
+                            <p class="text-muted mb-0">{{ request.user.role }}</p>
                         </div>
                     </div>
-
-
-                    {% if request.user.is_authenticated %}
-                    <a class="dropdown-item" href="doctor-dashboard.html">Dashboard</a>
+                    {% if request.user.role == 'CUSTOMERUSER' %}
+                    <a class="dropdown-item"
+                        href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">Dashboard</a>
+                    {% endif %}
                     <a class="dropdown-item" href="doctor-profile-settings.html">Profile Settings</a>
                     <a class="dropdown-item" href="{% url 'accounts:user_logout' %}">Logout</a>
-                    {% else %}
-                    <a class="dropdown-item" href="{% url 'accounts:user_login' %}">Login</a>
-                    <a class="dropdown-item" href="{% url 'accounts:register' %}">Register</a>
-                    {% endif %}
                 </div>
             </li>
 
         </ul>
+        {% else %}
+        <ul class="nav header-navbar-rht">
+            <li class="nav-item">
+                <a class="nav-link header-login" href="{% url 'accounts:user_login' %}">login / Signup </a>
+            </li>
+        </ul>
+
+        {% endif %}
     </nav>
 </header>

@@ -1,0 +1,35 @@
+{% load static %}
+<section class="cosmetics-specialist">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>choose your Barber specialist</h2>
+            <p>booking  an appontment  immediatly</p>
+        </div>
+        <div class="row justify-content-center">
+            {% for barber in barbers %}
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="specialities-col">
+                    <div class="card">
+                        <a href="doctor-profile.html" class="specialities-img">
+                            <img src="{% static 'img/doctors/doctor-01.png' %}" alt="">
+                        </a>
+                        <div class="card-body">
+                            <div class="specialities-content">
+                                <a href="doctor-profile.html">
+                                    <h5>{{ barber }}</h5>
+                                </a>
+                                <p>MBBS, MDS - Cosmetics Surgeon</p>
+
+                                <a href="{% url 'booking:booking_date'  barber.pk %}" class="booknow-btn">Book now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+         
+           
+         
+        </div>
+    </div>
+</section>
