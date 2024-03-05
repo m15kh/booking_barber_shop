@@ -1,9 +1,12 @@
 from accounts.models import BarberProfile
 from django.views.generic import TemplateView, ListView
-
-
-class HomePageView(TemplateView):
-    template_name = "pages/home.html"
+from accounts.models import BarberUser, User,  CustomerUser , BarberProfile
+from django.views import View
+from django.shortcuts import render
+class HomePageView(View):
+    def get(self, request):
+        barbers = BarberProfile.objects.all()
+        return render(request, "pages/home.html", {"barbers": barbers})
 
 
 class TestPageView(TemplateView):

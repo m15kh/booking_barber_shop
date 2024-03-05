@@ -17,7 +17,7 @@
             <nav class="dashboard-menu">
                 <ul>
                     <li class="active">
-                        <a href="{% url 'customers:customer_panel' customer.pk %}">
+                        <a href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">
                             <i class="fas fa-columns"></i>
                             <span>Dashboard</span>
                         </a>
@@ -25,7 +25,7 @@
       
 
                     <li>
-                        <a href="{% url 'customers:edit_profile' customer.pk %}">
+                        <a href="{% url 'customers:edit_profile' request.user.pk %}">
                             <i class="fas fa-user-cog"></i>
                             <span>Profile Settings</span>
                         </a>
@@ -37,7 +37,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'logout' %}">
+                        <a href="{% url 'accounts:user_logout' %}">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
                         </a>
@@ -47,3 +47,4 @@
         </div>
     </div>
 </div>
+

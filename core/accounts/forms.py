@@ -30,7 +30,11 @@ class UserRegisterForm(forms.Form):
             RegexValidator(r"^\d{2}$", "Enter a valid 2-digit phone number.")
         ],
     )
-
+    
+    password = forms.CharField(
+        required=True,  # Ensures the field is not null
+        widget=forms.PasswordInput,
+    )
     def clean_phone_number(self):
         phone = self.cleaned_data['phone_number']
 
