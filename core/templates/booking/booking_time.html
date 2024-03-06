@@ -38,7 +38,7 @@
                                     <img src="{{ barber.image.url }}" alt="User Image">
                                 </a>
                                 <div class="booking-info">
-                                    <h4><a href="doctor-profile.html">{{ barber }}</a></h4>
+                                    <h4><a href="doctor-profile.html">{{ barber.user.last_name }}</a></h4>
 
                                     <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> IRAN, Tehran
                                     </p>
@@ -51,46 +51,43 @@
                             <h4 class="text-muted">{{ selected_date }}</h4>
                             <p class="text-muted" style="font-size: 30px;">{{ day_of_week }}</p>
                         </div>
-                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                            <div class="bookingrange btn btn-white btn-sm mb-3">
-                                <i class="far fa-calendar-alt me-2"></i>
-                                <span></span>
-                                <i class="fas fa-chevron-down ms-2"></i>
-                            </div>
-                        </div>
+                 
                     </div>
 
                     <div class="card booking-schedule schedule-widget">
 
-                        <div class="card booking-schedule schedule-widget">
-                            <div class="schedule-header">
-                                <div class="row">
-
-                                </div>
-                            </div>
+                        
                             <!-- time slot TODO -->
                             <div class="schedule-cont">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="time-slot">
-                                                                                          
+                                        <div class="time-slot">                                         
                                             <ul class="clearfix">
-                                                {% for slot in all_timeslot %}
-                                                    <li>ِ
-                                                        <div class="date-slot">
+                                                
+                                                 {% for slot in all_timeslot %}
+
+                                                <li>
+                                                    <div class="date-slot">
                                                                 {% if slot in all_reserve %}
-                                                                    <button class="timing"  style="background-color: #979A9A ;" disabled>
-                                                                        <span style="font-size: 18px;">{{ slot }}</span>
-                                                                    </button>
-                                                                {% else %}
-                                                                    <button class="timing" >
-                                                                    <span style="font-size: 18px;">{{ slot }}</span>
-                                                                    </button>
-                                                                {% endif %}
-                                                                </br>
-                                                        </div>
-                                                    </li>
+                                                        <button class="timing"
+                                                            style="   background-color: #979A9A"
+                                                            disabled>
+                                                            <span style="font-size: 18px;">{{ slot }}</span><br>
+
+                                                        </button>
+                                                        {% else %}
+                                                        <button class="timing">
+                                                            <span style="font-size: 18px;">{{ slot }}</span><br>
+                                                        </button>
+                                                        {% endif %}
+                                                        </br>
+
+                                                    </div>
+
+
+                                                </li>
                                                 {% endfor %}
+
                                             </ul>
                                         </div>
                                         </br>
@@ -100,24 +97,22 @@
 
 
 
-                        </div>
 
 
+                    </div>
+                             
 
-
-
-
-                        <form id="bookingForm" method="POST" action="{% url 'booking:booking_process'  %}"> <!--[ ] -->
+                    <form id="bookingForm" method="POST" action="{% url 'booking:booking_process'  %}"> <!--[ ] -->
                             {% csrf_token %}
 
                             <input type="hidden" id="selectedTime" name="time" value="" autocomplete="off"/>
                             <input type="hidden" id="selectedDate" name="date" value="{{ selected_date }}" autocomplete="off"/>
                             <input type="hidden" id="barberName" name="barber" value="{{ barber.id }}"autocomplete="off" />
+                            <div class="submit-section proceed-btn text-end">
 
                             <!-- Your slot selection code here -->
-
                             <button type="submit" class="btn btn-primary submit-btn" id="proceedToPayBtn">Proceed to Pay</button>
-                    </div>
+                            </div>
                     </form>
 
 
@@ -128,6 +123,7 @@
     </div>
 </div>
 
+{% include 'include/_scripts.html' %}
 <script>
     $(document).ready(function () {
         $('.timing').click(function () {
@@ -174,14 +170,6 @@
 
 
 
-
-<script src="{% static 'js/jquery-3.6.0.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/moment.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
-<script src="{% static 'cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js' %}" data-cf-settings="|49"
-    defer=""></script>
 
 
 {% endblock content %}

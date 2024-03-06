@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     unique=True
     )
     first_name = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=False, null=False)
     email = models.EmailField(max_length=255, blank=True, null=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
