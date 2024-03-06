@@ -19,6 +19,6 @@
 
 ## :handshake: Contact
 
-mohammad khalili(liam williams) - - mohammad.khalili1515@gmail.com
+mohammad khalili - - mohammad.khalili1515@gmail.com
 
 Project Link: [https://github.com/liam1550/booking_calender](https://github.com/liam1550/booking_calender)
