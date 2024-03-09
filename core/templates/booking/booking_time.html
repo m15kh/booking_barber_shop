@@ -1,7 +1,10 @@
 {% extends '_base.html' %}
 {% load static %}
 
+
 {% block content %}
+
+
 
 
 
@@ -68,7 +71,9 @@
 
                                                 <li>
                                                     <div class="date-slot">
-                                                                {% if slot in all_reserve %}
+                                                        {% if slot in all_reserve or slot in past_time_slots %} 
+
+                                               
                                                         <button class="timing"
                                                             style="   background-color: #979A9A"
                                                             disabled>
