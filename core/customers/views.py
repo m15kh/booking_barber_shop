@@ -11,8 +11,10 @@ from datetime import date
 
 
 class CustomerPanelView(View):  # CustomerProfilePermissionMixin,
-    def get(self, request, customer_id):
-        customer = CustomerProfile.objects.get(pk=customer_id)
+    def get(self, request):
+        user_pk = request.user.customerprofile.pk
+        print("sa",user_pk)
+        customer = CustomerProfile.objects.get(pk=user_pk)
         bookings = Booking.objects.filter(customer=customer)
         today = date.today()
 
@@ -34,7 +36,11 @@ class CustomerPanelView(View):  # CustomerProfilePermissionMixin,
 
 
 class CustomerEditProfile(View):  # CustomerProfilePermissionMixin
-    def get(self, request, customer_id):
+    def get(self, request):
+        user_pk = request.user.pk
+        customer_id = user_pk
+        print(customer_id)
+        print(user_pk,'ssss')
         customer = User.objects.get(pk=customer_id)
         form = EditProfileForm(instance=customer)
         context = {"customer": customer, "form": form}
@@ -48,11 +54,6 @@ class CustomerEditProfile(View):  # CustomerProfilePermissionMixin
             print("yesssssssssssssssssssssssssssssssss it is valid")
         context = {"customer": customer, "form": form}
         return render(request, "customers/edit_profile.html", context)
-
-
-
-
-
 
 
 class CustomerChangePassword(CustomerProfilePermissionMixin, View):

@@ -3,15 +3,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("", include("pages.urls")),
     path("booking/", include("booking.urls")),
     path("barbers/", include("barbers.urls")),
     path("customers/", include("customers.urls")),
+    path("api/", include("rest_framework.urls")),
 ]
 
 

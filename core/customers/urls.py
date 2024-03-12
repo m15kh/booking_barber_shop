@@ -8,14 +8,14 @@ from .views import (
 
 app_name = "customers"
 urlpatterns = [
-    path("<int:customer_id>", CustomerPanelView.as_view(), name="customer_panel"),
+    path("", CustomerPanelView.as_view(), name="customer_panel"),
     path(
         "invoice-details",
         InvoiceDetailsView.as_view(),
         name="invoice_details",
     ),
     path(
-        "<int:customer_id>/editprofile",
+        "editprofile",
         CustomerEditProfile.as_view(),
         name="edit_profile",
     ),

@@ -11,12 +11,12 @@
                 <div class="specialities-col">
                     <div class="card">
                         <a href="doctor-profile.html" class="specialities-img">
-                            <img src="{% static 'img/doctors/doctor-01.png' %}" alt="">
+                            <img src="{{ barber.image.url }}" alt="">
                         </a>
                         <div class="card-body">
                             <div class="specialities-content">
                                 <a href="doctor-profile.html">
-                                    <h5>{{ barber }}</h5>
+                                    <h5>{{ barber.user.last_name }}</h5>
                                 </a>
                                 <p>MBBS, MDS - Cosmetics Surgeon</p>
 
