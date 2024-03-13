@@ -30,11 +30,10 @@ class BookingDateView(View):  # BookingPermissionMixin
     def get(self, request, barber_id):
         barber = get_object_or_404(BarberProfile, id=barber_id)
         check_timerange_day_exist = TimeRange.objects.filter(barber=barber)
-        # Assuming check_timerange_day_exist is your QuerySet
+
         day_names_list = [
-            str(timerange).strip() for timerange in check_timerange_day_exist
-        ]
-        # print("Days in the list:", day_names_list)
+            str(timerange).strip() for timerange in check_timerange_day_exist #reteun day of week that barber setting that customer can reserve
+        ]  # output: ['Sunday', 'Saturday', 'Wednesday', 'Friday', 'Thursday']
         all_days = [
             "Monday",
             "Tuesday",
@@ -45,8 +44,7 @@ class BookingDateView(View):  # BookingPermissionMixin
             "Sunday",
         ]
         missing_days = set(all_days) - set(day_names_list)
-        missing_days_list = list(missing_days)  # Days not in the list:
-        # print("Days not in the list:", missing_days_list)
+        missing_days_list = list(missing_days)  # Days not in the list: for example barber doesn't set plan for friday because it's weekend
 
         exclude_dates = (
             ExcludedDates.objects.filter(  # days that barber  is not available
@@ -63,6 +61,8 @@ class BookingDateView(View):  # BookingPermissionMixin
         # check that date is full timeslot  or not
 
         barber_timerange = TimeRange.objects.filter(barber=barber)
+        print(barber,'barbername')
+        print(barber_timerange)
         info_dict = {}
 
         for i in barber_timerange:
@@ -70,8 +70,8 @@ class BookingDateView(View):  # BookingPermissionMixin
 
         # Print the dictionary
         print("asa", info_dict)
-
         full_date = []
+
         for date in all_available_dates:  # all_da
             date = date[0]
             date_deform = date.strftime("%Y-%m-%d")  # Convert datetime.date to string
@@ -81,6 +81,13 @@ class BookingDateView(View):  # BookingPermissionMixin
             ).count()
 
             if date_name in info_dict:
+                print(
+                    "count_active_reserve:",
+                    count_active_reserve,
+                    info_dict[date_name],
+                    "info_dict[date_name]",
+                    date_name,
+                )
                 if count_active_reserve == info_dict[date_name]:
                     full_date.append(date_deform)
 

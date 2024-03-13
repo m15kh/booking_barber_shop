@@ -66,10 +66,11 @@ class CustomTimeRangeAdmin(TimeRangeAdmin):
         if request.user.role == "BARBERUSER":
             self.exclude = (
                 "barber",
-                "number_timeslots",
+                # "number_timeslots",
             )
         else:
-            self.exclude = ("number_timeslots",)
+            pass
+            # self.exclude = ("number_timeslots",)
         return super().get_form(request, obj, **kwargs)
 
     def get_queryset(self, request):

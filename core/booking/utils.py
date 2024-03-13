@@ -105,16 +105,3 @@ def TimeSlotgenerator(workstart, workfinish, reststart, restfinish, duration):
 
     len_time_slots = len(time_slots)
     return time_slots, len_time_slots
-
-
-# Example usage:
-work_start = "09:00"
-work_finish = "17:00"
-rest_start = "12:00"
-rest_finish = "12:00"  # Assuming no rest time
-duration = 30  # Duration in minutes
-slots, num_slots = TimeSlotgenerator(
-    work_start, work_finish, rest_start, rest_finish, duration
-)
-print(slots)
-print(num_slots)

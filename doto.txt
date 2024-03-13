@@ -2,6 +2,7 @@
  debug custom and barber  accounts that both of them can rigister successfully
  add status for booking! confirm cancel wait
  complete barber and customer panel
+for a example for today time now is 22:00 but show time 14:00 in booking site and user can resered!
 
 #TODO
 
@@ -20,7 +21,6 @@ add filed in model that user how many times reserve nooking with each barber
 
 
 #BUG
-for a example for today time now is 22:00 but show time 14:00 in booking site and user can resered!
-
+doesn't show in date slot if a date full of capecity
 
 #TODO
