@@ -81,8 +81,7 @@
                                         <a class="apt-btn" href="{% url 'booking:booking_date'  barber.pk %}">Book Appointment</a>
                                         {% else %}
 
-                                        <a class="apt-btn" href="{% url 'booking:booking_date'  barber.pk %}"
-                                            style="background-color: gray; pointer-events: none; cursor: default;">Not Available</a>
+                                        <a class="apt-btn" style="background-color: gray; pointer-events: none; cursor: default;">Not Available</a>
 
                                         {% endif %}
                                     </div>
