@@ -26,7 +26,7 @@ days_converter = {
 }
 
 
-class BookingDateView(BookingPermissionMixin, View):
+class BookingDateView(View):  # BookingPermissionMixin
     def get(self, request, barber_id):
         barber = get_object_or_404(BarberProfile, id=barber_id)
         check_timerange_day_exist = TimeRange.objects.filter(barber=barber)
@@ -96,7 +96,7 @@ class BookingDateView(BookingPermissionMixin, View):
         )
 
 
-class BookingTimeView(BookingPermissionMixin, View):
+class BookingTimeView(View):  # BookingPermissionMixin
     template_name = "booking/booking_time.html"
 
     def post(self, request, barber_id):
