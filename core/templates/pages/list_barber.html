@@ -68,12 +68,22 @@
                                     <div class="clini-infos">
                                         <ul>
                                             <li><i class="fas fa-map-marker-alt"></i> Iran, Tehran</li>
+                                
+                                            <i class="fas fa-exclamation-circle"> {{ barber.user.barberprofile.reservation_system }}</i>
+                          
+
                                          
                                         </ul>
                                     </div>
                                     <div class="clinic-booking">
                                         <a class="view-pro-btn" href="{% url 'barbers:barber_panel' barber.pk %}">View Profile</a>
+                                        {% if barber.user.barberprofile.reservation_system %}
                                         <a class="apt-btn" href="{% url 'booking:booking_date'  barber.pk %}">Book Appointment</a>
+                                        {% else %}
+
+                                        <a class="apt-btn" style="background-color: gray; pointer-events: none; cursor: default;">Not Available</a>
+
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

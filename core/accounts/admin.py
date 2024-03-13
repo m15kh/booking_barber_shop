@@ -8,6 +8,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 
 from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User, OtpCode
+from django.contrib import admin
+from .models import BarberProfile, BarberUser
 
 
 @admin.register(OtpCode)
@@ -122,9 +124,6 @@ class CustomUserAdmin(BaseUserAdmin):
     fieldsets = ()
     readonly_fields = ()
 
-from django.contrib import admin
-from .models import BarberProfile, BarberUser
-
 
 class BarberProfileInline(admin.StackedInline):
     model = BarberProfile
@@ -135,12 +134,11 @@ class BarberProfileInline(admin.StackedInline):
 class BarberUserAdmin(CustomUserAdmin):
     inlines = (BarberProfileInline,)  
 
+
     def get_inline_instances(self, request, obj=None):
         if obj:  # Editing an existing object
             return super().get_inline_instances(request, obj)
         return []
-
-    # Define other methods and attributes as you've implemented before
 
     list_display = (
         "phone_number",

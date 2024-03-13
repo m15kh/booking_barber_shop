@@ -105,6 +105,7 @@ class BarberProfile(models.Model):
         User, on_delete=models.CASCADE, related_name="barberprofile"
     )
     image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
+    reservation_system = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.phone_number

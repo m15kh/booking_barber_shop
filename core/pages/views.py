@@ -14,6 +14,7 @@ class TestPageView(TemplateView):
 
 
 class ListBarberPageView(ListView):
+    
     model = BarberProfile
     template_name = "pages/list_barber.html"
     context_object_name = "barbers"
