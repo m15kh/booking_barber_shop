@@ -19,8 +19,13 @@
                                     <h5>{{ barber.user.last_name }}</h5>
                                 </a>
                                 <p>MBBS, MDS - Cosmetics Surgeon</p>
-
+                                {% if barber.user.barberprofile.reservation_system %}
                                 <a href="{% url 'booking:booking_date'  barber.pk %}" class="booknow-btn">Book now</a>
+                                {% else %}
+                               
+                            <a class="booknow-btn" href="{% url 'booking:booking_date'  barber.pk %}"
+                                style="background-color: gray; pointer-events: none; cursor: default;">NOT AVAILABLE</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
