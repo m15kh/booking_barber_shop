@@ -134,6 +134,21 @@ class BookingTimeView(BookingPermissionMixin, View):
         else:
             print("No timeslots found for the specified conditions.")
 
+        # TODO  is better  check time past or not by fronted developer not back end
+
+        today = datee.today()
+        our_date = datetime.strptime(date, "%Y-%m-%d").date()
+        if our_date == today:
+            current_time = datetime.now().time()
+            all_timeslot_times = [datetime.strptime(time_str, '%H:%M').time() for time_str in all_timeslot[0]]
+            past_time_slots = [
+                time_slot.strftime("%H:%M")
+                for time_slot in all_timeslot_times
+                if time_slot < current_time
+            ]
+        else:
+            past_time_slots = []
+
         return render(
             request,
             self.template_name,
@@ -143,6 +158,7 @@ class BookingTimeView(BookingPermissionMixin, View):
                 "day_of_week": name_of_day,
                 "all_timeslot": all_timeslot[0],
                 "all_reserve": reserved_timeslot_format,
+                "past_time_slots": past_time_slots,
             },
         )
 

@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     unique=True
     )
     first_name = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=False, null=False)
     email = models.EmailField(max_length=255, blank=True, null=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -105,6 +105,7 @@ class BarberProfile(models.Model):
         User, on_delete=models.CASCADE, related_name="barberprofile"
     )
     image = models.ImageField(upload_to="barbers/", default="barbers/default.jpg")
+    reservation_system = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.phone_number

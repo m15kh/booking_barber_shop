@@ -1,6 +1,4 @@
-from collections.abc import Sequence
 from django.contrib import admin
-from django.http.request import HttpRequest
 from .models import TimeRange, Booking, ExcludedDates
 from django.urls import reverse
 
@@ -19,7 +17,6 @@ class TimeRangeAdmin(admin.ModelAdmin):
     list_filter = ()
 
     def get_list_filter(self, request):
-        # Check if the user is an admin
         if request.user.role == "ADMIN":
             # Show "barber" and "Days" in list filter for admins
             return super().get_list_filter(request) + ("barber", "Days")
@@ -107,6 +104,8 @@ class CustomTimeRangeAdmin(TimeRangeAdmin):
                 return
 
         super().save_model(request, obj, form, change)
+
+
 
 
 @admin.register(ExcludedDates)

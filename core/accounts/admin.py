@@ -8,6 +8,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 
 from .models import BarberUser, CustomerUser, BarberProfile, CustomerProfile, User, OtpCode
+from django.contrib import admin
+from .models import BarberProfile, BarberUser
 
 
 @admin.register(OtpCode)
@@ -130,39 +132,13 @@ class BarberProfileInline(admin.StackedInline):
 
 @admin.register(BarberUser)
 class BarberUserAdmin(CustomUserAdmin):
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.role == "BARBERUSER":
-            return qs.filter(pk=request.user.pk)
-        elif request.user.role == "ADMIN":
-            return qs.all()
-        else:
-            return qs.none()
+    inlines = (BarberProfileInline,)  
 
-    def has_change_permission(self, request, obj=None):
-        return True
-        # return super().has_change_permission(request, obj)
 
-    def has_delete_permission(self, request, obj=None):
-        return request.user.role == "ADMIN"
-
-    def has_add_permission(self, request):
-        return request.user.role == "ADMIN"
-
-    def has_module_permission(self, request):
-        return True
-
-    def get_readonly_fields(self, request, obj=None):
-            readonly_fields = super().get_readonly_fields(request, obj)
-            if request.user.role == "ADMIN":
-                return readonly_fields
-            return readonly_fields + (
-                "is_active",
-                "is_staff",
-                "groups",
-                "user_permissions",
-            )
-    # inlines = (BarberProfileInline,) #BUG
+    def get_inline_instances(self, request, obj=None):
+        if obj:  # Editing an existing object
+            return super().get_inline_instances(request, obj)
+        return []
 
     list_display = (
         "phone_number",
@@ -220,7 +196,11 @@ class CustomerProfileInline(admin.StackedInline):
 @admin.register(CustomerUser)
 class CustomerUserAdmin(CustomUserAdmin):
 
-    # inlines = (CustomerProfileInline,)
+    inlines = (CustomerProfileInline,)
+    def get_inline_instances(self, request, obj=None):
+        if obj:  # Editing an existing object
+            return super().get_inline_instances(request, obj)
+        return []
 
     list_display = (
         "phone_number",

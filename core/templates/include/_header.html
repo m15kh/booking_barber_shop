@@ -37,7 +37,7 @@
 
                 {% if request.user.role == 'ADMIN' %}
                 <li>
-                    <a href="admin/index.html" target="_blank">Admin</a>
+                    <a href="{% url 'admin:index' %}" target="_blank">Admin</a>
                 </li>
                 {% endif %}
                 <li class="login-link">
@@ -70,9 +70,13 @@
                     </div>
                     {% if request.user.role == 'CUSTOMERUSER' %}
                     <a class="dropdown-item"
-                        href="{% url 'customers:customer_panel' request.user.customerprofile.pk %}">Dashboard</a>
+                        href="{% url 'customers:customer_panel' %}">Dashboard</a>
+                    <a class="dropdown-item" href="{% url 'customers:edit_profile' %}">Profile Settings</a>
+                    {% elif request.user.role == 'ADMIN' %}
+                    <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin</a>
+
                     {% endif %}
-                    <a class="dropdown-item" href="doctor-profile-settings.html">Profile Settings</a>
+
                     <a class="dropdown-item" href="{% url 'accounts:user_logout' %}">Logout</a>
                 </div>
             </li>
