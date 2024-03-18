@@ -76,7 +76,16 @@ class Booking(models.Model):
     date = models.DateField(choices=Dateslotgenerator())
     time = models.TimeField()
     customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE,)
-    status = models.BooleanField(default=True)
+
+    STATUS_CHOICES = (
+        ('cancelled', 'Cancelled'),
+        ('confirmed', 'Confirmed'),
+        ('pending', 'Pending'),
+    )
+
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="confirmed"
+    )
 
     class Meta:
         unique_together = (
@@ -84,8 +93,6 @@ class Booking(models.Model):
             "date",
             "time",
         )
-
-
 
     def __str__(self):
         return "{} {} {}. customer: {}".format(

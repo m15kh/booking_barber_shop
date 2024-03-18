@@ -5,7 +5,7 @@ from booking.models import Booking
 from .mixins import CustomerProfilePermissionMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-from .forms import EditProfileForm
+from .forms import EditProfileForm, CancelAppointmentForm
 # 3rth party
 from datetime import date
 
@@ -14,6 +14,41 @@ class CustomerPanelView(View):  # CustomerProfilePermissionMixin,
     def get(self, request):
         user_pk = request.user.customerprofile.pk
         print("sa",user_pk)
+        customer = CustomerProfile.objects.get(pk=user_pk)
+        bookings = Booking.objects.filter(customer=customer)
+        today = date.today()
+
+        active_bookings = bookings.filter(
+            status=True, customer=customer, date__gte=today
+        )
+        deactived_bookings = bookings.filter(
+            status=False, customer=customer, date__gte=today
+        )
+
+        context = {
+            "customer": customer,
+            "bookings": bookings,
+            "active_bookings": active_bookings,
+            "deactive_bookings": deactived_bookings,
+        }
+
+        return render(request, "customers/customer_panel.html", context)
+
+    def post(self, request):
+        print('*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        form = CancelAppointmentForm(request.POST)  # Instantiate the form object with POST data
+        if form.is_valid():
+            booking_id = form.cleaned_data["booking_id"]
+            booking = Booking.objects.get(pk=booking_id)
+            print(booking_id) 
+            booking.status = "cancelled"
+            booking.save()
+        else:
+            print("Your post request is not valid")
+        print('*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+
+        user_pk = request.user.customerprofile.pk
+        print("sa", user_pk)
         customer = CustomerProfile.objects.get(pk=user_pk)
         bookings = Booking.objects.filter(customer=customer)
         today = date.today()
@@ -47,6 +82,7 @@ class CustomerEditProfile(View):  # CustomerProfilePermissionMixin
         return render(request, "customers/edit_profile.html", context)
 
     def post(self, request, customer_id):
+        
         customer = User.objects.get(pk=customer_id)
         form = EditProfileForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():

@@ -8489,3 +8489,9 @@ span.call-duration.float-end {
     padding: 6px 10px;
     background: #f7f7f7;
 }
+.custom-btn {
+    width: 100px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    margin-right: 5px; /* Adjust spacing between buttons */
+    display: inline-block; /* Make buttons display in line */
+}

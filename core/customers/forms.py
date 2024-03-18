@@ -13,3 +13,6 @@ class EditProfileForm(forms.ModelForm):
             "phone_number": "Phone Number",
             "birthday": "Date of Birth",
         }
+
+class CancelAppointmentForm(forms.Form):
+    booking_id = forms.IntegerField()

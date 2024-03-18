@@ -6,235 +6,123 @@
 <div class="main-wrapper">
     {% include 'include/_header.html' %} <!-- add header -->
 
-
-
-        <div class="breadcrumb-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-12 col-12">
-                        <nav aria-label="breadcrumb" class="page-breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                            </ol>
-                        </nav>
-                        <h2 class="breadcrumb-title">Dashboard</h2>
-                    </div>
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Dashboard</h2>
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
 
                 {% include 'include/cus_panel_sidebar.html' %}
 
-                    <div class="col-md-7 col-lg-8 col-xl-9">
-                        <div class="card">
-                            <div class="card-body pt-0">
+                <div class="col-md-7 col-lg-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body pt-0">
+                            <nav class="user-tabs mb-4">
+                                <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#pat_appointments"
+                                            data-bs-toggle="tab">Appointments</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#pat_prescriptions" data-bs-toggle="tab">activate
+                                            reservation</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#pat_billing" data-bs-toggle="tab">cancelled </a>
+                                    </li>
+                                </ul>
+                            </nav>
 
-                                <nav class="user-tabs mb-4">
-                                    <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" href="#pat_appointments"
-                                                data-bs-toggle="tab">Appointments</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#pat_prescriptions"
-                                                data-bs-toggle="tab">activate reservation</a>
-                                        </li>
-                              
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#pat_billing" data-bs-toggle="tab">cancelled </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-
-
-                                <div class="tab-content pt-0">
-
-                                    <div id="pat_appointments" class="tab-pane fade show active">
-                                        <div class="card card-table mb-0">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover table-center mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Barber</th>
-                                                                <th> Booking Date</th>
-                                                                <th>Booking TIme</th>
-                                                                <th>Follow Up</th>
-                                                                <th>Status</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                                              {% for item in bookings %}
-
-                                                            <tr>
-                                                                <td>
-                                                                    <h2 class="table-avatar">
-                                                                        <a href="doctor-profile.html"
-                                                                            class="avatar avatar-sm me-2">
-                                                                            <img class="avatar-img rounded-circle"
-                                                                                src="{{ item.barber.image.url }}"
-                                                                                alt="User Image">
-                                                                        </a>
-                                                                        <a href="doctor-profile.html">{{ item.barber }}
-                                                                            </a>
-                                                                    </h2>
-                                                                </td>
-                                                                <td>{{ item.date|date:"Y-m-d" }}</td>
-                                                                <td><span class="d-block text-info">{{ item.time|time:"H:i" }}</span></td>
-                                                                <td>---</td>
-                                                                {% if item.status == False %}
-                                                                <td><span class="badge rounded-pill bg-danger-light text-light">cancelled</span>
-                                                                </td>
-                                                                {% elif item.status == True %}
-                                                                        <td><span class="badge rounded-pill bg-success-light">confirm</span>
-                                                                        </td>
+                            <div class="tab-content pt-0">
+                                <div id="pat_appointments" class="tab-pane fade show active">
+                                    <div class="card card-table mb-0">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-center mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Barber</th>
+                                                            <th>Booking Date</th>
+                                                            <th>Booking Time</th>
+                                                            <th>Status</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for item in bookings %}
+                                                        <tr>
+                                                            <td>
+                                                                <h2 class="table-avatar">
+                                                                    <a href="doctor-profile.html"
+                                                                        class="avatar avatar-sm me-2">
+                                                                        <img class="avatar-img rounded-circle"
+                                                                            src="{{ item.barber.image.url }}"
+                                                                            alt="User Image">
+                                                                    </a>
+                                                                    <a href="doctor-profile.html">{{ item.barber.user.last_name }}
+                                                                    </a>
+                                                                </h2>
+                                                            </td>
+                                                            <td>{{ item.date|date:"Y-m-d" }}</td>
+                                                            <td><span class="d-block text-info">{{ item.time|time:"H:i" }}</span></td>
+                                                            {% if item.status == 'cancelled' %}
+                                                            <td><span
+                                                                    class="badge rounded-pill bg-danger-light text-light">cancelled</span>
+                                                            </td>
+                                                            {% elif item.status == 'confirmed' %}
+                                                            <td><span
+                                                                    class="badge rounded-pill bg-success-light">confirm</span>
+                                                            </td>
+                                                            {% endif %}
+                                                            <td class="text-end">
+                                                                <div class="appointment-action"
+                                                                    style="texta-align: center;">
+                                                                    {% if item.status == 'confirmed' %}
+                                                                    <a href="#" class="btn btn-sm bg-danger-light"
+                                                                        onclick="setSelectedBookingInfo('{{ item.pk }}', '{{ item.date|date:"Y-m-d" }}', '{{ item.time|time:"H:i" }}', '{{ item.barber.user.last_name }}', '{{ item.status }}', '{{ item.confirm_date|date:"Y-m-d" }}', '{{ item.paid_amount }}')"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#appt_details">
+                                                                        <i class="fas fa-times"></i> cancel
+                                                                        Appointment
+                                                                    </a>
+                                                                    {% endif %}
+                                                                  {% if item.status != 'confirmed' %}
+                                                                <span style="padding: 5px;">
+                                                                    <a href="javascript:void(0);" class="btn btn-sm bg-success-light"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#appt_details"
+                                                                        onclick="setSelectedBookingInfo('{{ item.pk }}', '{{ item.date|date:"Y-m-d" }}', '{{ item.time|time:"H:i" }}', '{{ item.barber.user.last_name }}', '{{ item.status }}', '{{ item.confirm_date|date:"Y-m-d" }}', '{{ item.paid_amount }}')">
+                                                                        <i class="fas fa-eye"></i> Info
+                                                                    </a>
+                                                                </span>
                                                                 {% endif %}
-                                                                <td class="text-end">
-                                                                    <div class="table-action">
-                                                                        <a href="{% url 'pages:list_barber' %}"
-                                                                            class="btn btn-sm bg-primary-light">
-                                                                             cancel
-                                                                        </a>
-                                                                        <a href="#"
-                                                                            class="btn btn-sm bg-info-light">
-                                                                            <i class="far fa-eye"></i> View
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    <div class="tab-pane fade" id="pat_prescriptions">
-                                        <div class="card card-table mb-0">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover table-center mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                    <th>Barber</th>
-                                                                    <th> Booking Date</th>
-                                                                    <th>Booking TIme</th>
-                                                                    <th>Follow Up</th>
-                                                                    <th>Status</th>
-                                                                    <th></th>
-                                                            </tr>
-
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for item in active_bookings %}
-                                                            
-                                                            <tr>
-                                                                <td>
-                                                                    <h2 class="table-avatar">
-                                                                        <a href="doctor-profile.html" class="avatar avatar-sm me-2">
-                                                                            <img class="avatar-img rounded-circle" src="{{ item.barber.image.url }}" alt="User Image">
-                                                                        </a>
-                                                                        <a href="doctor-profile.html">{{ item.barber }}
-                                                                        </a>
-                                                                    </h2>
-                                                                </td>
-                                                                <td>{{ item.date|date:"Y-m-d" }}</td>
-                                                                <td><span class="d-block text-info">{{ item.time|time:"H:i" }}</span></td>
-                                                                <td>---</td>
-                                                                {% if item.status == False %}
-                                                                <td><span class="badge rounded-pill bg-warning text-light">waiting</span>
-                                                                </td>
-                                                                {% elif item.status == True %}
-                                                                <td><span class="badge rounded-pill bg-success-light">confirm</span>
-                                                                </td>
-                                                                {% endif %}
-                                                                <td class="text-end">
-                                                                    <div class="table-action">
-                                                                        <a href="#" class="btn btn-sm bg-primary-light">
-                                                                            cancel
-                                                                        </a>
-                                                                        <a href="#" class="btn btn-sm bg-info-light">
-                                                                            <i class="far fa-eye"></i> View
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            {% endfor %}
-                     
-                                                        </tbody>
-                                                    
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div id="pat_billing" class="tab-pane fade">
-                                        <div class="card card-table mb-0">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover table-center mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                        <th>Barber</th>
-                                                                        <th> Booking Date</th>
-                                                                        <th>Booking TIme</th>
-                                                                        <th>Follow Up</th>
-                                                                        <th>Status</th>
-                                                                        <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for item in deactive_bookings %}
-                                                            <tr>
-                                                                <td>
-                                                                    <h2 class="table-avatar">
-                                                                        <a href="doctor-profile.html" class="avatar avatar-sm me-2">
-                                                                            <img class="avatar-img rounded-circle" src="{{ item.barber.image.url }}" alt="User Image">
-                                                                        </a>
-                                                                        <a href="doctor-profile.html">{{ item.barber }}
-                                                                        </a>
-                                                                    </h2>
-                                                                </td>
-                                                                <td>{{ item.date|date:"Y-m-d" }}</td>
-                                                                <td><span class="d-block text-info">{{ item.time|time:"H:i" }}</span></td>
-                                                                <td>---</td>
-                                                                {% if item.status == False %}
-                                                                <td><span class="badge rounded-pill bg-danger-light text-light">cancelled</span>
-                                                                </td>
-                                                               
-                                                                {% endif %}
-                                                                <td class="text-end">
-                                                                    <div class="table-action">
-                                                                        <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
-                                                                            <i class="fas fa-print"></i> cancel
-                                                                        </a>
-                                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                                            <i class="far fa-eye"></i> View
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                    
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
+
+                                <!-- Include other tab panes here -->
 
                             </div>
                         </div>
@@ -243,6 +131,72 @@
             </div>
         </div>
     </div>
+</div>
 
+<div class="modal fade custom-modal" id="appt_details">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reservation Details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="info-details">
+                    <li>
+                        <span class="title">Booking Date:</span>
+                        <span class="text" id="bookingDate"></span>
+                    </li>
+                    <li>
+                        <span class="title">Booking Time:</span>
+                        <span class="text" id="bookingTime"></span>
+                    </li>
+                    <li>
+                        <span class="title">Barber:</span>
+                        <span class="text" id="barberName"></span>
+                    </li>
+                    <li>
+                        <span class="title">Status:</span>
+                        <span class="text" id="bookingStatus"></span>
+                    </li>
+             
+                </ul>
+                 <form id="cancelReservationForm" method="post" action="{% url 'customers:customer_panel' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="selectedBookingId" name="booking_id" value="">
+                    <div class="submit-section text-center">
+                        <button type="submit" class="btn bg-success-light custom-btn">Yes</button>
+                        <button type="button" class="btn bg-danger-light custom-btn"
+                            data-bs-dismiss="modal">No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    {% endblock content %}
+<script>
+function setSelectedBookingInfo(bookingId, bookingDate, bookingTime, barberName, bookingStatus) {
+    document.getElementById('selectedBookingId').value = bookingId;
+    document.getElementById('bookingDate').innerText = bookingDate;
+    document.getElementById('bookingTime').innerText = bookingTime;
+    document.getElementById('barberName').innerText = barberName;
+    document.getElementById('bookingStatus').innerText = bookingStatus;
+
+    // Get the cancel reservation form element
+    var cancelReservationForm = document.getElementById('cancelReservationForm');
+
+    // Check if booking status is "cancelled"
+    if (bookingStatus === 'cancelled') {
+        // Hide the cancel reservation form
+        cancelReservationForm.style.display = 'none';
+    } else {
+        // Show the cancel reservation form
+        cancelReservationForm.style.display = 'block';
+    }
+}
+
+</script>
+
+{% endblock content %}
