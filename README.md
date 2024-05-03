@@ -18,9 +18,9 @@
 ## :star2: About the Project
 
 ### :camera: Screenshots
-<div align="center"> <a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/1.png alt="logo" width=1000 height=700 /></a>
-<a href=""><img src=https://github.com/liam1550/iot/blob/main/2.png alt="logo" width=350 height=700 /></a>
-<a href=""><img src=https://github.com/liam1550/iot/blob/main/3.png alt="logo" width=350 height=700 /></a></div>
+<div align="center"> <a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/1.png alt="logo" width=1000 height=10000 /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/2.png  alt="logo" width=1000 height=1000 /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/3.png  alt="logo" width=1000 height=1000 /></a></div>
 mohammad khalili - - mohammad.khalili1515@gmail.com
 
 Project Link: [https://github.com/liam1550/booking_calender](https://github.com/liam1550/booking_calender)
