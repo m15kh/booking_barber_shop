@@ -14,7 +14,7 @@ from django.contrib.auth import login, logout, authenticate
 from .models import OtpCode
 from .forms import UserRegisterForm, verifyCodeForm, UserLoginForm
 from .models import CustomerUser
-from utils import sent_otp_code
+from .utils import sent_otp_code
 
 # 3rd party
 import random
@@ -175,3 +175,4 @@ class ChangePasswordView(LoginRequiredMixin, FormView):
 
 class PasswordChangedView(TemplateView):
     template_name = "pages/home.html"
+

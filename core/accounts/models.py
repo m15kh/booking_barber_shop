@@ -5,6 +5,8 @@ from django.contrib.auth.models import BaseUserManager
 
 # local
 from .managers import UserManager
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Role(models.TextChoices):
@@ -15,11 +17,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     base_role = Role.ADMIN
 
     phone_number = models.CharField(
-    max_length=11,
-    validators=[
-        RegexValidator(r"^\d{2}$", "Enter a valid 2-digit phone number.")
-    ],
-    unique=True
+        max_length=11,
+        validators=[RegexValidator(r"^\d{2}$", "Enter a valid 2-digit phone number.")],
+        unique=True,
     )
     first_name = models.CharField(max_length=255, blank=True)
     last_name = models.CharField(max_length=255, blank=False, null=False)
@@ -31,8 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     role = models.CharField(max_length=50, choices=Role.choices)
 
-    USERNAME_FIELD = 'phone_number'
-
+    USERNAME_FIELD = "phone_number"
 
     objects = UserManager()
 
@@ -40,8 +39,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.pk:
             self.role = self.base_role
         return super().save(*args, **kwargs)
-
-
 
     def __str__(self):
         return self.phone_number
@@ -120,7 +117,7 @@ class BarberProfile(models.Model):
 
 
 class OtpCode(models.Model):
-    phone_number = models.CharField(max_length=11 , unique=True)
+    phone_number = models.CharField(max_length=11, unique=True)
     code = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     expiration = models.DateTimeField
