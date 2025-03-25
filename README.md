@@ -12,6 +12,7 @@
 -  [blog_site2](https://github.com/liam1550/blog_site2)
   
 - [About the Project](#star2-about-the-project)
+- [Features](#dart-features)
 - [Contact](#handshake-contact)
 
 
@@ -25,6 +26,20 @@
 <a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/5.png  alt="logo" width=1000 height=650 /></a>
 
 </div>
+
+## :dart: Features
+
+- **Interactive Calendar**: Easy-to-use calendar interface for appointment scheduling
+- **Time Slot Management**: Define and manage available appointment slots
+- **User Authentication**: Secure login for patients, doctors, and administrators
+- **Appointment Booking**: Simple process for patients to book appointments
+- **Doctor Profiles**: Detailed doctor information and specialties
+- **Admin Dashboard**: Comprehensive overview of all appointments and scheduling
+- **Email Notifications**: Automatic reminders for upcoming appointments
+- **Responsive Design**: Mobile-friendly interface for booking on any device
+- **Appointment History**: Track past and upcoming appointments
+- **Customizable Settings**: Tailor the booking process to specific requirements
+
 mohammad khalili - - mohammad.khalili1515@gmail.com
 
 Project Link: [https://github.com/liam1550/booking_calender](https://github.com/liam1550/booking_calender)
