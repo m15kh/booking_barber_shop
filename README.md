@@ -20,10 +20,10 @@
 
 ### :camera: Screenshots
 <div align="center"> <a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/1.png alt="logo" width=1000 height=650 /></a>
-<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/2.png  alt="logo" width=1000 height=650 /></a>
-<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/3.png  alt="logo" width=1000 height=650 /></a>
-<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/4.png  alt="logo" width=1000 height=650 /></a>
-<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/5.png  alt="logo" width=1000 height=650 /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/2.png  alt="logo"  /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/3.png  alt="logo" /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/4.png  alt="logo" /></a>
+<a href=""><img src=https://github.com/m15kh/booking_calender/blob/master/photo%20of%20project/5.png  alt="logo" /></a>
 
 </div>
 
